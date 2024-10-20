@@ -14,7 +14,7 @@ package paquetegrafo;
 import javax.swing.*;
 import java.awt.event.*;
 import java.io.*;
-import Interfaces.Interfaz;
+import Interfaces.Ventana1;
 
 public class Main {
 
@@ -22,11 +22,11 @@ public class Main {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        Interfaz v1 = new Interfaz();
+        Ventana1 v1 = new Ventana1();
         v1.setVisible(true);
     }
 
-
+    
 public class FileChooserExample {
     public static void main(String[] args) {
         // Crear un marco (JFrame)
