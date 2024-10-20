@@ -12,6 +12,7 @@
 import javax.swing.*;
 import java.awt.event.*;
 import java.io.*;
+import Interfaces.Interfaz;
 
 public class Main {
 
@@ -19,7 +20,8 @@ public class Main {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        // TODO code application logic here
+        Interfaz v1 = new Interfaz();
+        v1.setVisible(true);
     }
 
 
