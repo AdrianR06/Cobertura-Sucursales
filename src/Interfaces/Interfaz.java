@@ -2,13 +2,14 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
-
 package Interfaces;
-
+import paquetegrafo.Grafo;
+        
 /**
  *
  * @author aiannelli
  */
+
 public class Interfaz extends javax.swing.JFrame {
 
     /**
@@ -50,7 +51,7 @@ public class Interfaz extends javax.swing.JFrame {
 
         jLabel1.setText("Cobertura de Sucursales");
         getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 10, 130, 20));
-        getContentPane().add(ValorT, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 100, -1, -1));
+        getContentPane().add(ValorT, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 100, 170, -1));
 
         CambiarValorT.setText("Cambiar valor de T");
         CambiarValorT.addActionListener(new java.awt.event.ActionListener() {
@@ -58,7 +59,7 @@ public class Interfaz extends javax.swing.JFrame {
                 CambiarValorTActionPerformed(evt);
             }
         });
-        getContentPane().add(CambiarValorT, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 100, -1, -1));
+        getContentPane().add(CambiarValorT, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 100, -1, -1));
 
         jLabel2.setText("Indique el valor de t:");
         getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 100, -1, -1));
@@ -79,7 +80,7 @@ public class Interfaz extends javax.swing.JFrame {
                 ValorUbicacionSucursalActionPerformed(evt);
             }
         });
-        getContentPane().add(ValorUbicacionSucursal, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 240, -1, -1));
+        getContentPane().add(ValorUbicacionSucursal, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 240, 200, -1));
 
         ImprimirUbicacionesJSON.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -97,7 +98,7 @@ public class Interfaz extends javax.swing.JFrame {
                 ColocarSucursalActionPerformed(evt);
             }
         });
-        getContentPane().add(ColocarSucursal, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 240, -1, -1));
+        getContentPane().add(ColocarSucursal, new org.netbeans.lib.awtextra.AbsoluteConstraints(440, 240, -1, -1));
 
         RevisarCobertura.setText("Revisar cobertura");
         RevisarCobertura.addActionListener(new java.awt.event.ActionListener() {
@@ -111,6 +112,11 @@ public class Interfaz extends javax.swing.JFrame {
         getContentPane().add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 320, -1, -1));
 
         CambiarRedTransporte.setText("Cargar Red de Transporte");
+        CambiarRedTransporte.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                CambiarRedTransporteActionPerformed(evt);
+            }
+        });
         getContentPane().add(CambiarRedTransporte, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 50, -1, -1));
 
         pack();
@@ -139,6 +145,11 @@ public class Interfaz extends javax.swing.JFrame {
     private void RevisarCoberturaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RevisarCoberturaActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_RevisarCoberturaActionPerformed
+
+    private void CambiarRedTransporteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CambiarRedTransporteActionPerformed
+        Grafo grafo1 = new Grafo(100);
+        grafo1.cargarDesdeJSON("D:/Usuarios/aiannelli/OneDrive - Excelsior Gama Supermercados, CA/Documentos/NetBeansProjects/Caracas.json");
+    }//GEN-LAST:event_CambiarRedTransporteActionPerformed
 
     /**
      * @param args the command line arguments
