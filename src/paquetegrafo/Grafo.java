@@ -52,30 +52,31 @@ public class Grafo {
     // Método para cargar una red de transporte desde un archivo JSON
     public void cargarDesdeJSON(String archivo) {
         JSONParser parser = new JSONParser();
+
         try {
             // Leer y parsear el archivo JSON
-            Object obj = parser.parse(new FileReader("D:/Usuarios/aiannelli/OneDrive - Excelsior Gama Supermercados, CA/Documentos/NetBeansProjects/Caracas.json"));
-            JSONObject jsonObject = (JSONObject) obj;           
+            Object obj = parser.parse(new FileReader(archivo));
+            JSONObject jsonObject = (JSONObject) obj;
+
             // Iterar sobre las claves principales del JSON (e.g., "Metro de Caracas")
             for (Object claveRed : jsonObject.keySet()) {
-                String claveRedStr = (String) claveRed;
-                JSONArray lineas = (JSONArray) jsonObject.get(claveRedStr);
+                JSONArray lineas = (JSONArray) jsonObject.get(claveRed);
 
                 // Procesar cada línea
                 for (Object lineaObj : lineas) {
                     JSONObject lineaJSON = (JSONObject) lineaObj;
-                    
-                    for (Object claveLinea:lineaJSON.keySet()) {
+
+                    for (Object claveLinea : lineaJSON.keySet()) {
                         String claveLineaStr = (String) claveLinea;
-                        JSONArray estaciones = (JSONArray) lineaJSON.get(claveLinea);
-                        
+                        JSONArray estaciones = (JSONArray) lineaJSON.get(claveLineaStr);
+
                         // Procesar las estaciones de cada línea
-                        procesarEstaciones(claveLinea, estaciones);
+                        procesarEstaciones(claveLineaStr, estaciones);
                     }
                 }
             }
         } catch (IOException | ParseException e) {
-            e.printStackTrace();
+            e.printStackTrace(); // Manejo de errores en caso de problemas al cargar el archivo
         }
     }
 
