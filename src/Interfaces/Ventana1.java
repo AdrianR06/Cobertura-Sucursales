@@ -5,7 +5,7 @@
 package Interfaces;
 
 import javax.swing.JOptionPane;
-
+import paquetegrafo.Grafo;
 /**
  *
  * @author aiannelli
@@ -30,9 +30,10 @@ public class Ventana1 extends javax.swing.JFrame {
 
         jPanel1 = new javax.swing.JPanel();
         Exit = new javax.swing.JButton();
-        CargarRedDeTransporte = new javax.swing.JButton();
+        CargarRedDeTransporteTXT = new javax.swing.JButton();
         Indicaciones = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
+        CargarRedDeTransporteJSON1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -48,8 +49,8 @@ public class Ventana1 extends javax.swing.JFrame {
         });
         getContentPane().add(Exit, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 10, -1, -1));
 
-        CargarRedDeTransporte.setText("Cargar Red de Transporte");
-        getContentPane().add(CargarRedDeTransporte, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 230, -1, -1));
+        CargarRedDeTransporteTXT.setText("Cargar Red de Transporte .txt");
+        getContentPane().add(CargarRedDeTransporteTXT, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 220, -1, -1));
 
         Indicaciones.setText("Indicaciones");
         Indicaciones.addActionListener(new java.awt.event.ActionListener() {
@@ -57,11 +58,19 @@ public class Ventana1 extends javax.swing.JFrame {
                 IndicacionesActionPerformed(evt);
             }
         });
-        getContentPane().add(Indicaciones, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 180, -1, -1));
+        getContentPane().add(Indicaciones, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 130, -1, -1));
 
         jLabel1.setFont(new java.awt.Font("Segoe UI Black", 0, 14)); // NOI18N
         jLabel1.setText("Cobertura de Sucursales");
         getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 10, -1, -1));
+
+        CargarRedDeTransporteJSON1.setText("Cargar Red de Transporte .JSON");
+        CargarRedDeTransporteJSON1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                CargarRedDeTransporteJSON1ActionPerformed(evt);
+            }
+        });
+        getContentPane().add(CargarRedDeTransporteJSON1, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 170, -1, -1));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -73,6 +82,11 @@ public class Ventana1 extends javax.swing.JFrame {
     private void IndicacionesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_IndicacionesActionPerformed
          JOptionPane.showMessageDialog(null,"Bienvenido al sistema de cobertura de sucursales, para comenzar por favor cargue un archivo .JSON con la información referente a la red de transporte que desea utilizar");
     }//GEN-LAST:event_IndicacionesActionPerformed
+
+    private void CargarRedDeTransporteJSON1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CargarRedDeTransporteJSON1ActionPerformed
+        Grafo grafo1 = new Grafo(100);
+        grafo1.cargarDesdeJSON("D:/Usuarios/aiannelli/OneDrive - Excelsior Gama Supermercados, CA/Documentos/NetBeansProjects/Caracas.json");   
+    }//GEN-LAST:event_CargarRedDeTransporteJSON1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -110,7 +124,8 @@ public class Ventana1 extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton CargarRedDeTransporte;
+    private javax.swing.JButton CargarRedDeTransporteJSON1;
+    private javax.swing.JButton CargarRedDeTransporteTXT;
     private javax.swing.JButton Exit;
     private javax.swing.JButton Indicaciones;
     private javax.swing.JLabel jLabel1;

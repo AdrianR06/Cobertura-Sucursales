@@ -3,8 +3,8 @@ package paquetegrafo;
 
 import java.io.FileReader;
 import java.io.IOException;
-import org.json.JSONArray;
-import org.json.JSONObject;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
@@ -29,22 +29,22 @@ public class Grafo {
     }
 
     // Método para agregar una parada al grafo
-    public void agregarParada(String parada) {
-        if (!adyacencias.contieneClave(parada)) {
-            adyacencias.agregar(parada, new ListaEnlazada());
+    public void agregarParada(Object parada) {
+        if (!adyacencias.contieneClave(parada.toString())) {
+            adyacencias.agregar(parada.toString(), new ListaEnlazada());
         }
     }
 
     // Método para agregar una arista entre dos paradas
-    public void agregarArista(String parada1, String parada2) {
+    public void agregarArista(Object parada1, Object parada2) {
         agregarParada(parada1);
         agregarParada(parada2);
-        ListaEnlazada lista1 = adyacencias.obtener(parada1);
-        ListaEnlazada lista2 = adyacencias.obtener(parada2);
+        ListaEnlazada lista1 = adyacencias.obtener(parada1.toString());
+        ListaEnlazada lista2 = adyacencias.obtener(parada2.toString());
 
         if (lista1 != null && lista2 != null) {
-            lista1.agregar(parada2);
-            lista2.agregar(parada1);  // Grafo no dirigido
+            lista1.agregar(parada2.toString());
+            lista2.agregar(parada1.toString());  // Grafo no dirigido
         }
     }
 
@@ -52,12 +52,10 @@ public class Grafo {
     // Método para cargar una red de transporte desde un archivo JSON
     public void cargarDesdeJSON(String archivo) {
         JSONParser parser = new JSONParser();
-
         try {
             // Leer y parsear el archivo JSON
-            Object obj = parser.parse(new FileReader(archivo));
-            JSONObject jsonObject = (JSONObject) obj;
-
+            Object obj = parser.parse(new FileReader("D:/Usuarios/aiannelli/OneDrive - Excelsior Gama Supermercados, CA/Documentos/NetBeansProjects/Caracas.json"));
+            JSONObject jsonObject = (JSONObject) obj;           
             // Iterar sobre las claves principales del JSON (e.g., "Metro de Caracas")
             for (Object claveRed : jsonObject.keySet()) {
                 String claveRedStr = (String) claveRed;
@@ -66,13 +64,13 @@ public class Grafo {
                 // Procesar cada línea
                 for (Object lineaObj : lineas) {
                     JSONObject lineaJSON = (JSONObject) lineaObj;
-
-                    for (Object claveLinea : lineaJSON.keySet()) {
+                    
+                    for (Object claveLinea:lineaJSON.keySet()) {
                         String claveLineaStr = (String) claveLinea;
-                        JSONArray estaciones = (JSONArray) lineaJSON.get(claveLineaStr);
-
+                        JSONArray estaciones = (JSONArray) lineaJSON.get(claveLinea);
+                        
                         // Procesar las estaciones de cada línea
-                        procesarEstaciones(claveLineaStr, estaciones);
+                        procesarEstaciones(claveLinea, estaciones);
                     }
                 }
             }
@@ -82,18 +80,19 @@ public class Grafo {
     }
 
     // Método para procesar las estaciones de una línea
-    private void procesarEstaciones(String linea, JSONArray estaciones) {
+    private void procesarEstaciones(Object linea, JSONArray estaciones) {
         String estacionAnterior = null;
 
         for (Object estacionObj : estaciones) {
-            String estacionActual = (String) estacionObj;
-            agregarParada(estacionActual);
+            System.out.println(estacionObj);
+            //String estacionActual = (String) estacionObj;
+            agregarParada(estacionObj);
 
             // Conectar con la estación anterior
             if (estacionAnterior != null) {
-                agregarArista(estacionAnterior, estacionActual);
+                agregarArista(estacionAnterior, estacionObj);
             }
-            estacionAnterior = estacionActual;
+            estacionAnterior = estacionObj.toString();
         }
     }
 

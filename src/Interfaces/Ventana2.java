@@ -10,12 +10,12 @@ import paquetegrafo.Grafo;
  * @author aiannelli
  */
 
-public class Interfaz extends javax.swing.JFrame {
+public class Ventana2 extends javax.swing.JFrame {
 
     /**
      * Creates new form Interfaz
      */
-    public Interfaz() {
+    public Ventana2() {
         initComponents();
     }
 
@@ -29,7 +29,6 @@ public class Interfaz extends javax.swing.JFrame {
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
-        jLabel1 = new javax.swing.JLabel();
         ValorT = new javax.swing.JTextField();
         CambiarValorT = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
@@ -39,18 +38,17 @@ public class Interfaz extends javax.swing.JFrame {
         ImprimirUbicacionesJSON = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
         ColocarSucursal = new javax.swing.JButton();
-        RevisarCobertura = new javax.swing.JButton();
+        RevisarCoberturaTotal = new javax.swing.JButton();
         jLabel5 = new javax.swing.JLabel();
-        CambiarRedTransporte = new javax.swing.JButton();
+        MostrarGrafo = new javax.swing.JButton();
+        RevisarCoberturaSucursal1 = new javax.swing.JButton();
+        Exit2 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
         getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(106, 93, -1, -1));
-
-        jLabel1.setText("Cobertura de Sucursales");
-        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 10, 130, 20));
         getContentPane().add(ValorT, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 100, 170, -1));
 
         CambiarValorT.setText("Cambiar valor de T");
@@ -100,24 +98,35 @@ public class Interfaz extends javax.swing.JFrame {
         });
         getContentPane().add(ColocarSucursal, new org.netbeans.lib.awtextra.AbsoluteConstraints(440, 240, -1, -1));
 
-        RevisarCobertura.setText("Revisar cobertura");
-        RevisarCobertura.addActionListener(new java.awt.event.ActionListener() {
+        RevisarCoberturaTotal.setText("Revisar cobertura total");
+        RevisarCoberturaTotal.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                RevisarCoberturaActionPerformed(evt);
+                RevisarCoberturaTotalActionPerformed(evt);
             }
         });
-        getContentPane().add(RevisarCobertura, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 280, -1, -1));
+        getContentPane().add(RevisarCoberturaTotal, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 280, -1, -1));
 
         jLabel5.setText("En el caso de querer agregar una línea por favor suba el archivo .JSON con la información de las paradas de la misma:");
         getContentPane().add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 320, -1, -1));
 
-        CambiarRedTransporte.setText("Cargar Red de Transporte");
-        CambiarRedTransporte.addActionListener(new java.awt.event.ActionListener() {
+        MostrarGrafo.setText("Mostrar Red de Transporte");
+        getContentPane().add(MostrarGrafo, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 40, -1, -1));
+
+        RevisarCoberturaSucursal1.setText("Revisar cobertura");
+        RevisarCoberturaSucursal1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                CambiarRedTransporteActionPerformed(evt);
+                RevisarCoberturaSucursal1ActionPerformed(evt);
             }
         });
-        getContentPane().add(CambiarRedTransporte, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 50, -1, -1));
+        getContentPane().add(RevisarCoberturaSucursal1, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 280, -1, -1));
+
+        Exit2.setText("X");
+        Exit2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                Exit2ActionPerformed(evt);
+            }
+        });
+        getContentPane().add(Exit2, new org.netbeans.lib.awtextra.AbsoluteConstraints(650, 10, -1, -1));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -142,14 +151,17 @@ public class Interfaz extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_ColocarSucursalActionPerformed
 
-    private void RevisarCoberturaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RevisarCoberturaActionPerformed
+    private void RevisarCoberturaTotalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RevisarCoberturaTotalActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_RevisarCoberturaActionPerformed
+    }//GEN-LAST:event_RevisarCoberturaTotalActionPerformed
 
-    private void CambiarRedTransporteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CambiarRedTransporteActionPerformed
-        Grafo grafo1 = new Grafo(100);
-        grafo1.cargarDesdeJSON("D:/Usuarios/aiannelli/OneDrive - Excelsior Gama Supermercados, CA/Documentos/NetBeansProjects/Caracas.json");
-    }//GEN-LAST:event_CambiarRedTransporteActionPerformed
+    private void RevisarCoberturaSucursal1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RevisarCoberturaSucursal1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_RevisarCoberturaSucursal1ActionPerformed
+
+    private void Exit2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Exit2ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_Exit2ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -168,34 +180,36 @@ public class Interfaz extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Interfaz.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Ventana2.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Interfaz.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Ventana2.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Interfaz.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Ventana2.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Interfaz.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Ventana2.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new Interfaz().setVisible(true);
+                new Ventana2().setVisible(true);
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton AgregarLinea;
-    private javax.swing.JButton CambiarRedTransporte;
     private javax.swing.JButton CambiarValorT;
     private javax.swing.JButton ColocarSucursal;
+    private javax.swing.JButton Exit2;
     private javax.swing.JTextField ImprimirUbicacionesJSON;
-    private javax.swing.JButton RevisarCobertura;
+    private javax.swing.JButton MostrarGrafo;
+    private javax.swing.JButton RevisarCoberturaSucursal1;
+    private javax.swing.JButton RevisarCoberturaTotal;
     private javax.swing.JTextField ValorT;
     private javax.swing.JTextField ValorUbicacionSucursal;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
