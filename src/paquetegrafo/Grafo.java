@@ -8,7 +8,6 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import org.graphstream.graph.*;
-import org.graphstream.graph.implementations.*;
 
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
@@ -34,7 +33,8 @@ public class Grafo {
     public void agregarParada(Object parada, Graph graph) {
         if (!adyacencias.contieneClave(parada.toString())) {
             adyacencias.agregar(parada.toString(), new ListaEnlazada());
-            Node nodeA = graph.addNode(parada.toString());
+            Node nodoA = graph.addNode(parada.toString());
+            nodoA.setAttribute("ui.label", parada.toString());
         }
     }
 
@@ -42,17 +42,25 @@ public class Grafo {
     public void agregarArista(Object parada1, Object parada2, Graph graph) {
         agregarParada(parada1, graph);
         agregarParada(parada2, graph);
-        ListaEnlazada lista1 = adyacencias.obtener(parada1.toString());
-        ListaEnlazada lista2 = adyacencias.obtener(parada2.toString());
+        
+        //Convierte en Strings los nombres de las paradas en variables cortas
+        String p1 = parada1.toString();
+        String p2 = parada2.toString();
+        
+        ListaEnlazada lista1 = adyacencias.obtener(p1);
+        ListaEnlazada lista2 = adyacencias.obtener(p2);
 
         if (lista1 != null && lista2 != null) {
-            lista1.agregar(parada2.toString());
-            lista2.agregar(parada1.toString());  // Grafo no dirigido
-            String arista = parada1.toString()+parada2.toString();
-            Edge edge = graph.getEdge(arista);
-            if (edge != null) {
-                graph.addEdge(arista, parada1.toString(), parada2.toString());
-            } else {
+            lista1.agregar(p2);
+            lista2.agregar(p1);  // Grafo no dirigido
+            
+            //Agrega la arista al graph 
+            String aristaId = p1 + p2;
+            Node nodo1 = graph.getNode(p1);
+            Node nodo2 = graph.getNode(p2);
+            Boolean verificacion = nodo1.hasEdgeToward(nodo2.getId());
+            if (verificacion == false) { //Verifica que no exista ya una arista que conecte ambos nodos
+                graph.addEdge(aristaId, p1, p2);
             }
         }
     }
