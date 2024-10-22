@@ -31,28 +31,35 @@ public class Grafo {
     }
 
     // Método para agregar una parada al grafo
-    public void agregarParada(Object parada) {
+    public void agregarParada(Object parada, Graph graph) {
         if (!adyacencias.contieneClave(parada.toString())) {
             adyacencias.agregar(parada.toString(), new ListaEnlazada());
+            Node nodeA = graph.addNode(parada.toString());
         }
     }
 
     // Método para agregar una arista entre dos paradas
-    public void agregarArista(Object parada1, Object parada2) {
-        agregarParada(parada1);
-        agregarParada(parada2);
+    public void agregarArista(Object parada1, Object parada2, Graph graph) {
+        agregarParada(parada1, graph);
+        agregarParada(parada2, graph);
         ListaEnlazada lista1 = adyacencias.obtener(parada1.toString());
         ListaEnlazada lista2 = adyacencias.obtener(parada2.toString());
 
         if (lista1 != null && lista2 != null) {
             lista1.agregar(parada2.toString());
             lista2.agregar(parada1.toString());  // Grafo no dirigido
+            String arista = parada1.toString()+parada2.toString();
+            Edge edge = graph.getEdge(arista);
+            if (edge != null) {
+                graph.addEdge(arista, parada1.toString(), parada2.toString());
+            } else {
+            }
         }
     }
 
     // Método para cargar una red de transporte desde un archivo JSON
     // Método para cargar una red de transporte desde un archivo JSON
-    public void cargarDesdeJSON(String archivo) {
+    public void cargarDesdeJSON(String archivo, Graph graph) {
         JSONParser parser = new JSONParser();
 
         try {
@@ -73,7 +80,7 @@ public class Grafo {
                         JSONArray estaciones = (JSONArray) lineaJSON.get(claveLineaStr);
 
                         // Procesar las estaciones de cada línea
-                        procesarEstaciones(claveLineaStr, estaciones);
+                        procesarEstaciones(claveLineaStr, estaciones, graph);
                     }
                 }
             }
@@ -83,17 +90,17 @@ public class Grafo {
     }
 
     // Método para procesar las estaciones de una línea
-    private void procesarEstaciones(Object linea, JSONArray estaciones) {
+    private void procesarEstaciones(Object linea, JSONArray estaciones, Graph graph) {
         String estacionAnterior = null;
 
         for (Object estacionObj : estaciones) {
             System.out.println(estacionObj);
             //String estacionActual = (String) estacionObj;
-            agregarParada(estacionObj);
+            agregarParada(estacionObj, graph);
 
             // Conectar con la estación anterior
             if (estacionAnterior != null) {
-                agregarArista(estacionAnterior, estacionObj);
+                agregarArista(estacionAnterior, estacionObj, graph);
             }
             estacionAnterior = estacionObj.toString();
         }

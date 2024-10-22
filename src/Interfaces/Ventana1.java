@@ -10,8 +10,8 @@ import java.io.File;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileNameExtensionFilter;
-
-
+import org.graphstream.graph.Graph;
+import org.graphstream.graph.implementations.SingleGraph;
 import paquetegrafo.Grafo;
 /**
  *
@@ -110,10 +110,14 @@ public class Ventana1 extends javax.swing.JFrame {
 
         // Suponiendo que tienes una instancia de tu clase Grafo
         Grafo grafo = new Grafo(100); // Crear la instancia de Grafo (si ya existe, omite esta línea)
-
+        Graph graph = new SingleGraph("Tutorial");
+        
         try {
             // Llamar al método para cargar el JSON en el grafo
-            grafo.cargarDesdeJSON(rutaArchivo);
+            grafo.cargarDesdeJSON(rutaArchivo, graph);
+            //Muestra el grafo de GraphStream
+            System.setProperty("org.graphstream.ui", "swing");
+            graph.display();
 
             // Mostrar un mensaje de éxito
             JOptionPane.showMessageDialog(this, "Red cargada exitosamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
