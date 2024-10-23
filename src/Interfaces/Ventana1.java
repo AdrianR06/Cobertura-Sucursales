@@ -12,18 +12,19 @@ import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 
-import paquetegrafo.Grafo;
+import paquetegrafo.*;
 /**
  *
  * @author aiannelli
  */
 public class Ventana1 extends javax.swing.JFrame {
-
+    private Grafo grafo;
     /**
      * Creates new form Ventana1
      */
     public Ventana1() {
         initComponents();
+        grafo = new Grafo(100);
     }
 
     /**
@@ -91,38 +92,24 @@ public class Ventana1 extends javax.swing.JFrame {
     }//GEN-LAST:event_IndicacionesActionPerformed
 
     private void CargarRedDeTransporteJSON1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CargarRedDeTransporteJSON1ActionPerformed
-        // Crear el JFileChooser para que el usuario seleccione el archivo JSON
-    JFileChooser fileChooser = new JFileChooser();
-    fileChooser.setDialogTitle("Selecciona un archivo JSON de red de transporte");
+         // Llama al método cargarDesdeJSON de la clase Grafo
+    
+    grafo.reiniciarGrafo();
 
-    // Filtrar para que solo permita archivos JSON
-    FileNameExtensionFilter filter = new FileNameExtensionFilter("Archivos JSON", "json");
-    fileChooser.setFileFilter(filter);
+    try {
+        // Llamar al método para cargar el JSON en el grafo
+        grafo.cargarDesdeJSON();
+        // Imprimir la información del grafo para verificar
+        grafo.imprimirGrafo();
 
-    int resultado = fileChooser.showOpenDialog(this);
-
-    // Si el usuario selecciona un archivo
-    if (resultado == JFileChooser.APPROVE_OPTION) {
-        File archivoSeleccionado = fileChooser.getSelectedFile();
-
-        // Obtener la ruta del archivo seleccionado
-        String rutaArchivo = archivoSeleccionado.getAbsolutePath();
-
-        // Suponiendo que tienes una instancia de tu clase Grafo
-        Grafo grafo = new Grafo(100); // Crear la instancia de Grafo (si ya existe, omite esta línea)
-
-        try {
-            // Llamar al método para cargar el JSON en el grafo
-            grafo.cargarDesdeJSON(rutaArchivo);
-
-            // Mostrar un mensaje de éxito
-            JOptionPane.showMessageDialog(this, "Red cargada exitosamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
-        } catch (Exception e) {
-            // Manejar los errores durante la carga del archivo JSON
-            JOptionPane.showMessageDialog(this, "Error al cargar el archivo JSON: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-            e.printStackTrace();
-        }
+        // Mostrar un mensaje de éxito
+        JOptionPane.showMessageDialog(this, "Red cargada exitosamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+    } catch (Exception e) {
+        // Manejar los errores durante la carga del archivo JSON
+        JOptionPane.showMessageDialog(this, "Error al cargar el archivo JSON: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        e.printStackTrace();
     }
+
 
     }//GEN-LAST:event_CargarRedDeTransporteJSON1ActionPerformed
 

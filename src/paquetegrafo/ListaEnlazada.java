@@ -17,18 +17,20 @@ public class ListaEnlazada {
         this.cabeza = null;
     }
 
-    // Método para agregar un valor a la lista enlazada
-    public void agregar(String valor) {
-        Nodo nuevoNodo = new Nodo(valor);
+     public void agregar(Nodo nodo) {
         if (cabeza == null) {
-            cabeza = nuevoNodo;
+            cabeza = nodo;
         } else {
             Nodo actual = cabeza;
             while (actual.getSiguiente() != null) {
                 actual = actual.getSiguiente();
             }
-            actual.setSiguiente(nuevoNodo);
+            actual.setSiguiente(nodo);
         }
+    }
+    public void agregar(String valor) {
+        Nodo nuevoNodo = new Nodo(valor);
+        agregar(nuevoNodo); // Llama al método que acepta un Nodo
     }
 
     // Método para verificar si un valor está en la lista

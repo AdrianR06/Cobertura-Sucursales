@@ -1,6 +1,7 @@
 package paquetegrafo;
 
-
+import javax.swing.*;
+import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import org.json.simple.JSONArray;
@@ -34,68 +35,106 @@ public class Grafo {
             adyacencias.agregar(parada.toString(), new ListaEnlazada());
         }
     }
+    public void reiniciarGrafo() {
+        // Aquí reinicias tu estructura de datos
+        adyacencias = new MapaSimple(100); // Restablecer el mapa con una nueva instancia
+    }
 
     // Método para agregar una arista entre dos paradas
-    public void agregarArista(Object parada1, Object parada2) {
-        agregarParada(parada1);
-        agregarParada(parada2);
-        ListaEnlazada lista1 = adyacencias.obtener(parada1.toString());
-        ListaEnlazada lista2 = adyacencias.obtener(parada2.toString());
+    public void cargarDesdeJSON() {
+        // Crear el JFileChooser
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setDialogTitle("Seleccionar archivo JSON");
 
-        if (lista1 != null && lista2 != null) {
-            lista1.agregar(parada2.toString());
-            lista2.agregar(parada1.toString());  // Grafo no dirigido
-        }
-    }
+        // Filtrar para que solo muestre archivos JSON
+        fileChooser.setFileFilter(new javax.swing.filechooser.FileNameExtensionFilter("Archivos JSON", "json"));
 
-    // Método para cargar una red de transporte desde un archivo JSON
-    // Método para cargar una red de transporte desde un archivo JSON
-    public void cargarDesdeJSON(String archivo) {
-        JSONParser parser = new JSONParser();
+        // Abrir el cuadro de diálogo para que el usuario seleccione el archivo
+        int result = fileChooser.showOpenDialog(null);
 
-        try {
-            // Leer y parsear el archivo JSON
-            Object obj = parser.parse(new FileReader(archivo));
-            JSONObject jsonObject = (JSONObject) obj;
+        // Si el usuario selecciona un archivo
+        if (result == JFileChooser.APPROVE_OPTION) {
+            File selectedFile = fileChooser.getSelectedFile();
 
-            // Iterar sobre las claves principales del JSON (e.g., "Metro de Caracas")
-            for (Object claveRed : jsonObject.keySet()) {
-                JSONArray lineas = (JSONArray) jsonObject.get(claveRed);
+            try {
+                // Crear un parser para leer el archivo JSON
+                JSONParser parser = new JSONParser();
+                FileReader reader = new FileReader(selectedFile);
 
-                // Procesar cada línea
-                for (Object lineaObj : lineas) {
-                    JSONObject lineaJSON = (JSONObject) lineaObj;
+                // Parsear el archivo JSON
+                Object obj = parser.parse(reader);
+                JSONObject jsonObject = (JSONObject) obj;
 
-                    for (Object claveLinea : lineaJSON.keySet()) {
-                        String claveLineaStr = (String) claveLinea;
-                        JSONArray estaciones = (JSONArray) lineaJSON.get(claveLineaStr);
+                // Recorrer todas las líneas de la red
+                for (Object key : jsonObject.keySet()) {
+                    String red = (String) key;
+                    JSONArray lineas = (JSONArray) jsonObject.get(red);
 
-                        // Procesar las estaciones de cada línea
-                        procesarEstaciones(claveLineaStr, estaciones);
+                    for (Object lineaObj : lineas) {
+                        JSONObject linea = (JSONObject) lineaObj;
+                        for (Object nombreLinea : linea.keySet()) {
+                            String nombre = (String) nombreLinea;
+                            JSONArray paradas = (JSONArray) linea.get(nombre);
+
+                            Nodo anterior = null;
+                            for (Object paradaObj : paradas) {
+                                if (paradaObj instanceof String) {
+                                    // Si es una parada simple
+                                    String parada = (String) paradaObj;
+                                    Nodo nodoActual = agregarORecuperarNodo(parada);
+
+                                    if (anterior != null) {
+                                        agregarArista(anterior, nodoActual);
+                                    }
+
+                                    anterior = nodoActual;
+                                } else if (paradaObj instanceof JSONObject) {
+                                    // Si es una conexión entre líneas
+                                    JSONObject conexion = (JSONObject) paradaObj;
+                                    for (Object clave : conexion.keySet()) {
+                                        String origen = (String) clave;
+                                        String destino = (String) conexion.get(clave);
+
+                                        Nodo nodoOrigen = agregarORecuperarNodo(origen);
+                                        Nodo nodoDestino = agregarORecuperarNodo(destino);
+
+                                        // Conectar las estaciones
+                                        agregarArista(nodoOrigen, nodoDestino);
+                                        agregarArista(nodoDestino, nodoOrigen); // conexión bidireccional
+                                    }
+                                }
+                            }
+                        }
                     }
                 }
+
+                reader.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+                JOptionPane.showMessageDialog(null, "Error al cargar el archivo JSON.", "Error", JOptionPane.ERROR_MESSAGE);
             }
-        } catch (IOException | ParseException e) {
-            e.printStackTrace(); // Manejo de errores en caso de problemas al cargar el archivo
         }
     }
 
-    // Método para procesar las estaciones de una línea
-    private void procesarEstaciones(Object linea, JSONArray estaciones) {
-        String estacionAnterior = null;
-
-        for (Object estacionObj : estaciones) {
-            System.out.println(estacionObj);
-            //String estacionActual = (String) estacionObj;
-            agregarParada(estacionObj);
-
-            // Conectar con la estación anterior
-            if (estacionAnterior != null) {
-                agregarArista(estacionAnterior, estacionObj);
-            }
-            estacionAnterior = estacionObj.toString();
-        }
+   // Método para agregar o recuperar un nodo existente
+private Nodo agregarORecuperarNodo(String nombreParada) {
+    // Revisamos si la parada ya existe en el mapa de adyacencias
+    if (!adyacencias.contieneClave(nombreParada)) {
+        // Si no existe, creamos un nuevo nodo
+        Nodo nuevoNodo = new Nodo(nombreParada);
+        adyacencias.agregar(nombreParada, new ListaEnlazada()); // agregamos la nueva parada con su lista de adyacencias vacía
+        return nuevoNodo;
+    } else {
+        // Si ya existe, devolvemos el nodo
+        return new Nodo(nombreParada); // Este punto depende de cómo gestionas los nodos en tu grafo
     }
+}
+// Método para agregar una arista entre dos nodos
+// Método para agregar una arista entre dos nodos
+private void agregarArista(Nodo origen, Nodo destino) {
+    origen.agregarAdyacente(destino); // Agrega destino a la lista de adyacentes de origen
+    destino.agregarAdyacente(origen); // Agrega origen a la lista de adyacentes de destino para conexión bidireccional
+}
 
    public ListaEnlazada DFS(String inicio, int t) {
     ListaEnlazada visitados = new ListaEnlazada();
@@ -189,6 +228,28 @@ public class Grafo {
     return total;
 }
     
+  public void imprimirGrafo() {
+    System.out.println("Contenido del Grafo:");
+    for (int i = 0; i < adyacencias.getCapacidad(); i++) {
+        ListaEnlazada lista = adyacencias.obtenerEnIndice(i);
+        if (lista != null) {
+            Nodo actual = lista.getCabeza();
+            while (actual != null) {
+                System.out.print(actual.getValor() + " -> ");
+                // Aquí asumo que tienes un método para obtener las adyacencias
+                ListaEnlazada adyacentes = adyacencias.obtener(actual.getValor());
+                Nodo adyacenteActual = adyacentes.getCabeza();
+                while (adyacenteActual != null) {
+                    System.out.print(adyacenteActual.getValor() + " ");
+                    adyacenteActual = adyacenteActual.getSiguiente();
+                }
+                System.out.println();
+                actual = actual.getSiguiente();
+            }
+        }
+    }
+}
+
 }
     
 
