@@ -71,9 +71,13 @@ public class Grafo {
                         
                         // Procesar las estaciones de cada línea
                         procesarEstaciones(claveLinea, estaciones);
+                        
                     }
                 }
             }
+            System.out.println("--------------------------");
+            this.DFS("Palo Verde", 2);
+            //adyacencias.todasLasParadas();
         } catch (IOException | ParseException e) {
             e.printStackTrace();
         }

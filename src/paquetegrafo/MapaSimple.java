@@ -62,14 +62,18 @@ public class MapaSimple {
     public ListaEnlazada todasLasParadas() {
     ListaEnlazada paradas = new ListaEnlazada();
     
+    System.out.println("-----------------");
     for (int i = 0; i < capacidad; i++) {
         ListaEnlazada listaActual = tabla[i];
         Nodo actual = listaActual.getCabeza();
         
+        
         while (actual != null) {
             if (!paradas.contiene(actual.getValor())) { // Para evitar duplicados
+                
                 paradas.agregar(actual.getValor());
             }
+            System.out.println(actual.getValor());
             actual = actual.getSiguiente();
         }
     }
