@@ -3,11 +3,18 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
+<<<<<<< HEAD
             <file>file:/D:/Usuarios/aiannelli/OneDrive%20-%20Excelsior%20Gama%20Supermercados,%20CA/Documentos/NetBeansProjects/Cobertura-Sucursales/src/Interfaces/Ventana2.java</file>
             <file>file:/D:/Usuarios/aiannelli/OneDrive%20-%20Excelsior%20Gama%20Supermercados,%20CA/Documentos/NetBeansProjects/Cobertura-Sucursales/src/Interfaces/Ventana1.java</file>
             <file>file:/D:/Usuarios/aiannelli/OneDrive%20-%20Excelsior%20Gama%20Supermercados,%20CA/Documentos/NetBeansProjects/Cobertura-Sucursales/src/paquetegrafo/Main.java</file>
             <file>file:/D:/Usuarios/aiannelli/OneDrive%20-%20Excelsior%20Gama%20Supermercados,%20CA/Documentos/NetBeansProjects/Cobertura-Sucursales/src/paquetegrafo/ListaEnlazada.java</file>
             <file>file:/D:/Usuarios/aiannelli/OneDrive%20-%20Excelsior%20Gama%20Supermercados,%20CA/Documentos/NetBeansProjects/Cobertura-Sucursales/src/paquetegrafo/Grafo.java</file>
+=======
+            <file>file:/C:/Users/luisf/OneDrive/Documents/NetBeansProjects/Cobertura-Sucursales/src/paquetegrafo/Grafo.java</file>
+            <file>file:/C:/Users/luisf/OneDrive/Documents/NetBeansProjects/Cobertura-Sucursales/src/paquetegrafo/Main.java</file>
+            <file>file:/C:/Users/luisf/OneDrive/Documents/NetBeansProjects/Cobertura-Sucursales/src/Interfaces/Ventana2.java</file>
+            <file>file:/C:/Users/luisf/OneDrive/Documents/NetBeansProjects/Cobertura-Sucursales/src/Interfaces/Ventana1.java</file>
+>>>>>>> be22a490a8f36452c95b0ae7e1ee807e3925f6ca
         </group>
     </open-files>
 </project-private>

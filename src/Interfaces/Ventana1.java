@@ -4,7 +4,14 @@
  */
 package Interfaces;
 
+
+import java.io.File;
+
+import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+import javax.swing.filechooser.FileNameExtensionFilter;
+
+
 import paquetegrafo.Grafo;
 /**
  *
@@ -84,8 +91,39 @@ public class Ventana1 extends javax.swing.JFrame {
     }//GEN-LAST:event_IndicacionesActionPerformed
 
     private void CargarRedDeTransporteJSON1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CargarRedDeTransporteJSON1ActionPerformed
-        Grafo grafo1 = new Grafo(100);
-        grafo1.cargarDesdeJSON("D:/Usuarios/aiannelli/OneDrive - Excelsior Gama Supermercados, CA/Documentos/NetBeansProjects/Caracas.json");   
+        // Crear el JFileChooser para que el usuario seleccione el archivo JSON
+    JFileChooser fileChooser = new JFileChooser();
+    fileChooser.setDialogTitle("Selecciona un archivo JSON de red de transporte");
+
+    // Filtrar para que solo permita archivos JSON
+    FileNameExtensionFilter filter = new FileNameExtensionFilter("Archivos JSON", "json");
+    fileChooser.setFileFilter(filter);
+
+    int resultado = fileChooser.showOpenDialog(this);
+
+    // Si el usuario selecciona un archivo
+    if (resultado == JFileChooser.APPROVE_OPTION) {
+        File archivoSeleccionado = fileChooser.getSelectedFile();
+
+        // Obtener la ruta del archivo seleccionado
+        String rutaArchivo = archivoSeleccionado.getAbsolutePath();
+
+        // Suponiendo que tienes una instancia de tu clase Grafo
+        Grafo grafo = new Grafo(100); // Crear la instancia de Grafo (si ya existe, omite esta línea)
+
+        try {
+            // Llamar al método para cargar el JSON en el grafo
+            grafo.cargarDesdeJSON(rutaArchivo);
+
+            // Mostrar un mensaje de éxito
+            JOptionPane.showMessageDialog(this, "Red cargada exitosamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+        } catch (Exception e) {
+            // Manejar los errores durante la carga del archivo JSON
+            JOptionPane.showMessageDialog(this, "Error al cargar el archivo JSON: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            e.printStackTrace();
+        }
+    }
+
     }//GEN-LAST:event_CargarRedDeTransporteJSON1ActionPerformed
 
     /**
@@ -132,3 +170,4 @@ public class Ventana1 extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     // End of variables declaration//GEN-END:variables
 }
+
