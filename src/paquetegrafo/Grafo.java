@@ -88,14 +88,8 @@ public class Grafo {
         }
     }
 
-<<<<<<< HEAD
     // M&eacute;todo para cargar una red de transporte desde un archivo JSON
     public void cargarDesdeJSON(String archivo, Graph graph) {
-=======
-    // Método para cargar una red de transporte desde un archivo JSON
-    // Método para cargar una red de transporte desde un archivo JSON
-public void cargarDesdeJSON(String archivo) {
->>>>>>> 78a8e9170791f19281225faad586e5871b7b0c63
         JSONParser parser = new JSONParser();
 
         try {
@@ -116,20 +110,11 @@ public void cargarDesdeJSON(String archivo) {
                         JSONArray estaciones = (JSONArray) lineaJSON.get(claveLineaStr);
 
                         // Procesar las estaciones de cada línea
-<<<<<<< HEAD
                         procesarEstaciones(claveLineaStr, estaciones, graph);
-=======
-                        //procesarEstaciones(claveLinea, estaciones);
-                        
-                       procesarEstaciones(claveLineaStr, estaciones);
-
->>>>>>> 78a8e9170791f19281225faad586e5871b7b0c63
                     }
                 }
             }
             System.out.println("--------------------------");
-            //this.DFS("Palo Verde", 2);
-            //adyacencias.todasLasParadas();
         } catch (IOException | ParseException e) {
             e.printStackTrace(); // Manejo de errores en caso de problemas al cargar el archivo
         }
