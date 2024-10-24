@@ -7,6 +7,7 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
+import org.graphstream.graph.*;
 
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
@@ -29,28 +30,66 @@ public class Grafo {
     }
 
     // Método para agregar una parada al grafo
-    public void agregarParada(Object parada) {
-        if (!adyacencias.contieneClave(parada.toString())) {
-            adyacencias.agregar(parada.toString(), new ListaEnlazada());
+    public void agregarParada(Object parada, Graph graph) {
+        
+        // Agrega una variable paradaNombre para mayor legibilidad
+        String paradaNombre = parada.toString();
+        
+        if (!adyacencias.contieneClave(paradaNombre)) {
+            adyacencias.agregar(paradaNombre, new ListaEnlazada());
+            
+            // Entra en este condicional en caso de ser una transferencia
+            int indice = paradaNombre.indexOf(":");
+            if (indice != -1) {
+                String paradaNombreInver = cambiarOrdenTransferencia(paradaNombre);
+                
+                if (graph.getNode(paradaNombreInver) == null) { // Si no existe un nodo con el nombre inverso
+                    Node nodoA = graph.addNode(paradaNombre); //agrega al Graph el nodo con el nombre
+                    nodoA.setAttribute("ui.label", paradaNombre); //de las estaciones de la transferencia
+                }
+                
+            }else{ // Agrega al Graph el nodo con el nombre de la parada
+            Node nodoA = graph.addNode(parada.toString());
+            nodoA.setAttribute("ui.label", parada.toString());                
+            }
         }
     }
 
     // Método para agregar una arista entre dos paradas
-    public void agregarArista(Object parada1, Object parada2) {
-        agregarParada(parada1);
-        agregarParada(parada2);
-        ListaEnlazada lista1 = adyacencias.obtener(parada1.toString());
-        ListaEnlazada lista2 = adyacencias.obtener(parada2.toString());
+    public void agregarArista(Object parada1, Object parada2, Graph graph) {
+
+        // Asigna Strings con los nombres de las paradas a variables cortas 
+        String p1 = parada1.toString();
+        String p2 = parada2.toString();
+        
+        ListaEnlazada lista1 = adyacencias.obtener(p1);
+        ListaEnlazada lista2 = adyacencias.obtener(p2);
 
         if (lista1 != null && lista2 != null) {
-            lista1.agregar(parada2.toString());
-            lista2.agregar(parada1.toString());  // Grafo no dirigido
+            lista1.agregar(p2);
+            lista2.agregar(p1);  // Grafo no dirigido
+            
+            //Agrega la arista al graph 
+            String aristaId = p1 + p2;
+            Node nodo1 = graph.getNode(p1);
+            if (nodo1 == null){ //En caso de que no reconozca la transeferencia por estar en orden inverso
+                p1 = cambiarOrdenTransferencia(p1);
+                nodo1 = graph.getNode(p1);
+            }
+            Node nodo2 = graph.getNode(p2);
+            if (nodo2 == null){ //En caso de que no reconozca la transeferencia por estar en orden inverso
+                p2 = cambiarOrdenTransferencia(p2);
+                nodo2 = graph.getNode(p2); //cambia el orden de sus estaciones
+            }
+            Boolean verificacion = nodo1.hasEdgeToward(nodo2.getId());
+            if (verificacion == false) { //Verifica que no exista ya una arista que conecte ambos nodos
+                graph.addEdge(aristaId, nodo1, nodo2);
+            }
         }
     }
 
-    // Método para cargar una red de transporte desde un archivo JSON
-    // Método para cargar una red de transporte desde un archivo JSON
-public void cargarDesdeJSON(String archivo) {
+    // M&eacute;todo para cargar una red de transporte desde un archivo JSON
+    public void cargarDesdeJSON(String archivo, Graph graph) {
         JSONParser parser = new JSONParser();
 
         try {
@@ -71,35 +110,38 @@ public void cargarDesdeJSON(String archivo) {
                         JSONArray estaciones = (JSONArray) lineaJSON.get(claveLineaStr);
 
                         // Procesar las estaciones de cada línea
-                        //procesarEstaciones(claveLinea, estaciones);
-                        
-                       procesarEstaciones(claveLineaStr, estaciones);
-
+                        procesarEstaciones(claveLineaStr, estaciones, graph);
                     }
                 }
             }
             System.out.println("--------------------------");
-            //this.DFS("Palo Verde", 2);
-            //adyacencias.todasLasParadas();
         } catch (IOException | ParseException e) {
             e.printStackTrace(); // Manejo de errores en caso de problemas al cargar el archivo
         }
     }
 
     // Método para procesar las estaciones de una línea
-    private void procesarEstaciones(Object linea, JSONArray estaciones) {
+    private void procesarEstaciones(Object linea, JSONArray estaciones, Graph graph) {
         String estacionAnterior = null;
 
         for (Object estacionObj : estaciones) {
-            System.out.println(estacionObj);
+            
+            // Asigna la cadena del nombre de la etacion a una variable parada para mayor legibilidad
+            String parada = estacionObj.toString();
+            if (parada.startsWith("{")) { //Le quita las llaves al nombre de las transferencias
+                parada = parada.replace("{","");
+                parada = parada.replace("}","");
+            }
+            
+            System.out.println(parada);
             //String estacionActual = (String) estacionObj;
-            agregarParada(estacionObj);
+            agregarParada(parada, graph);
 
             // Conectar con la estación anterior
             if (estacionAnterior != null) {
-                agregarArista(estacionAnterior, estacionObj);
+                agregarArista(estacionAnterior, parada, graph);
             }
-            estacionAnterior = estacionObj.toString();
+            estacionAnterior = parada;
         }
     }
 
@@ -195,8 +237,15 @@ public void cargarDesdeJSON(String archivo) {
     }
 
     return total;
-}
+    }
     
+    // Cambia el orden de las estaciones en el nombre de las transferencias
+    private String cambiarOrdenTransferencia(String transferencia){
+                String[] cadena = transferencia.split(":", 2);
+                String transferencia1 = cadena[0];
+                String transferencia2 = cadena[1];
+                return (transferencia2+":"+transferencia1);
+    }
 }
     
 
