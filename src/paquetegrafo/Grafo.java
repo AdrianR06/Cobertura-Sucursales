@@ -50,7 +50,7 @@ public class Grafo {
 
     // Método para cargar una red de transporte desde un archivo JSON
     // Método para cargar una red de transporte desde un archivo JSON
-    public void cargarDesdeJSON(String archivo) {
+public void cargarDesdeJSON(String archivo) {
         JSONParser parser = new JSONParser();
 
         try {
@@ -71,7 +71,7 @@ public class Grafo {
                         JSONArray estaciones = (JSONArray) lineaJSON.get(claveLineaStr);
 
                         // Procesar las estaciones de cada línea
-                        procesarEstaciones(claveLinea, estaciones);
+                        //procesarEstaciones(claveLinea, estaciones);
                         
                        procesarEstaciones(claveLineaStr, estaciones);
 
@@ -79,7 +79,7 @@ public class Grafo {
                 }
             }
             System.out.println("--------------------------");
-            this.DFS("Palo Verde", 2);
+            //this.DFS("Palo Verde", 2);
             //adyacencias.todasLasParadas();
         } catch (IOException | ParseException e) {
             e.printStackTrace(); // Manejo de errores en caso de problemas al cargar el archivo
@@ -103,6 +103,7 @@ public class Grafo {
         }
     }
 
+
    public ListaEnlazada DFS(String inicio, int t) {
     ListaEnlazada visitados = new ListaEnlazada();
     DFSRecursivo(inicio, t, 0, visitados);
@@ -116,7 +117,8 @@ public class Grafo {
 
         // Marca el nodo como visitado
         visitados.agregar(nodo);
-        System.out.println(nodo); // Procesar el nodo (puedes cambiarlo por otro procesamiento)
+        System.out.println(nodo); 
+// Procesar el nodo (puedes cambiarlo por otro procesamiento)
 
         ListaEnlazada adyacentes = adyacencias.obtener(nodo);
         Nodo actual = adyacentes.getCabeza();

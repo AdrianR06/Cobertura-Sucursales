@@ -1,49 +1,49 @@
-package paquetegrafo;
-
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
+package paquetegrafo;
 
 /**
  *
  * @author aiannelli
  */
-public class NodoLista {
-    private String info;
-    private NodoLista next;
-    
-    public NodoLista (String info) {
+public class NodoArista {
+    private Arista info;
+    private NodoArista next;
+
+    public NodoArista(Arista info) {
         this.info = info;
-        this.next = null;
+        this.next = null;    
 }
+
     /**
-     * @return the clave
+     * @return the info
      */
-    public String getInfo() {
+    public Arista getInfo() {
         return info;
     }
 
     /**
-     * @param info the clave to set
+     * @param info the info to set
      */
-    public void setInfo(String info) {
+    public void setInfo(Arista info) {
         this.info = info;
     }
 
     /**
      * @return the next
      */
-    public NodoLista getNext() {
+    public NodoArista getNext() {
         return next;
     }
 
     /**
      * @param next the next to set
      */
-    public void setNext(NodoLista next) {
+    public void setNext(NodoArista next) {
         this.next = next;
     }
-
+    
+    
 }
-

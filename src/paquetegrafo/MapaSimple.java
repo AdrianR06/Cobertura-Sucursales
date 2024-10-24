@@ -77,8 +77,9 @@ public class MapaSimple {
             actual = actual.getSiguiente();
         }
     }
-    
+    System.out.println(paradas);
     return paradas; // Retorna la lista con todas las paradas
+        
     }
     
 }

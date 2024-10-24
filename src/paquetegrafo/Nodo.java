@@ -17,6 +17,7 @@ public class Nodo {
     public Nodo(String valor) {
         this.valor = valor;
         this.siguiente = null;
+        this.linea = null;
     }
         
     // Método para obtener el valor del nodo
