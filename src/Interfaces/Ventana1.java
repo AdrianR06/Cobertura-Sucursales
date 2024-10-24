@@ -121,7 +121,7 @@ public class Ventana1 extends javax.swing.JFrame {
                         "   text-alignment: center; " +
                         "   text-size: 14px; " +
                         "   text-color: white; " +
-                        "   label: $ui.label$; " +
+                        "   label: ui.label; " +
                         "}");
         
         try {
