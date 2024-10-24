@@ -41,13 +41,11 @@ public class Grafo {
             // Entra en este condicional en caso de ser una transferencia
             int indice = paradaNombre.indexOf(":");
             if (indice != -1) {
-                String[] paradas = paradaNombre.split(":", 2);
-                String parada1 = paradas[0];
-                String parada2 = paradas[1];
+                String paradaNombreInver = cambiarOrdenTransferencia(paradaNombre);
                 
-                if (graph.getNode(parada2+":"+parada1) == null) { // Agrega al Graph el nodo con el nombre
-                    Node nodoA = graph.addNode(parada1+":"+parada2); //de las estaciones de la transferencia
-                    nodoA.setAttribute("ui.label", parada1+":"+parada2);//en orden invertido
+                if (graph.getNode(paradaNombreInver) == null) { // Si no existe un nodo con el nombre inverso
+                    Node nodoA = graph.addNode(paradaNombre); //agrega al Graph el nodo con el nombre
+                    nodoA.setAttribute("ui.label", paradaNombre); //de las estaciones de la transferencia
                 }
                 
             }else{ // Agrega al Graph el nodo con el nombre de la parada
@@ -75,17 +73,13 @@ public class Grafo {
             String aristaId = p1 + p2;
             Node nodo1 = graph.getNode(p1);
             if (nodo1 == null){ //En caso de que no reconozca la transeferencia por estar en orden inverso
-                String[] transferencia = p1.split(":", 2);
-                String transferencia1 = transferencia[0];
-                String transferencia2 = transferencia[1];
-                nodo1 = graph.getNode(transferencia2+":"+transferencia1); //cambia el orden de sus estaciones
+                p1 = cambiarOrdenTransferencia(p1);
+                nodo1 = graph.getNode(p1);
             }
             Node nodo2 = graph.getNode(p2);
             if (nodo2 == null){ //En caso de que no reconozca la transeferencia por estar en orden inverso
-                String[] transferencia = p2.split(":", 2);
-                String transferencia1 = transferencia[0];
-                String transferencia2 = transferencia[1];
-                nodo2 = graph.getNode(transferencia2+":"+transferencia1); //cambia el orden de sus estaciones
+                p2 = cambiarOrdenTransferencia(p2);
+                nodo2 = graph.getNode(p2); //cambia el orden de sus estaciones
             }
             Boolean verificacion = nodo1.hasEdgeToward(nodo2.getId());
             if (verificacion == false) { //Verifica que no exista ya una arista que conecte ambos nodos
@@ -240,8 +234,15 @@ public class Grafo {
     }
 
     return total;
-}
+    }
     
+    // Cambia el orden de las estaciones en el nombre de las transferencias
+    private String cambiarOrdenTransferencia(String transferencia){
+                String[] cadena = transferencia.split(":", 2);
+                String transferencia1 = cadena[0];
+                String transferencia2 = cadena[1];
+                return (transferencia2+":"+transferencia1);
+    }
 }
     
 
