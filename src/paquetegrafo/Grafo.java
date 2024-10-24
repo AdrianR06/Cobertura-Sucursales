@@ -31,19 +31,36 @@ public class Grafo {
 
     // Método para agregar una parada al grafo
     public void agregarParada(Object parada, Graph graph) {
-        if (!adyacencias.contieneClave(parada.toString())) {
-            adyacencias.agregar(parada.toString(), new ListaEnlazada());
+        
+        // Agrega una variable paradaNombre para mayor legibilidad
+        String paradaNombre = parada.toString();
+        
+        if (!adyacencias.contieneClave(paradaNombre)) {
+            adyacencias.agregar(paradaNombre, new ListaEnlazada());
+            
+            // Entra en este condicional en caso de ser una transferencia
+            int indice = paradaNombre.indexOf(":");
+            if (indice != -1) {
+                String[] paradas = paradaNombre.split(":", 2);
+                String parada1 = paradas[0];
+                String parada2 = paradas[1];
+                
+                if (graph.getNode(parada2+":"+parada1) == null) { // Agrega al Graph el nodo con el nombre
+                    Node nodoA = graph.addNode(parada1+":"+parada2); //de las estaciones de la transferencia
+                    nodoA.setAttribute("ui.label", parada1+":"+parada2);//en orden invertido
+                }
+                
+            }else{ // Agrega al Graph el nodo con el nombre de la parada
             Node nodoA = graph.addNode(parada.toString());
-            nodoA.setAttribute("ui.label", parada.toString());
+            nodoA.setAttribute("ui.label", parada.toString());                
+            }
         }
     }
 
     // Método para agregar una arista entre dos paradas
     public void agregarArista(Object parada1, Object parada2, Graph graph) {
-        agregarParada(parada1, graph);
-        agregarParada(parada2, graph);
-        
-        //Convierte en Strings los nombres de las paradas en variables cortas
+
+        // Asigna Strings con los nombres de las paradas a variables cortas 
         String p1 = parada1.toString();
         String p2 = parada2.toString();
         
@@ -57,16 +74,27 @@ public class Grafo {
             //Agrega la arista al graph 
             String aristaId = p1 + p2;
             Node nodo1 = graph.getNode(p1);
+            if (nodo1 == null){ //En caso de que no reconozca la transeferencia por estar en orden inverso
+                String[] transferencia = p1.split(":", 2);
+                String transferencia1 = transferencia[0];
+                String transferencia2 = transferencia[1];
+                nodo1 = graph.getNode(transferencia2+":"+transferencia1); //cambia el orden de sus estaciones
+            }
             Node nodo2 = graph.getNode(p2);
+            if (nodo2 == null){ //En caso de que no reconozca la transeferencia por estar en orden inverso
+                String[] transferencia = p2.split(":", 2);
+                String transferencia1 = transferencia[0];
+                String transferencia2 = transferencia[1];
+                nodo2 = graph.getNode(transferencia2+":"+transferencia1); //cambia el orden de sus estaciones
+            }
             Boolean verificacion = nodo1.hasEdgeToward(nodo2.getId());
             if (verificacion == false) { //Verifica que no exista ya una arista que conecte ambos nodos
-                graph.addEdge(aristaId, p1, p2);
+                graph.addEdge(aristaId, nodo1, nodo2);
             }
         }
     }
 
-    // Método para cargar una red de transporte desde un archivo JSON
-    // Método para cargar una red de transporte desde un archivo JSON
+    // M&eacute;todo para cargar una red de transporte desde un archivo JSON
     public void cargarDesdeJSON(String archivo, Graph graph) {
         JSONParser parser = new JSONParser();
 
@@ -102,15 +130,23 @@ public class Grafo {
         String estacionAnterior = null;
 
         for (Object estacionObj : estaciones) {
-            System.out.println(estacionObj);
+            
+            // Asigna la cadena del nombre de la etacion a una variable parada para mayor legibilidad
+            String parada = estacionObj.toString();
+            if (parada.startsWith("{")) { //Le quita las llaves al nombre de las transferencias
+                parada = parada.replace("{","");
+                parada = parada.replace("}","");
+            }
+            
+            System.out.println(parada);
             //String estacionActual = (String) estacionObj;
-            agregarParada(estacionObj, graph);
+            agregarParada(parada, graph);
 
             // Conectar con la estación anterior
             if (estacionAnterior != null) {
-                agregarArista(estacionAnterior, estacionObj, graph);
+                agregarArista(estacionAnterior, parada, graph);
             }
-            estacionAnterior = estacionObj.toString();
+            estacionAnterior = parada;
         }
     }
 
