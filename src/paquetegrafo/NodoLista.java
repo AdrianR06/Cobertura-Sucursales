@@ -13,10 +13,14 @@ public class NodoLista {
     private String info;
     private NodoLista next;
     
-    public NodoLista (String info) {
-        this.info = info;
+    public NodoLista (String data) {
+        this.info = data;
         this.next = null;
-}
+    }    
+    public NodoLista (String data, NodoLista next) {
+        this.info = data;
+        this.next = next;   
+    }
     /**
      * @return the clave
      */

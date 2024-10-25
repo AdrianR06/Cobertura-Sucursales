@@ -9,63 +9,18 @@ package paquetegrafo;
  * @author aiannelli
  */
 public class GrafoLA {
-    private int numVertices;
     private int max;
-    private Vertice[] listaVertices;   
+    private int numVertices;
+    private Lista[] listaAdy;   
 
     public GrafoLA(int max) {
-        this.numVertices = 0; 
         this.max = max; 
-        this.listaVertices = new Vertice[max];
+        this.numVertices = 0;
+        this.listaAdy = new Lista[max];
     }
-        //Permite agregar una parada
-        public void agregarVertice(String parada){             
-        Vertice v = new Vertice(parada); 
-        v.setNumVertice(getNumVertices());               
-        listaVertices[getNumVertices()] = v;
-        numVertices++;                      
-    }
+
+    //-------getters y setters-------
     
-//        public boolean adyacente(String a, String b) throws Exception{
-//            int v1, v2;
-//            v1 = getNumVertice(a);
-//            v2 = getNumVertice(b);
-//            if(v1<0 || v2<0){
-//                throw new Exception("El vértice no existe");
-//            }
-//            if(listaVertices[v1].getListaAdy())
-//            
-//        }
-        
-        public boolean existeArista(int a, int b){
-        NodoArista aux = this.listaVertices[a].getListaAdy().primero();
-        boolean encontrado=false;
-        while(aux!=null && encontrado==false){
-            if (b==aux.getInfo().getDestino()){
-                encontrado=true;
-            }else{
-                encontrado=false;
-            }
-            aux=aux.getNext();
-        }
-        return encontrado;
-    }
-        
-        public void agregarArista(int origen, int destino){
-         if (origen < 0 || origen >= getNumVertices() || destino < 0 || destino >= getNumVertices()) { 
-            return;
-        }
-        
-        if (existeArista(origen,destino)==false){
-            
-            Arista ab = new Arista(destino, this.listaVertices[destino].getParada());
-            Arista ba = new Arista(origen, this.listaVertices[origen].getParada());
-            listaVertices[origen].getListaAdy().preinsertarPrimero(ab);
-            listaVertices[destino].getListaAdy().preinsertarPrimero(ba);        
-        }
-    }
-        
-        
     /**
      * @return the numVertices
      */
@@ -97,17 +52,46 @@ public class GrafoLA {
     /**
      * @return the listaVertices
      */
-    public Vertice[] getListaVertices() {
-        return listaVertices;
+    public Lista[] getListaVertices() {
+        return listaAdy;
     }
 
     /**
      * @param listaVertices the listaVertices to set
      */
-    public void setListaVertices(Vertice[] listaVertices) {
-        this.listaVertices = listaVertices;
+    public void setListaVertices(Lista[] listaVertices) {
+        this.listaAdy = listaVertices;
     }
-
+    
+    //--------metodos---------------
+    
+    public void insertarVertice(String paradaNueva){
+        if (numVertices == max) {
+            System.out.println ("Error, se supera el número de nodos máximo del grafo");
+        } else {
+            listaAdy[numVertices] = new Lista(paradaNueva);
+        }
+        numVertices += 1;
+    }
+    
+    public int obtenerIndice(String parada){
+        for (int i = 0; i < max; i++) {
+            NodoLista p = (NodoLista) listaAdy[i].getInicio();
+            if (p.getInfo().equals(parada)) {
+            return i;
+            }
+        }
+        return -1;
+    }
+    
+    public void insertarArista(String parada1, String parada2){
+        int indice1 = obtenerIndice(parada1);
+        int indice2 = obtenerIndice(parada2);
+        
+        listaAdy[indice1].insertarUltimo(parada2);
+        listaAdy[indice2].insertarUltimo(parada1);
+        
+    }
     
 
 }
