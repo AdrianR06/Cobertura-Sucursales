@@ -10,7 +10,6 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
-import org.graphstream.graph.implementations.SingleGraph;
 import org.graphstream.graph.*;
 
 /**
@@ -18,24 +17,22 @@ import org.graphstream.graph.*;
  * @author Adrian
  */
 public class JSON {
-    private GrafoLA grafo;
-    private Graph ventanaGrafo;
+    private String archivo;
     
-    public JSON(String archivo) {
-        this.grafo = new GrafoLA(100);
-        this.ventanaGrafo = new SingleGraph("Grafo");
-    }    
-        
-    // M&eacute;todo para cargar una red de transporte desde un archivo JSON
-    public void cargarDesdeJSON(String archivo) {
+    public JSON(String rutaArchivo){
+        this.archivo = rutaArchivo;
+    }
+    
+    // M&eacute;todo para cargar una red de transporte desde un archivo ManejoGrafo
+    public void cargarDesdeJSON(ManejoGrafo grafos) {
         JSONParser parser = new JSONParser();
 
         try {
-            // Leer y parsear el archivo JSON
+            // Leer y parsear el archivo ManejoGrafo
             Object obj = parser.parse(new FileReader(archivo));
             JSONObject jsonObject = (JSONObject) obj;
 
-            // Iterar sobre las claves principales del JSON (e.g., "Metro de Caracas")
+            // Iterar sobre las claves principales del ManejoGrafo (e.g., "Metro de Caracas")
             for (Object claveRed : jsonObject.keySet()) {
                 JSONArray lineas = (JSONArray) jsonObject.get(claveRed);
 
@@ -48,21 +45,25 @@ public class JSON {
                         JSONArray estaciones = (JSONArray) lineaJSON.get(claveLineaStr);
 
                         // Procesar las estaciones de cada línea
-                        procesarEstaciones(estaciones);
+                        procesarEstaciones(estaciones, grafos);
                     }
                 }
             }
             System.out.println("--------------------------");
             //Muestra el grafo de GraphStream
             System.setProperty("org.graphstream.ui", "swing");
-            ventanaGrafo.display();
+            grafos.ventanaGrafo.display();
+            
+            grafos.grafo.profundidad();
+            System.out.println("--------------------------");
+            grafos.grafo.amplitud();
         } catch (IOException | ParseException e) {
             e.printStackTrace(); // Manejo de errores en caso de problemas al cargar el archivo
         }
     }
     
     // Método para procesar las estaciones de una línea
-    private void procesarEstaciones(JSONArray estaciones) {
+    private void procesarEstaciones(JSONArray estaciones, ManejoGrafo grafos) {
         String estacionAnterior = null;
 
         for (Object estacionObj : estaciones) {
@@ -76,66 +77,14 @@ public class JSON {
             
             System.out.println(parada);
             //String estacionActual = (String) estacionObj;
-            agregarParada(parada);
+            grafos.agregarParada(parada);
 
             // Conectar con la estación anterior
             if (estacionAnterior != null) {
-                agregarArista(estacionAnterior, parada);
+                grafos.agregarArista(estacionAnterior, parada);
             }
             estacionAnterior = parada;
         }
-    }
-    
-    // Método para agregar una parada al grafo
-    public void agregarParada(String parada) {
-        if (ventanaGrafo.getNode(parada) == null){
-            // Entra en este condicional en caso de ser una transferencia
-            int indice = parada.indexOf(":");
-            if (indice != -1) {
-                String paradaNombreInver = cambiarOrdenTransferencia(parada);
-                
-                // Se asegura que no exista una transferencia con estaciones invertidas
-                if (ventanaGrafo.getNode(paradaNombreInver) == null) {
-                    grafo.insertarVertice(parada);
-                    Node nodoA = ventanaGrafo.addNode(parada);
-                    nodoA.setAttribute("ui.label", parada);
-                }
-                
-            }else{ // Agrega al Graph el nodo con el nombre de la parada
-            grafo.insertarVertice(parada);
-            Node nodoA = ventanaGrafo.addNode(parada);
-            nodoA.setAttribute("ui.label", parada);                
-            }
-        }
-    }
-    
-    // Método para agregar una arista entre dos paradas
-    public void agregarArista(String parada1, String parada2) {
-        //Agrega la arista al graph 
-        String aristaId = parada1 + parada2;
-        Node nodo1 = ventanaGrafo.getNode(parada1);
-        if (nodo1 == null){ //En caso de que no reconozca la transeferencia por estar en orden inverso
-            parada1 = cambiarOrdenTransferencia(parada1);
-            nodo1 = ventanaGrafo.getNode(parada1);
-        }
-        Node nodo2 = ventanaGrafo.getNode(parada2);
-        if (nodo2 == null){ //En caso de que no reconozca la transeferencia por estar en orden inverso
-            parada2 = cambiarOrdenTransferencia(parada2);
-            nodo2 = ventanaGrafo.getNode(parada2); //cambia el orden de sus estaciones
-        }
-        Boolean verificacion = nodo1.hasEdgeToward(nodo2.getId());
-        if (verificacion == false) { //Verifica que no exista ya una arista que conecte ambos nodos
-            grafo.insertarArista(parada1, parada2);
-            ventanaGrafo.addEdge(aristaId, nodo1, nodo2);
-        }
-    }
-
-    // Cambia el orden de las estaciones en el nombre de las transferencias
-    private String cambiarOrdenTransferencia(String transferencia){
-        String[] cadena = transferencia.split(":", 2);
-        String estacion1 = cadena[0];
-        String estacion2 = cadena[1];
-        return (estacion2+":"+estacion1);
     }
     
 }

@@ -10,7 +10,7 @@ package paquetegrafo;
  * @author aiannelli
  */
 public class Lista {
-    private NodoLista inicio;
+    private Nodo inicio;
     private int iN;
     
     public Lista () {
@@ -19,7 +19,7 @@ public class Lista {
     }
     
     public Lista (String estacion) {
-    this.inicio = new NodoLista(estacion);
+    this.inicio = new Nodo(estacion);
     this.iN = 0;
     }
 
@@ -27,14 +27,14 @@ public class Lista {
     /**
      * @return the inicio
      */
-    public NodoLista getInicio() {
+    public Nodo getInicio() {
         return inicio;
     }
 
     /**
      * @param inicio the inicio to set
      */
-    public void setInicio(NodoLista inicio) {
+    public void setInicio(Nodo inicio) {
         this.inicio = inicio;
     }
     
@@ -58,73 +58,39 @@ public class Lista {
     }
     
     
-    public NodoLista buscarUltimo(){
-    NodoLista aux = inicio;
+    public Nodo buscarUltimo(){
+    Nodo aux = inicio;
     if (getInicio()==null){
         return null;
     }
-    while(aux.getNext()!=null){
-            aux=aux.getNext();
+    while(aux.getSiguiente()!=null){
+            aux=aux.getSiguiente();
     }
     return aux;
     }
     
-    
-    /*public void insertarPrimero(String parada){  
-        NodoLista nuevo = new NodoLista(parada);                    
-        inicio=nuevo;
-        iN++;
-    }
-*/
-    
     public void insertarUltimo(String palabra){  
         
-        NodoLista ult = buscarUltimo();                    
-        NodoLista nuevo = new NodoLista(palabra); 
+        Nodo ult = buscarUltimo();                    
+        Nodo nuevo = new Nodo(palabra); 
         if(ult == null){
            inicio = nuevo;
         }else{
-            ult.setNext(nuevo);
+            ult.setSiguiente(nuevo);
         }
         iN++;   
     }
     
-    /*
-    public void insertar1DespuesDe2(String nuevaParada, String parada) {
-        NodoLista nuevoNodo = new NodoLista(nuevaParada);
-        NodoLista actual = inicio;
-
-        // Lista vacía
-        if (esVacia()) {
-            inicio = nuevoNodo;
-        } else {
-            // Buscar el nodo parada
-            while (actual != null && !actual.getInfo().equals(parada)) {
-                actual = actual.getNext();
-            }
-
-            // Si se encontró parada, insertar después
-            if (actual != null) {
-                nuevoNodo.setNext(actual.getNext());
-                actual.setNext(nuevoNodo);
-                iN++;
-            } else {
-                // Manejar el caso donde pValor no se encuentra
-                System.out.println("El valor " + parada + " no se encontró en la lista.");
-            }
-        }
-    }
-
-    public boolean seEncuentra(String parada) {
-        NodoLista actual = inicio;
+        public boolean seEncuentra(String palabra) {
+        Nodo actual = inicio;
 
         // Lista vacía
         if (esVacia()) {
             return false;
         } else {
             // Buscar el nodo parada
-            while (actual != null && !actual.getInfo().equals(parada)) {
-                actual = actual.getNext();
+            while (actual != null && !actual.getInfo().equals(palabra)) {
+                actual = actual.getSiguiente();
             }
 
             // Si se encontró parada, retornar verdadero
@@ -132,8 +98,42 @@ public class Lista {
         }
     }
     
+    /*
+        
+    public void insertarPrimero(String parada){  
+        Nodo nuevo = new Nodo(parada); 
+        nuevo.setSiguiente(inicio);
+        inicio=nuevo;
+        iN++;
+    }
+        
+    public void insertar1DespuesDe2(String nuevaParada, String parada) {
+        Nodo nuevoNodo = new Nodo(nuevaParada);
+        Nodo actual = inicio;
+
+        // Lista vacía
+        if (esVacia()) {
+            inicio = nuevoNodo;
+        } else {
+            // Buscar el nodo parada
+            while (actual != null && !actual.getInfo().equals(parada)) {
+                actual = actual.getSiguiente();
+            }
+
+            // Si se encontró parada, insertar después
+            if (actual != null) {
+                nuevoNodo.setSiguiente(actual.getSiguiente());
+                actual.setSiguiente(nuevoNodo);
+                iN++;
+            } else {
+                // Manejar el caso donde pValor no se encuentra
+                System.out.println("El valor " + parada + " no se encontró en la lista.");
+            }
+        }
+    }
+    
     public void eliminar(String parada) {
-        NodoLista actual = inicio;
+        Nodo actual = inicio;
 
         // Lista vacía
         if (esVacia()) {
@@ -142,18 +142,18 @@ public class Lista {
             if (inicio.getInfo().equals(parada)){
                 eliminarPrimero();
             } else {
-                inicio.setNext(null);
+                inicio.setSiguiente(null);
             }
         } else {
             // Buscar el nodo parada
-            while (actual != null && !actual.getNext().getInfo().equals(parada)) {
-                actual = actual.getNext();
+            while (actual != null && !actual.getSiguiente().getInfo().equals(parada)) {
+                actual = actual.getSiguiente();
             }
 
             // Si se encontró parada, insertar después
             if (actual != null) {
-                actual.setNext(actual.getNext().getNext());
-                actual.getNext().setNext(null);
+                actual.setSiguiente(actual.getSiguiente().getSiguiente());
+                actual.getSiguiente().setSiguiente(null);
                 iN--;
             } else {
                 // Manejar el caso donde pValor no se encuentra
@@ -162,13 +162,13 @@ public class Lista {
         }
     }
     
-    public NodoLista eliminarPrimero(){
+    public Nodo eliminarPrimero(){
         if (esVacia()) {
             return null;
         }
-        NodoLista aux = inicio;
-        inicio = aux.getNext();
-        aux.setNext(null);
+        Nodo aux = inicio;
+        inicio = aux.getSiguiente();
+        aux.setSiguiente(null);
         iN--;
         return aux;
     }*/

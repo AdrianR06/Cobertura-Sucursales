@@ -9,17 +9,17 @@ package paquetegrafo;
  *
  * @author aiannelli
  */
-public class NodoLista {
+public class Nodo {
     private String info;
-    private NodoLista next;
+    private Nodo siguiente;
     
-    public NodoLista (String data) {
+    public Nodo (String data) {
         this.info = data;
-        this.next = null;
+        this.siguiente = null;
     }    
-    public NodoLista (String data, NodoLista next) {
+    public Nodo (String data, Nodo siguiente) {
         this.info = data;
-        this.next = next;   
+        this.siguiente = siguiente;   
     }
     /**
      * @return the clave
@@ -36,17 +36,17 @@ public class NodoLista {
     }
 
     /**
-     * @return the next
+     * @return the siguiente
      */
-    public NodoLista getNext() {
-        return next;
+    public Nodo getSiguiente() {
+        return siguiente;
     }
 
     /**
-     * @param next the next to set
+     * @param siguiente the siguiente to set
      */
-    public void setNext(NodoLista next) {
-        this.next = next;
+    public void setSiguiente(Nodo siguiente) {
+        this.siguiente = siguiente;
     }
 
 }
