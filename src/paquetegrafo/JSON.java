@@ -10,7 +10,6 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
-import org.graphstream.graph.*;
 
 /**
  *
@@ -57,6 +56,15 @@ public class JSON {
             grafos.grafo.profundidad();
             System.out.println("--------------------------");
             grafos.grafo.amplitud();
+            
+            /* probando el eliminar los grafos
+            grafos.eliminarGrafos();
+            
+            grafos.grafo.profundidad();
+            System.out.println("--------------------------");
+            grafos.grafo.amplitud(); 
+            */
+            
         } catch (IOException | ParseException e) {
             e.printStackTrace(); // Manejo de errores en caso de problemas al cargar el archivo
         }

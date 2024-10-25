@@ -74,6 +74,11 @@ public class ManejoGrafo {
         return (estacion2+":"+estacion1);
     }
     
+    public void eliminarGrafos(){
+        grafo.eliminarGrafo();
+        ventanaGrafo.clear();
+    }
+    
     public void colocarSucursal(){
         
     }

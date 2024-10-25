@@ -97,6 +97,47 @@ public class Lista {
             return actual != null;
         }
     }
+        
+    public Nodo eliminarPrimero(){
+        if (esVacia()) {
+            return null;
+        }
+        Nodo aux = inicio;
+        inicio = aux.getSiguiente();
+        aux.setSiguiente(null);
+        iN--;
+        return aux;
+    }
+        
+    public void eliminar(String parada) {
+        Nodo actual = inicio;
+
+        // Lista vacía
+        if (esVacia()) {
+            System.out.println("La lista esta vacia.");
+        } else if (iN < 3){
+            if (inicio.getInfo().equals(parada)){
+                eliminarPrimero();
+            } else {
+                inicio.setSiguiente(null);
+            }
+        } else {
+            // Buscar el nodo parada
+            while (actual != null && !actual.getSiguiente().getInfo().equals(parada)) {
+                actual = actual.getSiguiente();
+            }
+
+            // Si se encontró parada, insertar después
+            if (actual != null) {
+                actual.setSiguiente(actual.getSiguiente().getSiguiente());
+                actual.getSiguiente().setSiguiente(null);
+                iN--;
+            } else {
+                // Manejar el caso donde pValor no se encuentra
+                System.out.println("El valor " + parada + " no se encontró en la lista.");
+            }
+        }
+    }
     
     /*
         
@@ -132,44 +173,5 @@ public class Lista {
         }
     }
     
-    public void eliminar(String parada) {
-        Nodo actual = inicio;
-
-        // Lista vacía
-        if (esVacia()) {
-            System.out.println("La lista esta vacia.");
-        } else if (iN < 3){
-            if (inicio.getInfo().equals(parada)){
-                eliminarPrimero();
-            } else {
-                inicio.setSiguiente(null);
-            }
-        } else {
-            // Buscar el nodo parada
-            while (actual != null && !actual.getSiguiente().getInfo().equals(parada)) {
-                actual = actual.getSiguiente();
-            }
-
-            // Si se encontró parada, insertar después
-            if (actual != null) {
-                actual.setSiguiente(actual.getSiguiente().getSiguiente());
-                actual.getSiguiente().setSiguiente(null);
-                iN--;
-            } else {
-                // Manejar el caso donde pValor no se encuentra
-                System.out.println("El valor " + parada + " no se encontró en la lista.");
-            }
-        }
-    }
-    
-    public Nodo eliminarPrimero(){
-        if (esVacia()) {
-            return null;
-        }
-        Nodo aux = inicio;
-        inicio = aux.getSiguiente();
-        aux.setSiguiente(null);
-        iN--;
-        return aux;
-    }*/
+*/
 }
