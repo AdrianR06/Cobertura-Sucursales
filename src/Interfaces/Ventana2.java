@@ -3,20 +3,29 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 package Interfaces;
-import paquetegrafo.GrafoLA;
-        
+import paquetegrafo.*;
+import javax.swing.JOptionPane;       
 /**
  *
  * @author aiannelli
  */
 
 public class Ventana2 extends javax.swing.JFrame {
-
+    private ManejoGrafo grafos;
+    private JSON json;
     /**
      * Creates new form Interfaz
      */
     public Ventana2() {
         initComponents();
+         this.grafos =grafos;
+    }
+    
+    public void setGrafo(ManejoGrafo grafos) {
+    this.grafos = grafos;
+    }
+     public void setJson(JSON json) {
+        this.json = json;
     }
 
     /**
@@ -110,6 +119,11 @@ public class Ventana2 extends javax.swing.JFrame {
         getContentPane().add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 320, -1, -1));
 
         MostrarGrafo.setText("Mostrar Red de Transporte");
+        MostrarGrafo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                MostrarGrafoActionPerformed(evt);
+            }
+        });
         getContentPane().add(MostrarGrafo, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 40, -1, -1));
 
         RevisarCoberturaSucursal1.setText("Revisar cobertura");
@@ -160,8 +174,17 @@ public class Ventana2 extends javax.swing.JFrame {
     }//GEN-LAST:event_RevisarCoberturaSucursal1ActionPerformed
 
     private void Exit2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Exit2ActionPerformed
-        // TODO add your handling code here:
+     this.dispose();
     }//GEN-LAST:event_Exit2ActionPerformed
+
+    private void MostrarGrafoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MostrarGrafoActionPerformed
+        // TODO add your handling code here:
+         if (grafos != null && json != null) {
+            json.mostrarGrafo(grafos);
+        } else {
+            JOptionPane.showMessageDialog(this, "El grafo no ha sido cargado.", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_MostrarGrafoActionPerformed
 
     /**
      * @param args the command line arguments

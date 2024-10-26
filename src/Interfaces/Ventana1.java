@@ -18,12 +18,14 @@ import paquetegrafo.ManejoGrafo;
  * @author aiannelli
  */
 public class Ventana1 extends javax.swing.JFrame {
-
+    public Ventana2 ventana2;
     /**
      * Creates new form Ventana1
      */
     public Ventana1() {
         initComponents();
+        ventana2= new Ventana2();
+        
     }
 
     /**
@@ -91,11 +93,11 @@ public class Ventana1 extends javax.swing.JFrame {
     }//GEN-LAST:event_IndicacionesActionPerformed
 
     private void CargarRedDeTransporteJSON1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CargarRedDeTransporteJSON1ActionPerformed
-        // Crear el JFileChooser para que el usuario seleccione el archivo ManejoGrafo
-    JFileChooser fileChooser = new JFileChooser();
+           // Crear el JFileChooser para que el usuario seleccione el archivo ManejoGrafo
+  JFileChooser fileChooser = new JFileChooser();
     fileChooser.setDialogTitle("Selecciona un archivo JSON de red de transporte");
 
-    // Filtrar para que solo permita archivos ManejoGrafo
+    // Filtrar para que solo permita archivos JSON
     FileNameExtensionFilter filter = new FileNameExtensionFilter("Archivos JSON", "json");
     fileChooser.setFileFilter(filter);
 
@@ -104,26 +106,30 @@ public class Ventana1 extends javax.swing.JFrame {
     // Si el usuario selecciona un archivo
     if (resultado == JFileChooser.APPROVE_OPTION) {
         File archivoSeleccionado = fileChooser.getSelectedFile();
-
-        // Obtener la ruta del archivo seleccionado
         String rutaArchivo = archivoSeleccionado.getAbsolutePath();
-        
-        JSON json = new JSON(rutaArchivo);
-        ManejoGrafo grafos = new ManejoGrafo();
-        
-        try {
-            // Llamar al método para cargar el ManejoGrafo en el grafo
-            json.cargarDesdeJSON(grafos);
 
-            // Mostrar un mensaje de éxito
+        JSON json = new JSON(rutaArchivo);  // Crear instancia de JSON
+        ManejoGrafo grafos = new ManejoGrafo();  // Crear instancia de ManejoGrafo
+        
+        grafos.eliminarGrafos();
+        try {
+          
+            // Llamar al método para cargar el JSON en el grafo
+            
+            json.cargarDesdeJSON(grafos ,ventana2);
+
+            // Crear Ventana2, pasarle el grafo y JSON
+            Ventana2 ventana2 = new Ventana2();
+            ventana2.setGrafo(grafos);  // Pasar el grafo a Ventana2
+            ventana2.setJson(json);     // Pasar JSON a Ventana2
+            ventana2.setVisible(true);  // Mostrar Ventana2
+
             JOptionPane.showMessageDialog(this, "Red cargada exitosamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
         } catch (Exception e) {
-            // Manejar los errores durante la carga del archivo ManejoGrafo
             JOptionPane.showMessageDialog(this, "Error al cargar el archivo JSON: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
             e.printStackTrace();
         }
-    }
-
+}
     }//GEN-LAST:event_CargarRedDeTransporteJSON1ActionPerformed
 
     /**

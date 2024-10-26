@@ -6,6 +6,9 @@ package paquetegrafo;
 
 import org.graphstream.graph.implementations.SingleGraph;
 import org.graphstream.graph.*;
+import javax.swing.JFrame;
+import org.graphstream.ui.view.Viewer;
+import org.graphstream.ui.view.ViewerPipe;
 
 /**
  *
@@ -15,10 +18,13 @@ public class ManejoGrafo {
     public GrafoLA grafo;
     public Graph ventanaGrafo;
     public int t;
+     public Viewer viewer; // Agregar Viewer para manejar la visualización
+     
     
     public ManejoGrafo() {
         this.grafo = new GrafoLA(500);
         this.ventanaGrafo = new SingleGraph("Grafo");
+
         this.t = 0;
     }    
 
@@ -73,6 +79,9 @@ public class ManejoGrafo {
         String estacion2 = cadena[1];
         return (estacion2+":"+estacion1);
     }
+   
+
+    
     
     public void eliminarGrafos(){
         grafo.eliminarGrafo();
