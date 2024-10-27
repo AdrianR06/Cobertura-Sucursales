@@ -6,17 +6,26 @@ package paquetegrafo;
  */
 
 /**
- *
+ * Representa una lista enlazada simple, donde cada elemento (nodo) contiene un dato de tipo String y una referencia al siguiente nodo.
+ * Esta clase proporciona métodos para realizar operaciones comunes en listas enlazadas, como agregar, buscar y eliminar elementos.
  * @author aiannelli
  */
 public class Lista {
     private Nodo inicio;
     private int iN;
     
+    /**
+     * Constructor por defecto que crea una lista vacía.
+     */
     public Lista () {
     this.inicio = null;
     this.iN = 0;
     }
+    
+    /**
+     * Constructor que crea una lista con un solo nodo, cuyo dato es el valor de `estacion`.
+     * @param estacion El dato a almacenar en el primer nodo.
+     */
     
     public Lista (String estacion) {
     this.inicio = new Nodo(estacion);
@@ -25,39 +34,51 @@ public class Lista {
 
 //----------getters y setters--------------
     /**
-     * @return the inicio
+     * Devuelve el nodo inicial de la lista.
+     * @return El nodo inicial.
      */
     public Nodo getInicio() {
         return inicio;
     }
 
     /**
-     * @param inicio the inicio to set
+     * Establece el nodo inicial de la lista.
+     * @param inicio El nuevo nodo inicial.
      */
     public void setInicio(Nodo inicio) {
         this.inicio = inicio;
     }
     
     /**
-     * @param iN the iN to set
+     * Devuelve el número de elementos en la lista.
+     * @return El tamaño de la lista.
      */
     public void setiN(int iN) {
         this.iN = iN;
     }
 
     /**
-     * @return the iN
+     * Establece el número de elementos en la lista.
+     * @param iN El nuevo tamaño de la lista.
      */
     public int getiN() {
         return iN;
     }
     
-    //---------------metodos-------------------
+    //A continuación se establecen los métodos para una lista simple, como verificar si es vacia, buscar, insertar y eliminar
+    
+    /**
+     * Verifica si la lista está vacía.
+     * @return `true` si la lista está vacía, `false` en caso contrario.
+     */
     public boolean esVacia(){
         return inicio == null;
     }
     
-    
+    /**
+     * Busca y devuelve el último nodo de la lista.
+     * @return El último nodo de la lista, o `null` si la lista está vacía.
+     */
     public Nodo buscarUltimo(){
     Nodo aux = inicio;
     if (getInicio()==null){
@@ -69,6 +90,10 @@ public class Lista {
     return aux;
     }
     
+    /**
+     * Inserta un nuevo nodo al final de la lista.
+     * @param palabra El dato a almacenar en el nuevo nodo.
+     */
     public void insertarUltimo(String palabra){  
         
         Nodo ult = buscarUltimo();                    
@@ -80,7 +105,11 @@ public class Lista {
         }
         iN++;   
     }
-    
+    /**
+     * Busca un nodo con el dato especificado.
+     * @param palabra El dato a buscar.
+     * @return `true` si el dato se encuentra en la lista, `false` en caso contrario.
+     */
         public boolean seEncuentra(String palabra) {
         Nodo actual = inicio;
 
@@ -97,7 +126,10 @@ public class Lista {
             return actual != null;
         }
     }
-        
+    /**
+     * Elimina el primer nodo de la lista.
+     * @return El nodo eliminado, o `null` si la lista está vacía.
+     */    
     public Nodo eliminarPrimero(){
         if (esVacia()) {
             return null;
@@ -108,7 +140,10 @@ public class Lista {
         iN--;
         return aux;
     }
-        
+    /**
+     * Elimina el primer nodo que contiene el dato especificado.
+     * @param parada El dato a eliminar.
+     */    
     public void eliminar(String parada) {
         Nodo actual = inicio;
 
