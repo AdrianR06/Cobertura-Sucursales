@@ -10,9 +10,9 @@ import java.io.File;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileNameExtensionFilter;
-import org.graphstream.graph.Graph;
-import org.graphstream.graph.implementations.SingleGraph;
-import paquetegrafo.Grafo;
+import paquetegrafo.JSON;
+import paquetegrafo.ManejoGrafo;
+
 /**
  *
  * @author aiannelli
@@ -91,11 +91,11 @@ public class Ventana1 extends javax.swing.JFrame {
     }//GEN-LAST:event_IndicacionesActionPerformed
 
     private void CargarRedDeTransporteJSON1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CargarRedDeTransporteJSON1ActionPerformed
-        // Crear el JFileChooser para que el usuario seleccione el archivo JSON
+        // Crear el JFileChooser para que el usuario seleccione el archivo ManejoGrafo
     JFileChooser fileChooser = new JFileChooser();
     fileChooser.setDialogTitle("Selecciona un archivo JSON de red de transporte");
 
-    // Filtrar para que solo permita archivos JSON
+    // Filtrar para que solo permita archivos ManejoGrafo
     FileNameExtensionFilter filter = new FileNameExtensionFilter("Archivos JSON", "json");
     fileChooser.setFileFilter(filter);
 
@@ -107,34 +107,18 @@ public class Ventana1 extends javax.swing.JFrame {
 
         // Obtener la ruta del archivo seleccionado
         String rutaArchivo = archivoSeleccionado.getAbsolutePath();
-
-        // Suponiendo que tienes una instancia de tu clase Grafo
-        Grafo grafo = new Grafo(100); // Crear la instancia de Grafo (si ya existe, omite esta línea)
         
-        //Inicializa el grafo de GraphStream
-        Graph graph = new SingleGraph("Grafo");
-        graph.setAttribute("ui.stylesheet", 
-                    "node { " +
-                        "   fill-color: black; " +
-                        "   size: 20px; " +
-                        "   text-mode: normal; " +
-                        "   text-alignment: center; " +
-                        "   text-size: 14px; " +
-                        "   text-color: white; " +
-                        "   label: ui.label; " +
-                        "}");
+        JSON json = new JSON(rutaArchivo);
+        ManejoGrafo grafos = new ManejoGrafo();
         
         try {
-            // Llamar al método para cargar el JSON en el grafo
-            grafo.cargarDesdeJSON(rutaArchivo, graph);
-            //Muestra el grafo de GraphStream
-            System.setProperty("org.graphstream.ui", "swing");
-            graph.display();
+            // Llamar al método para cargar el ManejoGrafo en el grafo
+            json.cargarDesdeJSON(grafos);
 
             // Mostrar un mensaje de éxito
             JOptionPane.showMessageDialog(this, "Red cargada exitosamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
         } catch (Exception e) {
-            // Manejar los errores durante la carga del archivo JSON
+            // Manejar los errores durante la carga del archivo ManejoGrafo
             JOptionPane.showMessageDialog(this, "Error al cargar el archivo JSON: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
             e.printStackTrace();
         }

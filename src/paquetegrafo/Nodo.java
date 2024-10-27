@@ -7,46 +7,47 @@ package paquetegrafo;
 
 /**
  *
- * @author VictorB
+ * @author aiannelli
  */
 public class Nodo {
-    private String valor;
-    private String linea;
+    private String info;
     private Nodo siguiente;
-
-    public Nodo(String valor) {
-        this.valor = valor;
+    
+    public Nodo (String data) {
+        this.info = data;
         this.siguiente = null;
-        this.linea = null;
+    }    
+    public Nodo (String data, Nodo siguiente) {
+        this.info = data;
+        this.siguiente = siguiente;   
     }
-        
-    // Método para obtener el valor del nodo
-    public String getValor() {
-        return valor;
+    /**
+     * @return the clave
+     */
+    public String getInfo() {
+        return info;
     }
 
-    // Método para obtener el siguiente nodo
+    /**
+     * @param info the clave to set
+     */
+    public void setInfo(String info) {
+        this.info = info;
+    }
+
+    /**
+     * @return the siguiente
+     */
     public Nodo getSiguiente() {
         return siguiente;
     }
 
-    // Método para establecer el siguiente nodo
+    /**
+     * @param siguiente the siguiente to set
+     */
     public void setSiguiente(Nodo siguiente) {
         this.siguiente = siguiente;
     }
 
-    /**
-     * @return the linea
-     */
-    public String getLinea() {
-        return linea;
-    }
-
-    /**
-     * @param linea the linea to set
-     */
-    public void setLinea(String linea) {
-        this.linea = linea;
-    }
-    
 }
+

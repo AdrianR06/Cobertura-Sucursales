@@ -10,85 +10,33 @@ package paquetegrafo;
  * @author aiannelli
  */
 public class Lista {
-    private NodoLista inicio;
+    private Nodo inicio;
     private int iN;
     
     public Lista () {
-    inicio = null;
-    iN = 0;
-}
+    this.inicio = null;
+    this.iN = 0;
+    }
+    
+    public Lista (String estacion) {
+    this.inicio = new Nodo(estacion);
+    this.iN = 0;
+    }
 
+//----------getters y setters--------------
     /**
      * @return the inicio
      */
-    public NodoLista getInicio() {
+    public Nodo getInicio() {
         return inicio;
     }
 
     /**
      * @param inicio the inicio to set
      */
-    public void setInicio(NodoLista inicio) {
+    public void setInicio(Nodo inicio) {
         this.inicio = inicio;
     }
-    
-//    boolean dirigido; // Indica si es dirigido o no.
-//    int maxNodos; // Tamaño máximo de la tabla.
-//    int numVertices; // Número de vértices del grafo.
-//    Lista listaAdy []; // Vector de listas de adyacencias del grafo.
-
-    public NodoLista buscarUltimo(){
-        NodoLista aux = inicio;
-        if (getInicio()==null){
-            return null;
-        }
-        while(aux.getNext()!=null){
-                aux=aux.getNext();
-        }
-        return aux;
-    }
-    public boolean esVacia(){
-        return inicio == null;
-    }
-    
-    public NodoLista primero(){ 
-        return inicio;
-    }
-    
-    public NodoLista ultimo(){
-        return null;
-    }
-    
-    public void preinsertarPrimero(String parada){  
-        NodoLista nuevo = new NodoLista(parada);                 
-        nuevo.setNext(inicio);               
-        inicio=nuevo;
-        iN++;
-    }
-
-    public void insertarUltimo(String palabra){  
-        
-        NodoLista ult=buscarUltimo();                    
-        NodoLista nuevo = new NodoLista(palabra); 
-        if(ult == null){
-           inicio = nuevo;
-        }else{
-            ult.setNext(nuevo);
-        }
-        iN++;   
-    }
-    
-        public NodoLista eliminarPrimero(){
-        if (esVacia()) {
-            return null;
-        }
-        NodoLista aux= null;
-        aux = inicio;
-        inicio = aux.getNext();
-        aux.setNext(null);
-        iN--;
-        return aux;
-        }
     
     /**
      * @param iN the iN to set
@@ -103,4 +51,127 @@ public class Lista {
     public int getiN() {
         return iN;
     }
+    
+    //---------------metodos-------------------
+    public boolean esVacia(){
+        return inicio == null;
+    }
+    
+    
+    public Nodo buscarUltimo(){
+    Nodo aux = inicio;
+    if (getInicio()==null){
+        return null;
+    }
+    while(aux.getSiguiente()!=null){
+            aux=aux.getSiguiente();
+    }
+    return aux;
+    }
+    
+    public void insertarUltimo(String palabra){  
+        
+        Nodo ult = buscarUltimo();                    
+        Nodo nuevo = new Nodo(palabra); 
+        if(ult == null){
+           inicio = nuevo;
+        }else{
+            ult.setSiguiente(nuevo);
+        }
+        iN++;   
+    }
+    
+        public boolean seEncuentra(String palabra) {
+        Nodo actual = inicio;
+
+        // Lista vacía
+        if (esVacia()) {
+            return false;
+        } else {
+            // Buscar el nodo parada
+            while (actual != null && !actual.getInfo().equals(palabra)) {
+                actual = actual.getSiguiente();
+            }
+
+            // Si se encontró parada, retornar verdadero
+            return actual != null;
+        }
+    }
+        
+    public Nodo eliminarPrimero(){
+        if (esVacia()) {
+            return null;
+        }
+        Nodo aux = inicio;
+        inicio = aux.getSiguiente();
+        aux.setSiguiente(null);
+        iN--;
+        return aux;
+    }
+        
+    public void eliminar(String parada) {
+        Nodo actual = inicio;
+
+        // Lista vacía
+        if (esVacia()) {
+            System.out.println("La lista esta vacia.");
+        } else if (iN < 3){
+            if (inicio.getInfo().equals(parada)){
+                eliminarPrimero();
+            } else {
+                inicio.setSiguiente(null);
+            }
+        } else {
+            // Buscar el nodo parada
+            while (actual != null && !actual.getSiguiente().getInfo().equals(parada)) {
+                actual = actual.getSiguiente();
+            }
+
+            // Si se encontró parada, insertar después
+            if (actual != null) {
+                actual.setSiguiente(actual.getSiguiente().getSiguiente());
+                actual.getSiguiente().setSiguiente(null);
+                iN--;
+            } else {
+                // Manejar el caso donde pValor no se encuentra
+                System.out.println("El valor " + parada + " no se encontró en la lista.");
+            }
+        }
+    }
+    
+    /*
+        
+    public void insertarPrimero(String parada){  
+        Nodo nuevo = new Nodo(parada); 
+        nuevo.setSiguiente(inicio);
+        inicio=nuevo;
+        iN++;
+    }
+        
+    public void insertar1DespuesDe2(String nuevaParada, String parada) {
+        Nodo nuevoNodo = new Nodo(nuevaParada);
+        Nodo actual = inicio;
+
+        // Lista vacía
+        if (esVacia()) {
+            inicio = nuevoNodo;
+        } else {
+            // Buscar el nodo parada
+            while (actual != null && !actual.getInfo().equals(parada)) {
+                actual = actual.getSiguiente();
+            }
+
+            // Si se encontró parada, insertar después
+            if (actual != null) {
+                nuevoNodo.setSiguiente(actual.getSiguiente());
+                actual.setSiguiente(nuevoNodo);
+                iN++;
+            } else {
+                // Manejar el caso donde pValor no se encuentra
+                System.out.println("El valor " + parada + " no se encontró en la lista.");
+            }
+        }
+    }
+    
+*/
 }
