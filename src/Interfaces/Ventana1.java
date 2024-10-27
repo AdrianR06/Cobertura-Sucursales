@@ -162,6 +162,7 @@ if (resultado == JFileChooser.APPROVE_OPTION) {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
+                 System.setProperty("org.graphstream.ui.logger", "OFF");
                 new Ventana1().setVisible(true);
             }
         });

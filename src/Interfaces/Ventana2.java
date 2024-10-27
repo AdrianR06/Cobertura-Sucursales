@@ -78,15 +78,47 @@ public class Ventana2 extends javax.swing.JFrame {
     }
     
     }
+    
     public void actualizarComboBoxEstaciones() {
-        if (grapho == null) {
-            System.out.println("No se puede actualizar el ComboBox de estaciones porque grapho es null.");
-            return;
-        }
-
-        Lista estaciones = grapho.obtenerTodasLasParadas();
-        cargarEstacionesEnComboBox(estaciones);
+    if (grapho == null) {
+        System.out.println("No se puede actualizar el ComboBox de estaciones porque grapho es null.");
+        return;
     }
+
+    Lista estaciones = grapho.obtenerTodasLasParadas();
+    
+    // Ordenar la lista de estaciones alfabéticamente
+    estaciones = ordenarListaAlfabeticamente(estaciones);
+    
+    cargarEstacionesEnComboBox(estaciones);
+}
+    // Método para ordenar la lista alfabéticamente
+private Lista ordenarListaAlfabeticamente(Lista estaciones) {
+    Nodo actual, siguiente;
+    String temp;
+    boolean intercambiado;
+
+    do {
+        intercambiado = false;
+        actual = estaciones.getInicio();
+
+        while (actual != null && actual.getSiguiente() != null) {
+            siguiente = actual.getSiguiente();
+
+            if (actual.getInfo().compareToIgnoreCase(siguiente.getInfo()) > 0) {
+                // Intercambiar los nombres de las estaciones
+                temp = actual.getInfo();
+                actual.setInfo(siguiente.getInfo());
+                siguiente.setInfo(temp);
+                intercambiado = true;
+            }
+
+            actual = siguiente;
+        }
+    } while (intercambiado);
+
+    return estaciones;
+}
     
     public void cargarEstacionesEnComboBox(Lista estaciones) {
         comboBoxEstaciones.removeAllItems(); // Elimina elementos previos en caso de recarga
@@ -128,6 +160,8 @@ public class Ventana2 extends javax.swing.JFrame {
         tipoBusqueda = new javax.swing.JComboBox<>();
         comboBoxEstaciones = new javax.swing.JComboBox<>();
         EliminarSucursal = new javax.swing.JButton();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        jTextArea = new javax.swing.JTextArea();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -153,7 +187,7 @@ public class Ventana2 extends javax.swing.JFrame {
                 AgregarLineaActionPerformed(evt);
             }
         });
-        getContentPane().add(AgregarLinea, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 420, -1, -1));
+        getContentPane().add(AgregarLinea, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 40, -1, -1));
 
         jLabel4.setText("Ubicacion Sucursal");
         getContentPane().add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 160, 100, 20));
@@ -164,7 +198,7 @@ public class Ventana2 extends javax.swing.JFrame {
                 ColocarSucursalActionPerformed(evt);
             }
         });
-        getContentPane().add(ColocarSucursal, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 180, -1, -1));
+        getContentPane().add(ColocarSucursal, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 180, -1, -1));
 
         RevisarCoberturaTotal.setText("Revisar cobertura total");
         RevisarCoberturaTotal.addActionListener(new java.awt.event.ActionListener() {
@@ -172,7 +206,7 @@ public class Ventana2 extends javax.swing.JFrame {
                 RevisarCoberturaTotalActionPerformed(evt);
             }
         });
-        getContentPane().add(RevisarCoberturaTotal, new org.netbeans.lib.awtextra.AbsoluteConstraints(420, 420, -1, -1));
+        getContentPane().add(RevisarCoberturaTotal, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 490, -1, -1));
 
         MostrarGrafo.setText("Mostrar Red de Transporte");
         MostrarGrafo.addActionListener(new java.awt.event.ActionListener() {
@@ -188,7 +222,7 @@ public class Ventana2 extends javax.swing.JFrame {
                 RevisarCoberturaSucursal1ActionPerformed(evt);
             }
         });
-        getContentPane().add(RevisarCoberturaSucursal1, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 330, -1, -1));
+        getContentPane().add(RevisarCoberturaSucursal1, new org.netbeans.lib.awtextra.AbsoluteConstraints(440, 320, -1, -1));
 
         Exit2.setText("X");
         Exit2.addActionListener(new java.awt.event.ActionListener() {
@@ -199,10 +233,10 @@ public class Ventana2 extends javax.swing.JFrame {
         getContentPane().add(Exit2, new org.netbeans.lib.awtextra.AbsoluteConstraints(650, 10, -1, -1));
 
         sucursalComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        getContentPane().add(sucursalComboBox, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 240, -1, -1));
+        getContentPane().add(sucursalComboBox, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 240, 160, -1));
 
         jLabel1.setText("Tipo de Busqueda");
-        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 310, -1, -1));
+        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(580, 300, -1, -1));
 
         jLabel6.setText("Sucursal");
         getContentPane().add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 220, -1, 20));
@@ -211,7 +245,7 @@ public class Ventana2 extends javax.swing.JFrame {
         ResultadoTextArea.setRows(5);
         jScrollPane1.setViewportView(ResultadoTextArea);
 
-        getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 230, 400, -1));
+        getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 210, 400, -1));
 
         tipoBusqueda.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "DFS", "BFS" }));
         tipoBusqueda.addContainerListener(new java.awt.event.ContainerAdapter() {
@@ -219,7 +253,7 @@ public class Ventana2 extends javax.swing.JFrame {
                 tipoBusquedaComponentRemoved(evt);
             }
         });
-        getContentPane().add(tipoBusqueda, new org.netbeans.lib.awtextra.AbsoluteConstraints(580, 330, -1, -1));
+        getContentPane().add(tipoBusqueda, new org.netbeans.lib.awtextra.AbsoluteConstraints(580, 320, -1, -1));
 
         comboBoxEstaciones.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
         comboBoxEstaciones.addActionListener(new java.awt.event.ActionListener() {
@@ -227,7 +261,7 @@ public class Ventana2 extends javax.swing.JFrame {
                 comboBoxEstacionesActionPerformed(evt);
             }
         });
-        getContentPane().add(comboBoxEstaciones, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 180, 100, -1));
+        getContentPane().add(comboBoxEstaciones, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 180, 160, -1));
 
         EliminarSucursal.setText("Eliminar Sucursal");
         EliminarSucursal.addActionListener(new java.awt.event.ActionListener() {
@@ -235,7 +269,13 @@ public class Ventana2 extends javax.swing.JFrame {
                 EliminarSucursalActionPerformed(evt);
             }
         });
-        getContentPane().add(EliminarSucursal, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 330, -1, -1));
+        getContentPane().add(EliminarSucursal, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 320, -1, -1));
+
+        jTextArea.setColumns(20);
+        jTextArea.setRows(5);
+        jScrollPane2.setViewportView(jTextArea);
+
+        getContentPane().add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 380, 400, -1));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -281,7 +321,7 @@ public class Ventana2 extends javax.swing.JFrame {
         return; // Sale del método si el grafo es null
     }
 
-    // Suponiendo que tienes un JComboBox llamado comboBoxEstaciones
+    
     String paradaSeleccionada = (String) comboBoxEstaciones.getSelectedItem();
 
     // Llama al método que coloca la sucursal
@@ -302,12 +342,25 @@ public class Ventana2 extends javax.swing.JFrame {
     }//GEN-LAST:event_ColocarSucursalActionPerformed
 
     private void RevisarCoberturaTotalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RevisarCoberturaTotalActionPerformed
-        // TODO add your handling code here:                                                    
+        // TODO add your handling code here:         
+                                                      
+    // Limpia el JTextArea
+    jTextArea.setText(""); 
+    
     // Llama al método revisarCoberturaTotal de ManejoGrafo
     String resultado = grafos.revisarCoberturaTotal();
     
-    // Muestra el resultado en un cuadro de diálogo
-    JOptionPane.showMessageDialog(this, resultado, "Resultado de Cobertura", JOptionPane.INFORMATION_MESSAGE);
+    // Muestra el resultado inicial
+    jTextArea.setText(resultado);
+    
+    // Si la cobertura es incompleta, llama a verCoberturaMinima
+    if (resultado.contains("Cobertura incompleta")) {
+        // Asume que tienes una lista de sucursales iniciales y un valor t previamente configurados
+        Lista paradasMinimas = grafos.verCoberturaMinima(grafos.obtenerSucursalesIniciales()); 
+        
+        // Agrega las paradas mínimas necesarias al JTextArea
+        jTextArea.append("\nParadas mínimas necesarias para cobertura completa: " + paradasMinimas.toString());
+    }
 
     }//GEN-LAST:event_RevisarCoberturaTotalActionPerformed
 
@@ -441,6 +494,8 @@ if (sucursalSeleccionada != null) {
     private javax.swing.JLabel jLabel6;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JTextArea jTextArea;
     private javax.swing.JComboBox<String> sucursalComboBox;
     private javax.swing.JComboBox<String> tipoBusqueda;
     // End of variables declaration//GEN-END:variables

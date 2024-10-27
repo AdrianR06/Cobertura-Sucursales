@@ -57,6 +57,24 @@ public class Lista {
         return inicio == null;
     }
     
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        Nodo actual = this.getInicio();
+        
+        // Agrega cada elemento a la cadena de texto
+        sb.append("[");
+        while (actual != null) {
+            sb.append(actual.getInfo());
+            actual = actual.getSiguiente();
+            if (actual != null) {
+                sb.append(", ");
+            }
+        }
+        sb.append("]");
+        return sb.toString();
+    }
+
+    
     
     public Nodo buscarUltimo(){
     Nodo aux = inicio;
@@ -138,6 +156,15 @@ public class Lista {
             }
         }
     }
+    public int longitud() {
+    int contador = 0;
+    Nodo actual = this.inicio;
+    while (actual != null) {
+        contador++;
+        actual = actual.getSiguiente();
+    }
+    return contador;
+}
     
     /*
         
