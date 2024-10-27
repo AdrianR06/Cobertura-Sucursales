@@ -10,6 +10,8 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
+import org.graphstream.ui.view.Viewer;
+import org.graphstream.ui.view.ViewerListener;
 
 /**
  *
@@ -50,14 +52,14 @@ public class JSON {
             }
             System.out.println("--------------------------");
             //Muestra el grafo de GraphStream
-            System.setProperty("org.graphstream.ui", "swing");
-            grafos.ventanaGrafo.display();
+            grafos.mostrarGrafo();
             
             grafos.grafo.profundidad();
             System.out.println("--------------------------");
             grafos.grafo.amplitud();
             
             /* probando el eliminar los grafos
+            
             grafos.eliminarGrafos();
             
             grafos.grafo.profundidad();
