@@ -18,12 +18,17 @@ import paquetegrafo.ManejoGrafo;
  * @author aiannelli
  */
 public class Ventana1 extends javax.swing.JFrame {
-
+    public Ventana2 ventana2;
+    private ManejoGrafo grafos;
     /**
      * Creates new form Ventana1
      */
     public Ventana1() {
         initComponents();
+        ventana2= new Ventana2();
+        grafos = new ManejoGrafo(); // Inicializa la instancia de ManejoGrafo
+        
+        
     }
 
     /**
@@ -37,7 +42,6 @@ public class Ventana1 extends javax.swing.JFrame {
 
         jPanel1 = new javax.swing.JPanel();
         Exit = new javax.swing.JButton();
-        CargarRedDeTransporteTXT = new javax.swing.JButton();
         Indicaciones = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         CargarRedDeTransporteJSON1 = new javax.swing.JButton();
@@ -55,9 +59,6 @@ public class Ventana1 extends javax.swing.JFrame {
             }
         });
         getContentPane().add(Exit, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 10, -1, -1));
-
-        CargarRedDeTransporteTXT.setText("Cargar Red de Transporte .txt");
-        getContentPane().add(CargarRedDeTransporteTXT, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 220, -1, -1));
 
         Indicaciones.setText("Indicaciones");
         Indicaciones.addActionListener(new java.awt.event.ActionListener() {
@@ -91,39 +92,44 @@ public class Ventana1 extends javax.swing.JFrame {
     }//GEN-LAST:event_IndicacionesActionPerformed
 
     private void CargarRedDeTransporteJSON1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CargarRedDeTransporteJSON1ActionPerformed
-        // Crear el JFileChooser para que el usuario seleccione el archivo ManejoGrafo
-    JFileChooser fileChooser = new JFileChooser();
-    fileChooser.setDialogTitle("Selecciona un archivo JSON de red de transporte");
+  JFileChooser fileChooser = new JFileChooser();
+fileChooser.setDialogTitle("Selecciona un archivo JSON de red de transporte");
 
-    // Filtrar para que solo permita archivos ManejoGrafo
-    FileNameExtensionFilter filter = new FileNameExtensionFilter("Archivos JSON", "json");
-    fileChooser.setFileFilter(filter);
+// Filtrar para que solo permita archivos JSON
+FileNameExtensionFilter filter = new FileNameExtensionFilter("Archivos JSON", "json");
+fileChooser.setFileFilter(filter);
 
-    int resultado = fileChooser.showOpenDialog(this);
+int resultado = fileChooser.showOpenDialog(this);
 
-    // Si el usuario selecciona un archivo
-    if (resultado == JFileChooser.APPROVE_OPTION) {
-        File archivoSeleccionado = fileChooser.getSelectedFile();
+// Si el usuario selecciona un archivo
+if (resultado == JFileChooser.APPROVE_OPTION) {
+    File archivoSeleccionado = fileChooser.getSelectedFile();
+    String rutaArchivo = archivoSeleccionado.getAbsolutePath();
 
-        // Obtener la ruta del archivo seleccionado
-        String rutaArchivo = archivoSeleccionado.getAbsolutePath();
+    JSON json = new JSON(rutaArchivo);  // Crear instancia de JSON
+    ManejoGrafo grafos = new ManejoGrafo();  // Crear instancia de ManejoGrafo
+    Ventana2 ventana2 = new Ventana2();  // Crear Ventana2 sin pasar el grafo
+
+    grafos.eliminarGrafos();
+    try {
+        // Llamar al método para cargar el JSON en el grafo
+        json.cargarDesdeJSON(grafos, ventana2);
+
+        // Configurar el grafo en Ventana2 después de cargarlo
+        ventana2.configurarGrafo(grafos);
         
-        JSON json = new JSON(rutaArchivo);
-        ManejoGrafo grafos = new ManejoGrafo();
-        
-        try {
-            // Llamar al método para cargar el ManejoGrafo en el grafo
-            json.cargarDesdeJSON(grafos);
+        // Pasar JSON a Ventana2 si es necesario
+        ventana2.setJson(json);
 
-            // Mostrar un mensaje de éxito
-            JOptionPane.showMessageDialog(this, "Red cargada exitosamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
-        } catch (Exception e) {
-            // Manejar los errores durante la carga del archivo ManejoGrafo
-            JOptionPane.showMessageDialog(this, "Error al cargar el archivo JSON: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-            e.printStackTrace();
-        }
+        // Mostrar Ventana2
+        ventana2.setVisible(true);
+
+        JOptionPane.showMessageDialog(this, "Red cargada exitosamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(this, "Error al cargar el archivo JSON: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        e.printStackTrace();
     }
-
+}
     }//GEN-LAST:event_CargarRedDeTransporteJSON1ActionPerformed
 
     /**
@@ -163,7 +169,6 @@ public class Ventana1 extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton CargarRedDeTransporteJSON1;
-    private javax.swing.JButton CargarRedDeTransporteTXT;
     private javax.swing.JButton Exit;
     private javax.swing.JButton Indicaciones;
     private javax.swing.JLabel jLabel1;

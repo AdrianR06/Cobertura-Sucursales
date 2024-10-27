@@ -63,6 +63,7 @@ public class Cola {
         this.iN = iN;
     }
     
+    
     //----------primitivas----------
     public void destruirCola(){
         Nodo temporal; // No se usa a proposito para que el recolector de basura de Java lo borre

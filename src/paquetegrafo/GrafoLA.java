@@ -11,12 +11,18 @@ package paquetegrafo;
 public class GrafoLA {
     private int max;
     private int numVertices;
-    private Lista[] listaAdy;   
+    private Lista[] listaAdy; 
+    // Inicializa cada posición en el arreglo con una nueva instancia de Lista
+    
+
 
     public GrafoLA(int max) {
         this.max = max; 
         this.numVertices = 0;
         this.listaAdy = new Lista[max];
+        for (int i = 0; i < max; i++) {
+        this.listaAdy[i] = new Lista();
+    }
     }
 
     //-------getters y setters-------
@@ -168,5 +174,25 @@ public class GrafoLA {
                 }
             }
         }
+    }
+    public Lista obtenerAdyacentes(String parada) {
+    int indice = obtenerIndice(parada);
+    if (indice != -1) {
+        return listaAdy[indice];  // Retorna la lista de adyacencias de la parada encontrada
+    }
+    return new Lista();  // Retorna una lista vacía si no se encuentra la parada
+}
+    public Lista obtenerTodasLasParadas() {
+        Lista todasLasParadas = new Lista();
+        for (int i = 0; i < numVertices; i++) {
+            Nodo nodo = listaAdy[i].getInicio();
+            while (nodo != null) {
+                if (!todasLasParadas.seEncuentra(nodo.getInfo())) {
+                    todasLasParadas.insertarUltimo(nodo.getInfo());
+                }
+                nodo = nodo.getSiguiente();
+            }
+        }
+        return todasLasParadas;
     }
 }
