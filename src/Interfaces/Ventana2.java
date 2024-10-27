@@ -12,14 +12,41 @@ import javax.swing.JOptionPane;
 
 public class Ventana2 extends javax.swing.JFrame {
     private ManejoGrafo grafos;
+    private GrafoLA grapho;
+
     private JSON json;
     /**
      * Creates new form Interfaz
      */
     public Ventana2() {
         initComponents();
-         this.grafos =grafos;
+        // Inicialmente, desactiva los componentes que dependen del grafo
+        comboBoxEstaciones.setEnabled(false);
+        sucursalComboBox.setEnabled(false);
+
     }
+    
+    
+    
+    /**
+     * Método para configurar el grafo después de cargar el archivo.
+     */
+    public void configurarGrafo(ManejoGrafo grafos) {
+        this.grafos = grafos;
+        this.grapho = grafos.getGrafo();
+
+        if (this.grapho != null) {
+            // Activa y actualiza los ComboBoxes ahora que el grafo está cargado
+            comboBoxEstaciones.setEnabled(true);
+            sucursalComboBox.setEnabled(true);
+            actualizarComboBoxEstaciones();
+            actualizarComboBoxSucursales();
+        } else {
+            System.out.println("El grafo aún no está cargado.");
+        }
+    }
+
+
     
     public void setGrafo(ManejoGrafo grafos) {
     this.grafos = grafos;
@@ -27,6 +54,51 @@ public class Ventana2 extends javax.swing.JFrame {
      public void setJson(JSON json) {
         this.json = json;
     }
+     
+    private void actualizarComboBoxSucursales() {
+    // Limpiar el JComboBox
+    sucursalComboBox.removeAllItems();
+
+    // Verificar si 'grafos' está inicializado
+    if (grafos == null) {
+        JOptionPane.showMessageDialog(this, "El objeto de ManejoGrafo no está inicializado.");
+        return; // Sale del método si grafos es nulo
+    }
+
+    // Obtener las sucursales del manejo de grafo
+    String[] sucursalesActuales = grafos.obtenerSucursales();
+
+    // Comprobar si hay sucursales antes de añadir
+    if (sucursalesActuales != null && sucursalesActuales.length > 0) {
+        for (String sucursal : sucursalesActuales) {
+            sucursalComboBox.addItem(sucursal);
+        }
+    } else {
+        JOptionPane.showMessageDialog(this, "No hay sucursales disponibles.");
+    }
+    
+    }
+    public void actualizarComboBoxEstaciones() {
+        if (grapho == null) {
+            System.out.println("No se puede actualizar el ComboBox de estaciones porque grapho es null.");
+            return;
+        }
+
+        Lista estaciones = grapho.obtenerTodasLasParadas();
+        cargarEstacionesEnComboBox(estaciones);
+    }
+    
+    public void cargarEstacionesEnComboBox(Lista estaciones) {
+        comboBoxEstaciones.removeAllItems(); // Elimina elementos previos en caso de recarga
+        Nodo nodo = estaciones.getInicio(); // Accedemos a la primera estación
+        while (nodo != null) { // Recorre la lista de estaciones
+            comboBoxEstaciones.addItem(nodo.getInfo()); // Agrega cada estación al ComboBox
+            nodo = nodo.getSiguiente();
+        }
+}
+
+    // Otros métodos de Ventana2
+
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -42,23 +114,27 @@ public class Ventana2 extends javax.swing.JFrame {
         CambiarValorT = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
         AgregarLinea = new javax.swing.JButton();
-        jLabel3 = new javax.swing.JLabel();
-        ValorUbicacionSucursal = new javax.swing.JTextField();
-        ImprimirUbicacionesJSON = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
         ColocarSucursal = new javax.swing.JButton();
         RevisarCoberturaTotal = new javax.swing.JButton();
-        jLabel5 = new javax.swing.JLabel();
         MostrarGrafo = new javax.swing.JButton();
         RevisarCoberturaSucursal1 = new javax.swing.JButton();
         Exit2 = new javax.swing.JButton();
+        sucursalComboBox = new javax.swing.JComboBox<>();
+        jLabel1 = new javax.swing.JLabel();
+        jLabel6 = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        ResultadoTextArea = new javax.swing.JTextArea();
+        tipoBusqueda = new javax.swing.JComboBox<>();
+        comboBoxEstaciones = new javax.swing.JComboBox<>();
+        EliminarSucursal = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
         getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(106, 93, -1, -1));
-        getContentPane().add(ValorT, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 100, 170, -1));
+        getContentPane().add(ValorT, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 100, 130, -1));
 
         CambiarValorT.setText("Cambiar valor de T");
         CambiarValorT.addActionListener(new java.awt.event.ActionListener() {
@@ -66,7 +142,7 @@ public class Ventana2 extends javax.swing.JFrame {
                 CambiarValorTActionPerformed(evt);
             }
         });
-        getContentPane().add(CambiarValorT, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 100, -1, -1));
+        getContentPane().add(CambiarValorT, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 100, -1, -1));
 
         jLabel2.setText("Indique el valor de t:");
         getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 100, -1, -1));
@@ -77,35 +153,18 @@ public class Ventana2 extends javax.swing.JFrame {
                 AgregarLineaActionPerformed(evt);
             }
         });
-        getContentPane().add(AgregarLinea, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 360, -1, -1));
+        getContentPane().add(AgregarLinea, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 420, -1, -1));
 
-        jLabel3.setText("Las ubicaciones posibles para colocar una sucursal son las siguientes:");
-        getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 120, 410, 40));
+        jLabel4.setText("Ubicacion Sucursal");
+        getContentPane().add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 160, 100, 20));
 
-        ValorUbicacionSucursal.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                ValorUbicacionSucursalActionPerformed(evt);
-            }
-        });
-        getContentPane().add(ValorUbicacionSucursal, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 240, 200, -1));
-
-        ImprimirUbicacionesJSON.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                ImprimirUbicacionesJSONActionPerformed(evt);
-            }
-        });
-        getContentPane().add(ImprimirUbicacionesJSON, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 160, 510, 70));
-
-        jLabel4.setText("Indique la ubicación de la sucursal:");
-        getContentPane().add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 230, 190, 40));
-
-        ColocarSucursal.setText("Colocar sucursal");
+        ColocarSucursal.setText("Colocar Sucursal");
         ColocarSucursal.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 ColocarSucursalActionPerformed(evt);
             }
         });
-        getContentPane().add(ColocarSucursal, new org.netbeans.lib.awtextra.AbsoluteConstraints(440, 240, -1, -1));
+        getContentPane().add(ColocarSucursal, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 180, -1, -1));
 
         RevisarCoberturaTotal.setText("Revisar cobertura total");
         RevisarCoberturaTotal.addActionListener(new java.awt.event.ActionListener() {
@@ -113,10 +172,7 @@ public class Ventana2 extends javax.swing.JFrame {
                 RevisarCoberturaTotalActionPerformed(evt);
             }
         });
-        getContentPane().add(RevisarCoberturaTotal, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 280, -1, -1));
-
-        jLabel5.setText("En el caso de querer agregar una línea por favor suba el archivo .JSON con la información de las paradas de la misma:");
-        getContentPane().add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 320, -1, -1));
+        getContentPane().add(RevisarCoberturaTotal, new org.netbeans.lib.awtextra.AbsoluteConstraints(420, 420, -1, -1));
 
         MostrarGrafo.setText("Mostrar Red de Transporte");
         MostrarGrafo.addActionListener(new java.awt.event.ActionListener() {
@@ -132,7 +188,7 @@ public class Ventana2 extends javax.swing.JFrame {
                 RevisarCoberturaSucursal1ActionPerformed(evt);
             }
         });
-        getContentPane().add(RevisarCoberturaSucursal1, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 280, -1, -1));
+        getContentPane().add(RevisarCoberturaSucursal1, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 330, -1, -1));
 
         Exit2.setText("X");
         Exit2.addActionListener(new java.awt.event.ActionListener() {
@@ -142,35 +198,178 @@ public class Ventana2 extends javax.swing.JFrame {
         });
         getContentPane().add(Exit2, new org.netbeans.lib.awtextra.AbsoluteConstraints(650, 10, -1, -1));
 
+        sucursalComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        getContentPane().add(sucursalComboBox, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 240, -1, -1));
+
+        jLabel1.setText("Tipo de Busqueda");
+        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 310, -1, -1));
+
+        jLabel6.setText("Sucursal");
+        getContentPane().add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 220, -1, 20));
+
+        ResultadoTextArea.setColumns(20);
+        ResultadoTextArea.setRows(5);
+        jScrollPane1.setViewportView(ResultadoTextArea);
+
+        getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 230, 400, -1));
+
+        tipoBusqueda.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "DFS", "BFS" }));
+        tipoBusqueda.addContainerListener(new java.awt.event.ContainerAdapter() {
+            public void componentRemoved(java.awt.event.ContainerEvent evt) {
+                tipoBusquedaComponentRemoved(evt);
+            }
+        });
+        getContentPane().add(tipoBusqueda, new org.netbeans.lib.awtextra.AbsoluteConstraints(580, 330, -1, -1));
+
+        comboBoxEstaciones.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        comboBoxEstaciones.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                comboBoxEstacionesActionPerformed(evt);
+            }
+        });
+        getContentPane().add(comboBoxEstaciones, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 180, 100, -1));
+
+        EliminarSucursal.setText("Eliminar Sucursal");
+        EliminarSucursal.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                EliminarSucursalActionPerformed(evt);
+            }
+        });
+        getContentPane().add(EliminarSucursal, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 330, -1, -1));
+
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void CambiarValorTActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CambiarValorTActionPerformed
         // TODO add your handling code here:
+        
+        // Obtener el valor del campo de texto ValorT y eliminar espacios en blanco
+    String textoValorT = ValorT.getText().trim();
+
+    // Verificar si el campo está vacío
+    if (textoValorT.isEmpty()) {
+        JOptionPane.showMessageDialog(this, "Por favor, ingresa un valor para T.", "Advertencia", JOptionPane.WARNING_MESSAGE);
+        return; // Sale del método si el campo está vacío
+    }
+
+    int nuevoT;
+    try {
+        // Intentar convertir el texto a un número entero
+        nuevoT = Integer.parseInt(textoValorT);
+    } catch (NumberFormatException e) {
+        // Si la conversión falla, mostrar un mensaje de error y salir del método
+        JOptionPane.showMessageDialog(this, "Por favor, ingresa un número válido para T.", "Error", JOptionPane.ERROR_MESSAGE);
+        return;
+    }
+
+    // Llamar al método establecerT para asignar el valor en el grafo
+    grafos.establecerT(nuevoT);
+    JOptionPane.showMessageDialog(this, "El valor de T se ha actualizado a " + nuevoT, "Éxito", JOptionPane.INFORMATION_MESSAGE);
+
+        
     }//GEN-LAST:event_CambiarValorTActionPerformed
 
     private void AgregarLineaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AgregarLineaActionPerformed
-        // TODO add your handling code here:
+       
+        
     }//GEN-LAST:event_AgregarLineaActionPerformed
 
-    private void ImprimirUbicacionesJSONActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ImprimirUbicacionesJSONActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_ImprimirUbicacionesJSONActionPerformed
-
-    private void ValorUbicacionSucursalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ValorUbicacionSucursalActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_ValorUbicacionSucursalActionPerformed
-
     private void ColocarSucursalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ColocarSucursalActionPerformed
-        // TODO add your handling code here:
+        // Verifica si el objeto grafos es null
+    if (grafos == null) {
+        System.out.println("El grafo no ha sido cargado. Por favor, carga el archivo primero.");
+        return; // Sale del método si el grafo es null
+    }
+
+    // Suponiendo que tienes un JComboBox llamado comboBoxEstaciones
+    String paradaSeleccionada = (String) comboBoxEstaciones.getSelectedItem();
+
+    // Llama al método que coloca la sucursal
+    if (paradaSeleccionada != null) {
+        grafos.colocarSucursal(paradaSeleccionada);
+        System.out.println("Sucursal colocada en la parada: " + paradaSeleccionada);
+        
+        // Actualiza el ComboBox para reflejar los cambios
+        actualizarComboBoxEstaciones();
+        actualizarComboBoxSucursales(); // También actualiza el ComboBox de sucursales si es necesario
+    } else {
+        System.out.println("Por favor, selecciona una parada válida.");
+    }
+
+
+
+        
     }//GEN-LAST:event_ColocarSucursalActionPerformed
 
     private void RevisarCoberturaTotalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RevisarCoberturaTotalActionPerformed
-        // TODO add your handling code here:
+        // TODO add your handling code here:                                                    
+    // Llama al método revisarCoberturaTotal de ManejoGrafo
+    String resultado = grafos.revisarCoberturaTotal();
+    
+    // Muestra el resultado en un cuadro de diálogo
+    JOptionPane.showMessageDialog(this, resultado, "Resultado de Cobertura", JOptionPane.INFORMATION_MESSAGE);
+
     }//GEN-LAST:event_RevisarCoberturaTotalActionPerformed
 
     private void RevisarCoberturaSucursal1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RevisarCoberturaSucursal1ActionPerformed
-        // TODO add your handling code here:
+    
+    String sucursalSeleccionada = (String) sucursalComboBox.getSelectedItem();
+
+if (sucursalSeleccionada != null) {
+    // Verificar si el campo de texto ValorT está vacío
+    String textoValorT = ValorT.getText().trim();
+    if (textoValorT.isEmpty()) {
+        JOptionPane.showMessageDialog(this, "Por favor, ingresa un valor para el límite de cobertura.");
+        return; // Sale del método si el campo está vacío
+    }
+
+    // Convertir el valor de texto a entero
+    int limiteCobertura;
+    try {
+        limiteCobertura = Integer.parseInt(textoValorT);
+    } catch (NumberFormatException e) {
+        JOptionPane.showMessageDialog(this, "Por favor, ingresa un número válido para el límite de cobertura.");
+        return; // Sale del método si el valor no es un número válido
+    }
+
+    // Establecer el valor de cobertura en la clase de manejo del grafo
+    grafos.establecerT(limiteCobertura);
+
+    // Llamar a la función para ver la cobertura usando DFS o BFS según lo seleccionado
+    Lista cobertura;
+    String metodoSeleccionado = (String) tipoBusqueda.getSelectedItem();
+    if (metodoSeleccionado.equals("DFS")) {
+        cobertura = grafos.verCoberturaDFS(sucursalSeleccionada);
+    } else {
+        cobertura = grafos.verCoberturaBFS(sucursalSeleccionada);
+    }
+
+    // Verificar si la lista de cobertura está vacía
+    if (cobertura == null || cobertura.getInicio() == null) {
+        JOptionPane.showMessageDialog(this, "No hay paradas alcanzables desde esta sucursal dentro del límite de cobertura.");
+        return; // Sale del método si no hay cobertura disponible
+    }
+
+    // Construir el resultado para mostrarlo en ResultadoTextArea
+    StringBuilder resultado = new StringBuilder("Paradas alcanzables desde " + sucursalSeleccionada + ":\n");
+    Nodo nodo = cobertura.getInicio();
+    while (nodo != null) {
+        // Agregar verificación adicional para asegurar que nodo tenga información
+        if (nodo.getInfo() != null) {
+            resultado.append(nodo.getInfo()).append("\n");
+        } else {
+            System.out.println("Nodo vacío encontrado."); // Mensaje de depuración
+        }
+        nodo = nodo.getSiguiente();
+    }
+
+    // Mostrar el resultado en el JTextArea
+    ResultadoTextArea.setText(resultado.toString());
+} else {
+    JOptionPane.showMessageDialog(this, "Por favor, selecciona una sucursal.");
+}                                           
+   
+
     }//GEN-LAST:event_RevisarCoberturaSucursal1ActionPerformed
 
     private void Exit2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Exit2ActionPerformed
@@ -186,57 +385,63 @@ public class Ventana2 extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_MostrarGrafoActionPerformed
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Ventana2.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Ventana2.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Ventana2.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Ventana2.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-        //</editor-fold>
+    private void tipoBusquedaComponentRemoved(java.awt.event.ContainerEvent evt) {//GEN-FIRST:event_tipoBusquedaComponentRemoved
+        // TODO add your handling code here:
+    }//GEN-LAST:event_tipoBusquedaComponentRemoved
 
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new Ventana2().setVisible(true);
-            }
-        });
+    private void comboBoxEstacionesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboBoxEstacionesActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_comboBoxEstacionesActionPerformed
+
+    private void EliminarSucursalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EliminarSucursalActionPerformed
+        // TODO add your handling code here:
+    // Obtener la sucursal seleccionada del comboBox
+    String paradaSeleccionada = (String) sucursalComboBox.getSelectedItem();
+
+    // Verificar que se haya seleccionado una sucursal
+    if (paradaSeleccionada != null) {
+        // Llamar al método eliminarSucursal para eliminar la sucursal del grafo
+        grafos.eliminarSucursal(paradaSeleccionada);
+
+        // Eliminar la sucursal del comboBox
+        sucursalComboBox.removeItem(paradaSeleccionada);
+
+        // Vaciar el ResultadoTextArea
+        ResultadoTextArea.setText("");
+
+        // Mostrar mensaje de confirmación
+        JOptionPane.showMessageDialog(this, "Sucursal " + paradaSeleccionada + " eliminada.");
+    } else {
+        JOptionPane.showMessageDialog(this, "Por favor, selecciona una sucursal para eliminar.");
     }
+
+
+
+        
+        
+    }//GEN-LAST:event_EliminarSucursalActionPerformed
+
+   
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton AgregarLinea;
     private javax.swing.JButton CambiarValorT;
     private javax.swing.JButton ColocarSucursal;
+    private javax.swing.JButton EliminarSucursal;
     private javax.swing.JButton Exit2;
-    private javax.swing.JTextField ImprimirUbicacionesJSON;
     private javax.swing.JButton MostrarGrafo;
+    private javax.swing.JTextArea ResultadoTextArea;
     private javax.swing.JButton RevisarCoberturaSucursal1;
     private javax.swing.JButton RevisarCoberturaTotal;
     private javax.swing.JTextField ValorT;
-    private javax.swing.JTextField ValorUbicacionSucursal;
+    private javax.swing.JComboBox<String> comboBoxEstaciones;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JComboBox<String> sucursalComboBox;
+    private javax.swing.JComboBox<String> tipoBusqueda;
     // End of variables declaration//GEN-END:variables
 }
