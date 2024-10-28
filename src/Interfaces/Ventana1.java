@@ -45,6 +45,7 @@ public class Ventana1 extends javax.swing.JFrame {
         Indicaciones = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         CargarRedDeTransporteJSON1 = new javax.swing.JButton();
+        jLabel2 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -58,7 +59,7 @@ public class Ventana1 extends javax.swing.JFrame {
                 ExitActionPerformed(evt);
             }
         });
-        getContentPane().add(Exit, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 10, -1, -1));
+        getContentPane().add(Exit, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 10, -1, -1));
 
         Indicaciones.setText("Indicaciones");
         Indicaciones.addActionListener(new java.awt.event.ActionListener() {
@@ -66,11 +67,11 @@ public class Ventana1 extends javax.swing.JFrame {
                 IndicacionesActionPerformed(evt);
             }
         });
-        getContentPane().add(Indicaciones, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 130, -1, -1));
+        getContentPane().add(Indicaciones, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 130, -1, -1));
 
         jLabel1.setFont(new java.awt.Font("Segoe UI Black", 0, 14)); // NOI18N
         jLabel1.setText("Cobertura de Sucursales");
-        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 10, -1, -1));
+        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 10, -1, -1));
 
         CargarRedDeTransporteJSON1.setText("Cargar Red de Transporte .JSON");
         CargarRedDeTransporteJSON1.addActionListener(new java.awt.event.ActionListener() {
@@ -78,7 +79,10 @@ public class Ventana1 extends javax.swing.JFrame {
                 CargarRedDeTransporteJSON1ActionPerformed(evt);
             }
         });
-        getContentPane().add(CargarRedDeTransporteJSON1, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 170, -1, -1));
+        getContentPane().add(CargarRedDeTransporteJSON1, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 170, -1, -1));
+
+        jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/IconoTransporte.png"))); // NOI18N
+        getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 340, 300));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -173,6 +177,7 @@ if (resultado == JFileChooser.APPROVE_OPTION) {
     private javax.swing.JButton Exit;
     private javax.swing.JButton Indicaciones;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
     // End of variables declaration//GEN-END:variables
 }

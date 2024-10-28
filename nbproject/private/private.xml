@@ -1,49 +1,14 @@
-<<<<<<< HEAD
 <?xml version="1.0" encoding="UTF-8"?>
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-<<<<<<< HEAD
-            <file>file:/D:/Usuarios/aiannelli/OneDrive%20-%20Excelsior%20Gama%20Supermercados,%20CA/Documentos/NetBeansProjects/Cobertura-Sucursales/src/paquetegrafo/GrafoLA.java</file>
-            <file>file:/D:/Usuarios/aiannelli/OneDrive%20-%20Excelsior%20Gama%20Supermercados,%20CA/Documentos/NetBeansProjects/Cobertura-Sucursales/src/paquetegrafo/Grafo.java</file>
-=======
-<<<<<<< HEAD
-            <file>file:/C:/Users/soyte/EDD%20proyecto%20sucursales/Cobertura-Sucursales/src/paquetegrafo/Grafo.java</file>
-            <file>file:/C:/Users/soyte/EDD%20proyecto%20sucursales/Cobertura-Sucursales/src/paquetegrafo/Main.java</file>
-            <file>file:/C:/Users/soyte/EDD%20proyecto%20sucursales/Cobertura-Sucursales/src/Interfaces/Ventana1.java</file>
-            <file>file:/C:/Users/soyte/EDD%20proyecto%20sucursales/Cobertura-Sucursales/src/paquetegrafo/ListaEnlazada.java</file>
-            <file>file:/C:/Users/soyte/EDD%20proyecto%20sucursales/Cobertura-Sucursales/src/paquetegrafo/MapaSimple.java</file>
-=======
-            <file>file:/D:/Usuarios/aiannelli/OneDrive%20-%20Excelsior%20Gama%20Supermercados,%20CA/Documentos/NetBeansProjects/Cobertura-Sucursales/src/Interfaces/Ventana2.java</file>
-            <file>file:/D:/Usuarios/aiannelli/OneDrive%20-%20Excelsior%20Gama%20Supermercados,%20CA/Documentos/NetBeansProjects/Cobertura-Sucursales/src/Interfaces/Ventana1.java</file>
-            <file>file:/D:/Usuarios/aiannelli/OneDrive%20-%20Excelsior%20Gama%20Supermercados,%20CA/Documentos/NetBeansProjects/Cobertura-Sucursales/src/paquetegrafo/NodoLista.java</file>
+            <file>file:/D:/Usuarios/aiannelli/OneDrive%20-%20Excelsior%20Gama%20Supermercados,%20CA/Documentos/NetBeansProjects/Cobertura-Sucursales/src/paquetegrafo/JSON.java</file>
+            <file>file:/D:/Usuarios/aiannelli/OneDrive%20-%20Excelsior%20Gama%20Supermercados,%20CA/Documentos/NetBeansProjects/Cobertura-Sucursales/src/paquetegrafo/Lista.java</file>
+            <file>file:/D:/Usuarios/aiannelli/OneDrive%20-%20Excelsior%20Gama%20Supermercados,%20CA/Documentos/NetBeansProjects/Cobertura-Sucursales/src/paquetegrafo/ManejoGrafo.java</file>
+            <file>file:/D:/Usuarios/aiannelli/OneDrive%20-%20Excelsior%20Gama%20Supermercados,%20CA/Documentos/NetBeansProjects/Cobertura-Sucursales/src/paquetegrafo/Cola.java</file>
             <file>file:/D:/Usuarios/aiannelli/OneDrive%20-%20Excelsior%20Gama%20Supermercados,%20CA/Documentos/NetBeansProjects/Cobertura-Sucursales/src/paquetegrafo/Main.java</file>
-            <file>file:/D:/Usuarios/aiannelli/OneDrive%20-%20Excelsior%20Gama%20Supermercados,%20CA/Documentos/NetBeansProjects/Cobertura-Sucursales/src/paquetegrafo/ListaEnlazada.java</file>
             <file>file:/D:/Usuarios/aiannelli/OneDrive%20-%20Excelsior%20Gama%20Supermercados,%20CA/Documentos/NetBeansProjects/Cobertura-Sucursales/src/paquetegrafo/Nodo.java</file>
-            <file>file:/D:/Usuarios/aiannelli/OneDrive%20-%20Excelsior%20Gama%20Supermercados,%20CA/Documentos/NetBeansProjects/Cobertura-Sucursales/src/paquetegrafo/Grafo.java</file>
-            <file>file:/D:/Usuarios/aiannelli/OneDrive%20-%20Excelsior%20Gama%20Supermercados,%20CA/Documentos/NetBeansProjects/Cobertura-Sucursales/src/paquetegrafo/MapaSimple.java</file>
->>>>>>> 78a8e9170791f19281225faad586e5871b7b0c63
->>>>>>> 7ef53cdd6ae72f31a9625edfc9c7f9b9ac70d34f
         </group>
     </open-files>
 </project-private>
-=======
-<?xml version="1.0" encoding="UTF-8"?>
-<project-private xmlns="http://www.netbeans.org/ns/project-private/1">
-    <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
-    <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
-        <group>
-            <file>file:/C:/Users/luisf/OneDrive/Documents/NetBeansProjects/Cobertura-Sucursales/src/paquetegrafo/Nodo.java</file>
-            <file>file:/C:/Users/luisf/OneDrive/Documents/NetBeansProjects/Cobertura-Sucursales/src/paquetegrafo/Main.java</file>
-            <file>file:/C:/Users/luisf/OneDrive/Documents/NetBeansProjects/Cobertura-Sucursales/src/paquetegrafo/Cola.java</file>
-            <file>file:/C:/Users/luisf/OneDrive/Documents/NetBeansProjects/Cobertura-Sucursales/src/paquetegrafo/JSON.java</file>
-            <file>file:/C:/Users/luisf/OneDrive/Documents/NetBeansProjects/Cobertura-Sucursales/src/paquetegrafo/Lista.java</file>
-            <file>file:/C:/Users/luisf/OneDrive/Documents/NetBeansProjects/Cobertura-Sucursales/src/Interfaces/Ventana2.java</file>
-            <file>file:/C:/Users/luisf/OneDrive/Documents/NetBeansProjects/Cobertura-Sucursales/src/paquetegrafo/ManejoGrafo.java</file>
-            <file>file:/C:/Users/luisf/OneDrive/Documents/NetBeansProjects/Cobertura-Sucursales/src/Interfaces/Ventana1.java</file>
-            <file>file:/C:/Users/luisf/OneDrive/Documents/NetBeansProjects/Cobertura-Sucursales/src/paquetegrafo/GrafoLA.java</file>
-        </group>
-    </open-files>
-</project-private>
->>>>>>> 2c4bc079513a5e39bd9d3c894d52f2a4d1d8b2d0

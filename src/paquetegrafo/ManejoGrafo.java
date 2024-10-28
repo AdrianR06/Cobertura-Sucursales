@@ -26,7 +26,7 @@ public class ManejoGrafo {
     /**
      * Constructor de la clase ManejoGrafo.
      *
-     * Inicializa un nuevo grafo vacío y establece el límite de cobertura (t).
+     * Inicializa un nuevo grafo vac&iacute;o y establece el l&iacute;mite de cobertura (t).
      */
     public ManejoGrafo() {
         this.grafo = new GrafoLA(500);
@@ -36,9 +36,9 @@ public class ManejoGrafo {
 /**
      * Aplica estilos a los nodos del grafo.
      *
-     * Asigna la clase de estilo "sucursal" a los nodos que representan sucursales y "normal" a los demás.
+     * Asigna la clase de estilo "sucursal" a los nodos que representan sucursales y "normal" a los dem&aacute;s.
      *
-     * @param grafo El grafo al que se aplicarán los estilos.
+     * @param grafo El grafo al que se aplicar&aacute;n los estilos.
      * @param sucursales Un arreglo con los nombres de las sucursales.
      */    
  public void crearGrafoConEstilos(GrafoLA grafo, String[] sucursales) {
@@ -63,9 +63,9 @@ public class ManejoGrafo {
 
 // Método auxiliar para verificar si una estación está en el arreglo
  /**
- * Verifica si un arreglo de estaciones contiene una estacion en específico.
+ * Verifica si un arreglo de estaciones contiene una estacion en espec&iacute;fico.
  *
- * Este método realiza una búsqueda lineal en el arreglo para determinar si la sucursal proporcionada 
+ * Este m&eacute;todo realiza una b&uacute;squeda lineal en el arreglo para determinar si la sucursal proporcionada 
  * se encuentra entre los elementos del arreglo.
  *
  * @param estacionesConSucursal El arreglo de sucursales a buscar.
@@ -104,7 +104,7 @@ private boolean contiene(String[] estacionesConSucursal, String estacion) {
     return grafo;
 }
     /**
-    * Obtiene el valor actual del límite de profundidad de la búsqueda.
+    * Obtiene el valor actual del limite de profundidad de la busqueda.
     *
     * @return El valor actual de t.
     */
@@ -114,7 +114,7 @@ private boolean contiene(String[] estacionesConSucursal, String estacion) {
    
     // Establece el valor de t
     /**
-    * Establece el valor del límite de profundidad de la búsqueda.
+    * Establece el valor del limite de profundidad de la busqueda.
     *
     * @param nuevoT El nuevo valor para t.
     */
@@ -125,7 +125,7 @@ private boolean contiene(String[] estacionesConSucursal, String estacion) {
     /**
     * Obtiene una lista con las sucursales iniciales configuradas.
     *
-    * Itera sobre el arreglo de sucursales y agrega las sucursales válidas a una nueva lista.
+    * Itera sobre el arreglo de sucursales y agrega las sucursales validas a una nueva lista.
     *
     * @return Una lista con las sucursales iniciales.
     */
@@ -141,7 +141,7 @@ private boolean contiene(String[] estacionesConSucursal, String estacion) {
        
     // Método para agregar una parada al grafo
     /**
-    * Agrega una nueva parada al grafo y a la visualización.
+    * Agrega una nueva parada al grafo y a la visualizacion.
     *
     * Verifica si la parada ya existe. Si es una transferencia, asegura que no exista una transferencia inversa.
     *
@@ -170,9 +170,9 @@ private boolean contiene(String[] estacionesConSucursal, String estacion) {
     }
    
     
-    // Método para agregar una arista entre dos paradas
+    // Metodo para agregar una arista entre dos paradas
     /**
-    * Agrega una nueva arista entre dos paradas en el grafo y la visualización.
+    * Agrega una nueva arista entre dos paradas en el grafo y la visualizacion.
     *
     * Verifica si las paradas existen y si ya existe una arista entre ellas. Maneja el caso de transferencias.
     *
@@ -183,12 +183,12 @@ private boolean contiene(String[] estacionesConSucursal, String estacion) {
         //Agrega la arista al graph 
         String aristaId = parada1 + parada2;
         Node nodo1 = ventanaGrafo.getNode(parada1);
-        if (nodo1 == null){ //En caso de que no reconozca la transeferencia por estar en orden inverso
+        if (nodo1 == null){ //En caso de que no reconozca la transferencia por estar en orden inverso
             parada1 = cambiarOrdenTransferencia(parada1);
             nodo1 = ventanaGrafo.getNode(parada1);
         }
         Node nodo2 = ventanaGrafo.getNode(parada2);
-        if (nodo2 == null){ //En caso de que no reconozca la transeferencia por estar en orden inverso
+        if (nodo2 == null){ //En caso de que no reconozca la transferencia por estar en orden inverso
             parada2 = cambiarOrdenTransferencia(parada2);
             nodo2 = ventanaGrafo.getNode(parada2); //cambia el orden de sus estaciones
         }
@@ -214,11 +214,11 @@ private boolean contiene(String[] estacionesConSucursal, String estacion) {
     }
     
 /**
- * Coloca una sucursal en una parada específica.
+ * Coloca una sucursal en una parada especifica.
  *
- * Verifica si la parada existe y si ya hay una sucursal en ella. Actualiza el arreglo de sucursales y la visualización.
+ * Verifica si la parada existe y si ya hay una sucursal en ella. Actualiza el arreglo de sucursales y la visualizacion.
  *
- * @param parada El nombre de la parada donde se colocará la sucursal.
+ * @param parada El nombre de la parada donde se colocara la sucursal.
  */    
 public void colocarSucursal(String parada) {
     // Verificar si ya existe una sucursal en la parada
@@ -249,11 +249,11 @@ public void colocarSucursal(String parada) {
     
 // Des-seleccionar sucursal
 /**
- * Elimina una sucursal del listado de sucursales y actualiza la visualización del grafo.
+ * Elimina una sucursal del listado de sucursales y actualiza la visualizacion del grafo.
  *
  * Busca la sucursal especificada en el arreglo de sucursales y la marca como eliminada
- * estableciendo su valor a `null`. Además, quita la marca visual correspondiente en la representación
- * gráfica del grafo.
+ * estableciendo su valor a `null`. Además, quita la marca visual correspondiente en la representacion
+ * grafica del grafo.
  * @param parada El nombre de la parada (sucursal) a eliminar.
  */
 public void eliminarSucursal(String parada) {
@@ -275,12 +275,12 @@ public void eliminarSucursal(String parada) {
     }
 }
 /**
-     * Calcula la cobertura alcanzable desde una sucursal dada utilizando búsqueda en profundidad (DFS).
+     * Calcula la cobertura alcanzable desde una sucursal dada utilizando busqueda en profundidad (DFS).
      *
-     * Recorre el grafo en profundidad desde la sucursal indicada, marcando las paradas visitadas dentro del límite de t.
+     * Recorre el grafo en profundidad desde la sucursal indicada, marcando las paradas visitadas dentro del limite de t.
      *
-     * @param sucursal La sucursal desde la cual iniciar la búsqueda.
-     * @return Una lista con las paradas alcanzables desde la sucursal dentro del límite de t.
+     * @param sucursal La sucursal desde la cual iniciar la busqueda.
+     * @return Una lista con las paradas alcanzables desde la sucursal dentro del limite de t.
      */
 public Lista verCoberturaDFS(String sucursal) {
         Lista cobertura = new Lista(); // Lista de paradas cubiertas
@@ -289,14 +289,14 @@ public Lista verCoberturaDFS(String sucursal) {
     }
 
 /**
- * Realiza una búsqueda en profundidad (DFS) recursiva para calcular la cobertura alcanzable desde una parada dada.
- * Recorre el grafo en profundidad, marcando las paradas visitadas y limitando la búsqueda a un máximo de 't' niveles de profundidad.
- * @param parada La parada actual en la búsqueda.
+ * Realiza una busqueda en profundidad (DFS) recursiva para calcular la cobertura alcanzable desde una parada dada.
+ * Recorre el grafo en profundidad, marcando las paradas visitadas y limitando la búsqueda a un maximo de 't' niveles de profundidad.
+ * @param parada La parada actual en la busqueda.
  * @param distancia La distancia actual desde la parada inicial.
  * @param cobertura Una lista para almacenar las paradas visitadas.
  */
 private void verCoberturaDFSRecursivo(String parada, int distancia, Lista cobertura) {
-        if (distancia > t || cobertura.seEncuentra(parada)) return; // Límite alcanzado o parada ya cubierta
+        if (distancia > t || cobertura.seEncuentra(parada)) return; // Limite alcanzado o parada ya cubierta
         
         cobertura.insertarUltimo(parada); // Marca como cubierta
 
@@ -310,12 +310,12 @@ private void verCoberturaDFSRecursivo(String parada, int distancia, Lista cobert
     }
 
 /**
-     * Calcula la cobertura alcanzable desde una sucursal dada utilizando búsqueda en anchura (BFS).
+     * Calcula la cobertura alcanzable desde una sucursal dada utilizando busqueda en anchura (BFS).
      *
-     * Recorre el grafo en anchura desde la sucursal indicada, marcando las paradas visitadas dentro del límite de t.
+     * Recorre el grafo en anchura desde la sucursal indicada, marcando las paradas visitadas dentro del limite de t.
      *
-     * @param sucursal La sucursal desde la cual iniciar la búsqueda.
-     * @return Una lista con las paradas alcanzables desde la sucursal dentro del límite de t.
+     * @param sucursal La sucursal desde la cual iniciar la busqueda.
+     * @return Una lista con las paradas alcanzables desde la sucursal dentro del limite de t.
      */ 
    public Lista verCoberturaBFS(String sucursal) {
     Lista cobertura = new Lista();
@@ -348,12 +348,12 @@ private void verCoberturaDFSRecursivo(String parada, int distancia, Lista cobert
 }
    
 /**
- * Calcula la cobertura alcanzable desde una parada inicial utilizando una búsqueda en amplitud (BFS).
- * Realiza un recorrido en anchura desde la parada inicial hasta un máximo de 't' niveles de profundidad,
+ * Calcula la cobertura alcanzable desde una parada inicial utilizando una busqueda en amplitud (BFS).
+ * Realiza un recorrido en anchura desde la parada inicial hasta un maximo de 't' niveles de profundidad,
  * agregando las paradas visitadas a una lista de cobertura.
- * @param paradaInicial La parada desde la cual se inicia la búsqueda.
- * @param t El límite de profundidad de la búsqueda (número máximo de paradas a explorar).
- * @return Una lista con las paradas alcanzables desde la parada inicial dentro del límite de 't' paradas.
+ * @param paradaInicial La parada desde la cual se inicia la busqueda.
+ * @param t El limite de profundidad de la busqueda (número maximo de paradas a explorar).
+ * @return Una lista con las paradas alcanzables desde la parada inicial dentro del limite de 't' paradas.
  */  
 public Lista verCoberturaBFS(String paradaInicial, int t) {
     // Lista para almacenar las paradas alcanzables dentro del rango de t paradas
@@ -413,7 +413,7 @@ public Lista verCoberturaBFS(String paradaInicial, int t) {
 }
 
 /**
-     * Calcula la cobertura mínima necesaria para alcanzar todas las paradas dentro del rango de t paradas.
+     * Calcula la cobertura minima necesaria para alcanzar todas las paradas dentro del rango de t paradas.
      *
      * Utiliza un algoritmo greedy para encontrar la menor cantidad de paradas adicionales necesarias para cubrir todas las paradas.
      *
@@ -421,7 +421,7 @@ public Lista verCoberturaBFS(String paradaInicial, int t) {
      * @return Una lista con las paradas adicionales necesarias para alcanzar la cobertura mínima.
      */
 public Lista verCoberturaMinima(Lista sucursalesIniciales) {
-    // Lista para almacenar las paradas necesarias mínimas adicionales
+    // Lista para almacenar las paradas necesarias minimas adicionales
     int t = getT();
     Lista paradasNecesarias = new Lista();
     
@@ -538,7 +538,7 @@ public String revisarCoberturaTotal() {
         }
     }
 
-    // Verificación de cobertura completa
+    // Verificacion de cobertura completa
     Lista todasParadas = grafo.obtenerTodasLasParadas(); 
     Nodo parada = todasParadas.getInicio();
     boolean coberturaCompleta = true;
@@ -591,17 +591,17 @@ public String revisarCoberturaTotal() {
     return resultado.toString(); 
 }
 
-// Método para buscar paradas mínimas necesarias para cubrir la parada especificada en un rango t
+// Método para buscar paradas minimas necesarias para cubrir la parada especificada en un rango t
 /**
- * Busca las paradas mínimas necesarias para cubrir una parada específica dentro de un rango de t paradas.
+ * Busca las paradas minimas necesarias para cubrir una parada especifica dentro de un rango de t paradas.
  * 
- * Realiza una búsqueda en anchura (BFS) desde la parada no cubierta para identificar las paradas que se pueden alcanzar en t pasos o menos.
+ * Realiza una busqueda en anchura (BFS) desde la parada no cubierta para identificar las paradas que se pueden alcanzar en t pasos o menos.
  *
- * **Nota:** Este método asume que `verCoberturaBFS` ya está implementado y calcula la cobertura alcanzable desde una parada dada.
+ * **Nota:** Este metodo asume que `verCoberturaBFS` ya esta implementado y calcula la cobertura alcanzable desde una parada dada.
  *
  * @param paradaNoCubierta La parada que se desea cubrir.
- * @param t El límite máximo de paradas a considerar.
- * @return Una lista con las paradas mínimas necesarias para cubrir la parada especificada.
+ * @param t El limite máximo de paradas a considerar.
+ * @return Una lista con las paradas minimas necesarias para cubrir la parada especificada.
  */
 private Lista buscarParadasMinimas(String paradaNoCubierta, int t) {
     // Realiza una búsqueda BFS desde la parada no cubierta para identificar paradas cubrientes en un rango t
@@ -611,10 +611,10 @@ private Lista buscarParadasMinimas(String paradaNoCubierta, int t) {
 /**
  * Elimina las duplicaciones de una lista de paradas.
  *
- * Itera sobre la lista de sugerencias y agrega cada parada única a una nueva lista.
+ * Itera sobre la lista de sugerencias y agrega cada parada unica a una nueva lista.
  *
  * @param sugerencias Una lista de paradas que puede contener duplicados.
- * @return Una lista con las paradas únicas de la lista de sugerencias.
+ * @return Una lista con las paradas unicas de la lista de sugerencias.
  */
 private Lista filtrarParadasUnicas(Lista sugerencias) {
     Lista paradasUnicas = new Lista();
@@ -651,7 +651,7 @@ private Lista filtrarParadasUnicas(Lista sugerencias) {
    /**
     * Elimina todos los nodos y aristas del grafo, tanto en la representación interna como en la visualización.
     *
-    * Reinicia el grafo a un estado vacío.
+    * Reinicia el grafo a un estado vacio.
     */
     public void eliminarGrafos(){
         grafo.eliminarGrafo();
