@@ -7,16 +7,27 @@ package paquetegrafo;
 /**
  *
  * @author aiannelli
+ *  * Clase que representa un grafo utilizando listas de adyacencia para almacenar las conexiones entre vértices.
  */
 public class GrafoLA {
-    private int max;
-    private int numVertices;
-    private Lista[] listaAdy;   
+    private int max; // Máximo número de vértices en el grafo
+    private int numVertices; // Número actual de vértices en el grafo
+    private Lista[] listaAdy; // Arreglo de listas que almacena las adyacencias de cada vértice
+
+    
+/**
+     * Constructor que inicializa el grafo con una capacidad máxima especificada.
+     *
+     * @param max Número máximo de vértices que puede tener el grafo
+     */
 
     public GrafoLA(int max) {
         this.max = max; 
         this.numVertices = 0;
         this.listaAdy = new Lista[max];
+        for (int i = 0; i < max; i++) {
+        this.listaAdy[i] = new Lista();
+    }
     }
 
     //-------getters y setters-------
@@ -65,6 +76,12 @@ public class GrafoLA {
     
     //--------metodos---------------
     
+    /**
+     * Agrega un nuevo vértice (parada) al grafo.
+     *
+     * @param paradaNueva Nombre de la parada que se agregará como un nuevo vértice
+     */
+    
     public void insertarVertice(String paradaNueva){
         if (numVertices == max) {
             System.out.println ("Error, se supera el número de nodos máximo del grafo");
@@ -73,6 +90,13 @@ public class GrafoLA {
         }
         numVertices += 1;
     }
+    
+    /**
+     * Devuelve el índice de una parada específica en el grafo.
+     *
+     * @param parada Nombre de la parada a buscar
+     * @return Índice de la parada en el arreglo o -1 si no se encuentra
+     */
     
     public int obtenerIndice(String parada){
         for (int i = 0; i < max; i++) {
@@ -84,6 +108,13 @@ public class GrafoLA {
         return -1;
     }
     
+    /**
+     * Inserta una arista entre dos paradas en el grafo.
+     *
+     * @param parada1 Primera parada que se conecta
+     * @param parada2 Segunda parada que se conecta
+     */
+    
     public void insertarArista(String parada1, String parada2){
         int indice1 = obtenerIndice(parada1);
         int indice2 = obtenerIndice(parada2);
@@ -92,23 +123,34 @@ public class GrafoLA {
         listaAdy[indice2].insertarUltimo(parada1);
         
     }
-    
+    /**
+     * Elimina todas las aristas y vértices del grafo, dejándolo vacío.
+     */
     public void eliminarGrafo(){
         for (int i =0; i < numVertices; i++){
             listaAdy[i] = null;
         }
         this.setNumVertices(0);
     }
-    
+    /**
+     * Verifica si existe una arista entre dos vértices dados por sus índices.
+     *
+     * @param v Índice del primer vértice
+     * @param i Índice del segundo vértice
+     * @return true si existe la arista, false en caso contrario
+     */
     public boolean existeArista(int v, int i){
         String paradai = listaAdy[i].getInicio().getInfo();
         return listaAdy[v].seEncuentra(paradai);
         
     }
     
-    // Para los recorridos 
-    
-    //procedimiento recursivo. Donde v es el indice en listaAdy del vertice inicial
+   /**
+     * Realiza un recorrido en profundidad (DFS) recursivo desde un vértice dado.
+     *
+     * @param v Índice del vértice inicial
+     * @param visitados Arreglo de booleanos para rastrear los vértices visitados
+     */
     public void recorrerProfundidad (int v, boolean [ ] visitados) {
         //se marca el vértice v como visitado
         visitados [v] = true;
@@ -122,7 +164,9 @@ public class GrafoLA {
             }
         }
     }
-    //procedimiento no recursivo
+    /**
+     * Realiza un recorrido en profundidad (DFS) no recursivo de todo el grafo.
+     */
     public void profundidad() {
         if (numVertices != 0) {
             boolean visitados [ ] = new boolean [numVertices];
@@ -137,6 +181,10 @@ public class GrafoLA {
             System.out.println ("Error, el grafo esta vacio");
         }
     }
+    
+    /**
+     * Realiza un recorrido en amplitud (BFS) de todo el grafo.
+     */
     public void amplitud () {
         if (numVertices != 0) {
             Cola cola = new Cola ();
@@ -168,5 +216,37 @@ public class GrafoLA {
                 }
             }
         }
+    }
+    /**
+     * Obtiene una lista de las paradas adyacentes a una parada específica.
+     *
+     * @param parada Nombre de la parada para la cual se obtendrán las adyacencias
+     * @return Lista de paradas adyacentes a la parada especificada
+     */
+    public Lista obtenerAdyacentes(String parada) {
+    int indice = obtenerIndice(parada);
+    if (indice != -1) {
+        return listaAdy[indice];  // Retorna la lista de adyacencias de la parada encontrada
+    }
+    return new Lista();  // Retorna una lista vacía si no se encuentra la parada
+}
+    
+    /**
+     * Obtiene una lista de todas las paradas (vértices) en el grafo.
+     *
+     * @return Lista con todas las paradas en el grafo
+     */
+    public Lista obtenerTodasLasParadas() {
+        Lista todasLasParadas = new Lista();
+        for (int i = 0; i < numVertices; i++) {
+            Nodo nodo = listaAdy[i].getInicio();
+            while (nodo != null) {
+                if (!todasLasParadas.seEncuentra(nodo.getInfo())) {
+                    todasLasParadas.insertarUltimo(nodo.getInfo());
+                }
+                nodo = nodo.getSiguiente();
+            }
+        }
+        return todasLasParadas;
     }
 }

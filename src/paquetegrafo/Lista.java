@@ -76,10 +76,31 @@ public class Lista {
         return inicio == null;
     }
     
+
     /**
      * Busca y devuelve el &uacute;ltimo nodo de la lista.
      * @return El &uacute;ltimo nodo de la lista, o `null` si la lista est&aacute; vac&iacute;a.
      */
+
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        Nodo actual = this.getInicio();
+        
+        // Agrega cada elemento a la cadena de texto
+        sb.append("[");
+        while (actual != null) {
+            sb.append(actual.getInfo());
+            actual = actual.getSiguiente();
+            if (actual != null) {
+                sb.append(", ");
+            }
+        }
+        sb.append("]");
+        return sb.toString();
+    }
+
+    
+   
     public Nodo buscarUltimo(){
     Nodo aux = inicio;
     if (getInicio()==null){
@@ -174,6 +195,15 @@ public class Lista {
             }
         }
     }
+    public int longitud() {
+    int contador = 0;
+    Nodo actual = this.inicio;
+    while (actual != null) {
+        contador++;
+        actual = actual.getSiguiente();
+    }
+    return contador;
+}
     
     /*
         
