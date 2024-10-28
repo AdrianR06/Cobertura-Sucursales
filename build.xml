@@ -32,15 +32,35 @@
 
     (Targets beginning with '-' are not intended to be called on their own.)
 
-    Example of inserting an obfuscator after compilation could look like this:
+    Example of inserting an obfuscator after compilation could look like this:-->
 
-        <target name="-post-compile">
-            <obfuscate>
-                <fileset dir="${build.classes.dir}"/>
-            </obfuscate>
-        </target>
 
-    For list of available properties check the imported 
+<project name="Cobertura-Sucursales" default="run" basedir=".">
+    <property file="nbproject/project.properties"/>
+    
+    <target name="init">
+        <mkdir dir="build"/>
+    </target>
+
+    <target name="compile" depends="init">
+        <javac srcdir="src" destdir="build">
+            <classpath>
+                <pathelement path="D:\Usuarios\aiannelli\Downloads\json-20240303.jar"/> 
+            </classpath>
+        </javac>
+    </target>
+
+    <target name="run" depends="compile">
+        <java classname="tu.clase.Principal" fork="true">
+            <classpath>
+                <pathelement path="build"/>
+                <pathelement path="D:\Usuarios\aiannelli\Downloads\json-20240303.jar"/> 
+            </classpath>
+        </java>
+    </target>
+</project>
+
+    <!--For list of available properties check the imported 
     nbproject/build-impl.xml file. 
 
 

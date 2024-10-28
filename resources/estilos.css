@@ -1,0 +1,9 @@
+node.sucursal {
+    fill-color: red; /* Color para estaciones con sucursal */
+    size: 20px;
+    text-alignment: above;
+    text-color: black;
+    text-style: bold;
+}
+
+
