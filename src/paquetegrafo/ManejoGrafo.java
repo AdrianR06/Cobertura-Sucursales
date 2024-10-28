@@ -7,17 +7,16 @@ package paquetegrafo;
 import org.graphstream.graph.implementations.SingleGraph;
 import org.graphstream.graph.*;
 import org.graphstream.ui.view.Viewer;
-import org.graphstream.ui.view.ViewerListener;
 
 
 
 /**
- *
+ * Clase que encapsula la lógica de manejo de un grafo, tanto en una representación
+ * interna (GrafoLA) como en una visualización gráfica (GraphStream).
  * @author Adrian
  */
 public class ManejoGrafo {
     public GrafoLA grafo;
-
     public Graph ventanaGrafo;
     public int t;//limite de covertura
     private String[] sucursales = new String[500];
@@ -32,7 +31,11 @@ public class ManejoGrafo {
         this.t = 0;
     } 
     
-    
+    /**
+     * Obtiene el grafo interno.
+     *
+     * @return El grafo interno, o null si no ha sido cargado.
+     */
     public GrafoLA getGrafo() {
     if (grafo == null) {
         // Puedes retornar una nueva instancia vacía o lanzar una excepción
@@ -41,14 +44,21 @@ public class ManejoGrafo {
     return grafo;
 }
    
-    // Establece el valor de t
+    /**
+     * Establece el valor del límite de cobertura (t).
+     *
+     * @param nuevoT El nuevo valor de t.
+     */
     public void establecerT(int nuevoT) {
     this.t = nuevoT;
     }
 
    
 
-    //mostrar graphstream
+    /**
+     * Muestra el grafo en una ventana de GraphStream.
+     * Habilita el layout automático y configura la ventana para que se oculte al cerrar.
+     */
     public void mostrarGrafo(){
         this.viewer = ventanaGrafo.display();
         viewer.setCloseFramePolicy(Viewer.CloseFramePolicy.HIDE_ONLY);
@@ -56,7 +66,14 @@ public class ManejoGrafo {
     }
 
     
-    // Método para agregar una parada al grafo
+    /**
+     * Agrega una parada al grafo.
+     *
+     * Si la parada representa una transferencia (contiene el carácter ':'), se verifica
+     * que no exista ya una transferencia con las estaciones invertidas.
+     *
+     * @param parada El nombre de la parada a agregar.
+     */
     public void agregarParada(String parada) {
         if (ventanaGrafo.getNode(parada) == null){
             // Entra en este condicional en caso de ser una transferencia
@@ -80,8 +97,15 @@ public class ManejoGrafo {
         }
     }
    
-    
-    // Método para agregar una arista entre dos paradas
+    /**
+     * Agrega una arista entre dos paradas.
+     *
+     * Verifica si las paradas existen y si ya existe una arista entre ellas.
+     * Maneja el caso de transferencias, invirtiendo el orden si es necesario.
+     *
+     * @param parada1 El nombre de la primera parada.
+     * @param parada2 El nombre de la segunda parada.
+     */
     public void agregarArista(String parada1, String parada2) {
         //Agrega la arista al graph 
         String aristaId = parada1 + parada2;
@@ -102,7 +126,16 @@ public class ManejoGrafo {
         }
     }
 
-    // Cambia el orden de las estaciones en el nombre de las transferencias
+    /**
+     * Invierte el orden de las estaciones en una transferencia.
+     *
+     * Toma una cadena que representa una transferencia entre dos estaciones
+     * (en formato "estacion1:estacion2") y devuelve una nueva cadena
+     * con el orden invertido ("estacion2:estacion1").
+     *
+     * @param transferencia La cadena que representa la transferencia.
+     * @return Una nueva cadena con el orden de las estaciones invertido.
+     */
     private String cambiarOrdenTransferencia(String transferencia){
         String[] cadena = transferencia.split(":", 2);
         String estacion1 = cadena[0];
@@ -110,7 +143,14 @@ public class ManejoGrafo {
         return (estacion2+":"+estacion1);
     }
     
-    
+    /**
+     * Agrega una sucursal a una parada específica del grafo.
+     *
+     * Verifica si la parada ya tiene una sucursal asignada y si existe en el grafo.
+     * Si cumple con las condiciones, marca la parada como una sucursal en el grafo visual.
+     *
+     * @param parada nombre de la parada donde se desea colocar la sucursal.
+     */
     public void colocarSucursal(String parada) {
         // Verificar si ya existe una sucursal en la parada
         for (int i = 0; i < sucursales.length; i++) {
@@ -137,32 +177,41 @@ public class ManejoGrafo {
         }
     }
     
-// Des-seleccionar sucursal
-public void eliminarSucursal(String parada) {
-    for (int i = 0; i < sucursales.length; i++) {
-        if (sucursales[i] != null && sucursales[i].equals(parada)) {
-            // Eliminar la sucursal del arreglo
-            sucursales[i] = null;
+    /**
+     * Elimina una sucursal de una parada específica del grafo.
+     *
+     * Busca la parada en la lista de sucursales y, si la encuentra, la elimina tanto de la lista
+     * como de la representación visual del grafo.
+     *
+     * @param parada La parada de la cual se desea eliminar la sucursal.
+     */
+    public void eliminarSucursal(String parada) {
+        for (int i = 0; i < sucursales.length; i++) {
+            if (sucursales[i] != null && sucursales[i].equals(parada)) {
+                // Eliminar la sucursal del arreglo
+                sucursales[i] = null;
 
-            // Quitar marca visual
-            Node nodoSucursal = ventanaGrafo.getNode(parada);
-            if (nodoSucursal != null) {
-                nodoSucursal.removeAttribute("ui.class");
+                // Quitar marca visual
+                Node nodoSucursal = ventanaGrafo.getNode(parada);
+                if (nodoSucursal != null) {
+                    nodoSucursal.removeAttribute("ui.class");
+                }
+
+                // Mensaje de confirmación
+                System.out.println("Sucursal eliminada: " + parada);
+                break; // Salir del ciclo una vez que se elimina
             }
-
-            // Mensaje de confirmación
-            System.out.println("Sucursal eliminada: " + parada);
-            break; // Salir del ciclo una vez que se elimina
         }
     }
-}
 
-public Lista verCoberturaDFS(String sucursal) {
+    public Lista verCoberturaDFS(String sucursal) {
         Lista cobertura = new Lista(); // Lista de paradas cubiertas
         verCoberturaDFSRecursivo(sucursal, 0, cobertura);
         return cobertura;
     }
-private void verCoberturaDFSRecursivo(String parada, int distancia, Lista cobertura) {
+    
+    
+    private void verCoberturaDFSRecursivo(String parada, int distancia, Lista cobertura) {
         if (distancia > t || cobertura.seEncuentra(parada)) return; // Límite alcanzado o parada ya cubierta
         
         cobertura.insertarUltimo(parada); // Marca como cubierta
