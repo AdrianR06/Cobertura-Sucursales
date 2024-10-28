@@ -7,18 +7,18 @@ package paquetegrafo;
 /**
  *
  * @author aiannelli
- *  * Clase que representa un grafo utilizando listas de adyacencia para almacenar las conexiones entre vértices.
+ *  * Clase que representa un grafo utilizando listas de adyacencia para almacenar las conexiones entre v&eacute;rtices.
  */
 public class GrafoLA {
-    private int max; // Máximo número de vértices en el grafo
-    private int numVertices; // Número actual de vértices en el grafo
+    private int max; // Máximo número de vertices en el grafo
+    private int numVertices; // Número actual de vertices en el grafo
     private Lista[] listaAdy; // Arreglo de listas que almacena las adyacencias de cada vértice
 
     
 /**
-     * Constructor que inicializa el grafo con una capacidad máxima especificada.
+     * Constructor que inicializa el grafo con una capacidad m&aacute;xima especificada.
      *
-     * @param max Número máximo de vértices que puede tener el grafo
+     * @param max N&uacute;mero m&aacute;ximo de v&eacute;rtices que puede tener el grafo
      */
 
     public GrafoLA(int max) {
@@ -33,14 +33,16 @@ public class GrafoLA {
     //-------getters y setters-------
     
     /**
-     * @return the numVertices
+     * Devuelve un n&uacute;mero entero correspondiente a la cantidad de v&eacute;rtices
+     * @return el numero de v&eacute;rtices
      */
     public int getNumVertices() {
         return numVertices;
     }
 
     /**
-     * @param numVertices the numVertices to set
+     * Permite definir el n&uacute;mero de v&eacute;rtices deseado
+     * @param numVertices el n&uacute;mero de v&eacute;rtices a establecer
      */
     public void setNumVertices(int numVertices) {
         this.numVertices = numVertices;
@@ -77,9 +79,9 @@ public class GrafoLA {
     //--------metodos---------------
     
     /**
-     * Agrega un nuevo vértice (parada) al grafo.
+     * Agrega un nuevo v&eacute;rtice (parada) al grafo.
      *
-     * @param paradaNueva Nombre de la parada que se agregará como un nuevo vértice
+     * @param paradaNueva Nombre de la parada que se agregar&aacute; como un nuevo v&eacute;rtice
      */
     
     public void insertarVertice(String paradaNueva){
@@ -92,10 +94,10 @@ public class GrafoLA {
     }
     
     /**
-     * Devuelve el índice de una parada específica en el grafo.
+     * Devuelve el &iacute;ndice de una parada espec&iacute;fica en el grafo.
      *
      * @param parada Nombre de la parada a buscar
-     * @return Índice de la parada en el arreglo o -1 si no se encuentra
+     * @return &iacute;ndice de la parada en el arreglo o -1 si no se encuentra
      */
     
     public int obtenerIndice(String parada){
@@ -124,7 +126,7 @@ public class GrafoLA {
         
     }
     /**
-     * Elimina todas las aristas y vértices del grafo, dejándolo vacío.
+     * Elimina todas las aristas y v&eacute;rtices del grafo, dej&aacute;ndolo vac&iacute;o.
      */
     public void eliminarGrafo(){
         for (int i =0; i < numVertices; i++){
@@ -133,10 +135,10 @@ public class GrafoLA {
         this.setNumVertices(0);
     }
     /**
-     * Verifica si existe una arista entre dos vértices dados por sus índices.
+     * Verifica si existe una arista entre dos v&eacute;rtices dados por sus &iacute;ndices.
      *
-     * @param v Índice del primer vértice
-     * @param i Índice del segundo vértice
+     * @param v &iacute;ndice del primer v&eacute;rtice
+     * @param i &iacute;ndice del segundo v&eacute;rtice
      * @return true si existe la arista, false en caso contrario
      */
     public boolean existeArista(int v, int i){
@@ -146,10 +148,10 @@ public class GrafoLA {
     }
     
    /**
-     * Realiza un recorrido en profundidad (DFS) recursivo desde un vértice dado.
+     * Realiza un recorrido en profundidad (DFS) recursivo desde un v&eacute;rtice dado.
      *
-     * @param v Índice del vértice inicial
-     * @param visitados Arreglo de booleanos para rastrear los vértices visitados
+     * @param v &iacute;ndice del v&eacute;rtice inicial
+     * @param visitados Arreglo de booleanos para rastrear los v&eacute;rtices visitados
      */
     public void recorrerProfundidad (int v, boolean [ ] visitados) {
         //se marca el vértice v como visitado
@@ -218,9 +220,9 @@ public class GrafoLA {
         }
     }
     /**
-     * Obtiene una lista de las paradas adyacentes a una parada específica.
+     * Obtiene una lista de las paradas adyacentes a una parada espec&iacute;fica.
      *
-     * @param parada Nombre de la parada para la cual se obtendrán las adyacencias
+     * @param parada Nombre de la parada para la cual se obtendr&aacute;n las adyacencias
      * @return Lista de paradas adyacentes a la parada especificada
      */
     public Lista obtenerAdyacentes(String parada) {
@@ -228,11 +230,11 @@ public class GrafoLA {
     if (indice != -1) {
         return listaAdy[indice];  // Retorna la lista de adyacencias de la parada encontrada
     }
-    return new Lista();  // Retorna una lista vacía si no se encuentra la parada
+    return new Lista();  // Retorna una lista vac&iacute;a si no se encuentra la parada
 }
     
     /**
-     * Obtiene una lista de todas las paradas (vértices) en el grafo.
+     * Obtiene una lista de todas las paradas (v&eacute;rtices) en el grafo.
      *
      * @return Lista con todas las paradas en el grafo
      */

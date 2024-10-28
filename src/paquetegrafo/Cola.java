@@ -5,6 +5,8 @@
 package paquetegrafo;
 
 /**
+ * Representa una cola que almacena elementos de tipo String.
+ * Esta implementaci&oacute;n utiliza nodos enlazados para gestionar los elementos de la cola.
  *
  * @author Adrian
  */
@@ -13,6 +15,9 @@ public class Cola {
     private Nodo ultimo;
     private int iN;
     
+        /**
+     * Constructor por defecto que crea una cola vacía.
+     */
     public Cola() {
         inicio = null;
         ultimo = null;
@@ -22,42 +27,48 @@ public class Cola {
     //----------getters y setters---------
     
     /**
-     * @return the inicio
+     * Devuelve el nodo al inicio de la cola.
+     * @return El primer nodo de la cola.
      */
     public Nodo getInicio() {
         return inicio;
     }
 
     /**
-     * @param inicio the inicio to set
+     * Establece el nodo al inicio de la cola.
+     * @param inicio El nuevo nodo inicial.
      */
     public void setInicio(Nodo inicio) {
         this.inicio = inicio;
     }
 
     /**
-     * @return the ultimo
+     * Devuelve el &uacute;ltimo nodo de la cola.
+     * @return El &uacute;ltimo nodo de la cola.
      */
     public Nodo getUltimo() {
         return ultimo;
     }
 
     /**
-     * @param ultimo the ultimo to set
+     * Establece el &uacute;ltimo nodo de la cola.
+     * @param ultimo El nuevo &uacute;ltimo nodo.
      */
     public void setUltimo(Nodo ultimo) {
         this.ultimo = ultimo;
     }
 
     /**
-     * @return the iN
+     * Devuelve el n&uacute;mero de elementos en la cola.
+     * @return El tamano de la cola.
      */
     public int getiN() {
         return iN;
     }
 
     /**
-     * @param iN the iN to set
+     * Establece el n&uacute;mero de elementos en la cola.
+     * @param iN El nuevo tamano de la cola.
      */
     public void setiN(int iN) {
         this.iN = iN;
@@ -65,6 +76,9 @@ public class Cola {
     
     
     //----------primitivas----------
+    /**
+     * Elimina todos los elementos de la cola.
+     */
     public void destruirCola(){
         Nodo temporal; // No se usa a proposito para que el recolector de basura de Java lo borre
         while (inicio != null) {
@@ -73,6 +87,10 @@ public class Cola {
         }
     }
     
+    /**
+     * Agrega un nuevo elemento al final de la cola.
+     * @param x El elemento a agregar.
+     */
     public void encolar(String x){
         Nodo nuevoNodo = new Nodo(x);
 
@@ -86,10 +104,19 @@ public class Cola {
         iN++;
     }  
     
+    /**
+     * Verifica si la cola est&aacute; vac&iacute;a.
+     * @return `true` si la cola está vacía, `false` en caso contrario.
+     */
     public boolean estaVacia(){
         return iN == 0;
     }
     
+    /**
+     * Elimina y devuelve el elemento al frente de la cola.
+     * @return El elemento eliminado.
+     * @throws RuntimeException si la cola est&aacute; vac&iacute;a.
+     */
     public String desencolar() {
         if (estaVacia()) {
             throw new RuntimeException("La cola está vacía");
