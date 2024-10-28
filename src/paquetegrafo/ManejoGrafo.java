@@ -8,7 +8,6 @@ import org.graphstream.graph.implementations.SingleGraph;
 import org.graphstream.graph.*;
 
 
-
 /**
  *
  * Esta es la clase utilizada para el manejo del grafo que se est&eacute; trabajando
@@ -41,68 +40,69 @@ public class ManejoGrafo {
      * @param grafo El grafo al que se aplicar&aacute;n los estilos.
      * @param sucursales Un arreglo con los nombres de las sucursales.
      */    
- public void crearGrafoConEstilos(GrafoLA grafo, String[] sucursales) {
-    // Recorrer nodos existentes y aplicar estilos
-    for (int i = 0; i < grafo.getNumVertices(); i++) {
-        String estacion = grafo.getListaVertices()[i].getInicio().getInfo();
-        
-        // Verifica si el nodo ya existe antes de aplicar el estilo
-        if (ventanaGrafo.getNode(estacion) != null) {
-            // Aplica el estilo según si es una sucursal o no
-            if (contiene(sucursales, estacion)) {
-                ventanaGrafo.getNode(estacion).setAttribute("ui.class", "sucursal");
-            } else {
-                ventanaGrafo.getNode(estacion).setAttribute("ui.class", "normal");
+    public void crearGrafoConEstilos(GrafoLA grafo, String[] sucursales) {
+        // Recorrer nodos existentes y aplicar estilos
+        for (int i = 0; i < grafo.getNumVertices(); i++) {
+            String estacion = grafo.getListaVertices()[i].getInicio().getInfo();
+
+            // Verifica si el nodo ya existe antes de aplicar el estilo
+            if (ventanaGrafo.getNode(estacion) != null) {
+                // Aplica el estilo según si es una sucursal o no
+                if (contiene(sucursales, estacion)) {
+                    ventanaGrafo.getNode(estacion).setAttribute("ui.class", "sucursal");
+                } else {
+                    ventanaGrafo.getNode(estacion).setAttribute("ui.class", "normal");
+                }
             }
         }
-    }
 
     // Importante!! Aqui se debe indicar la ruta del archivo con los estilos
     ventanaGrafo.setAttribute("ui.stylesheet", "url('file:///C:/Users/luisf/OneDrive/Documents/NetBeansProjects/Cobertura-Sucursales/resources/estilos.css')");
-}
-
-// Método auxiliar para verificar si una estación está en el arreglo
- /**
- * Verifica si un arreglo de estaciones contiene una estacion en espec&iacute;fico.
- *
- * Este m&eacute;todo realiza una b&uacute;squeda lineal en el arreglo para determinar si la sucursal proporcionada 
- * se encuentra entre los elementos del arreglo.
- *
- * @param estacionesConSucursal El arreglo de sucursales a buscar.
- * @param estacion La sucursal a buscar dentro del arreglo.
- * @return `true` si la sucursal se encuentra en el arreglo, `false` en caso contrario.
- */
-private boolean contiene(String[] estacionesConSucursal, String estacion) {
-    for (String sucursal : estacionesConSucursal) {
-        if (estacion.equals(sucursal)) {
-            return true;
-        }
     }
-    return false;
-}
-/**
- * Muestra el grafo en una ventana utilizando la biblioteca GraphStream.
- *
- */
+
+    // Método auxiliar para verificar si una estación está en el arreglo
+     /**
+     * Verifica si un arreglo de estaciones contiene una estacion en espec&iacute;fico.
+     *
+     * Este m&eacute;todo realiza una b&uacute;squeda lineal en el arreglo para determinar si la sucursal proporcionada 
+     * se encuentra entre los elementos del arreglo.
+     *
+     * @param estacionesConSucursal El arreglo de sucursales a buscar.
+     * @param estacion La sucursal a buscar dentro del arreglo.
+     * @return `true` si la sucursal se encuentra en el arreglo, `false` en caso contrario.
+     */
+    private boolean contiene(String[] estacionesConSucursal, String estacion) {
+        for (String sucursal : estacionesConSucursal) {
+            if (estacion.equals(sucursal)) {
+                return true;
+            }
+        }
+        return false;
+    }
+    
+    /**
+     * Muestra el grafo en una ventana utilizando la biblioteca GraphStream.
+     *
+     */
     public void mostrarGrafo() {
         System.setProperty("org.graphstream.ui", "swing");
         ventanaGrafo.display();
     }
-/**
- * Obtiene una referencia al grafo interno.
- *
- * Si el grafo no ha sido creado, se imprime un mensaje y se retorna null.
- *
- * @return Una referencia al grafo, o null si no ha sido creado.
- */    
+    /**
+     * Obtiene una referencia al grafo interno.
+     *
+     * Si el grafo no ha sido creado, se imprime un mensaje y se retorna null.
+     *
+     * @return Una referencia al grafo, o null si no ha sido creado.
+     */    
     public GrafoLA getGrafo() {
-    if (grafo == null) {
-        // Puedes retornar una nueva instancia vacía o lanzar una excepción
-        System.out.println("El grafo no ha sido cargado.");
-        
+        if (grafo == null) {
+            // Puedes retornar una nueva instancia vacía o lanzar una excepción
+            System.out.println("El grafo no ha sido cargado.");
+
+        }
+        return grafo;
     }
-    return grafo;
-}
     /**
     * Obtiene el valor actual del limite de profundidad de la busqueda.
     *
@@ -119,8 +119,8 @@ private boolean contiene(String[] estacionesConSucursal, String estacion) {
     * @param nuevoT El nuevo valor para t.
     */
     public void establecerT(int nuevoT) {
-    this.t = nuevoT;
-}
+        this.t = nuevoT;
+    }
     
     /**
     * Obtiene una lista con las sucursales iniciales configuradas.
@@ -130,14 +130,14 @@ private boolean contiene(String[] estacionesConSucursal, String estacion) {
     * @return Una lista con las sucursales iniciales.
     */
     public Lista obtenerSucursalesIniciales() {
-    Lista sucursalesList = new Lista();
-    for (String sucursal : sucursales) {
-        if (sucursal != null) {
-            sucursalesList.insertarUltimo(sucursal);
+        Lista sucursalesList = new Lista();
+        for (String sucursal : sucursales) {
+            if (sucursal != null) {
+                sucursalesList.insertarUltimo(sucursal);
+            }
         }
-    }
     return sucursalesList;
-}
+    }
        
     // Método para agregar una parada al grafo
     /**
@@ -213,39 +213,39 @@ private boolean contiene(String[] estacionesConSucursal, String estacion) {
         return (estacion2+":"+estacion1);
     }
     
-/**
- * Coloca una sucursal en una parada especifica.
- *
- * Verifica si la parada existe y si ya hay una sucursal en ella. Actualiza el arreglo de sucursales y la visualizacion.
- *
- * @param parada El nombre de la parada donde se colocara la sucursal.
- */    
-public void colocarSucursal(String parada) {
-    // Verificar si ya existe una sucursal en la parada
-    for (int i = 0; i < sucursales.length; i++) {
-        if (parada.equals(sucursales[i])) {
-            System.out.println("Ya existe una sucursal en la parada: " + parada);
-            return; // Sale del método si la sucursal ya existe
-        }
-    }
-
-    // Continuar si no hay sucursal en la parada
-    if (numSucursales < sucursales.length && grafo.obtenerIndice(parada) != -1) {
+    /**
+     * Coloca una sucursal en una parada especifica.
+     *
+     * Verifica si la parada existe y si ya hay una sucursal en ella. Actualiza el arreglo de sucursales y la visualizacion.
+     *
+     * @param parada El nombre de la parada donde se colocara la sucursal.
+     */    
+    public void colocarSucursal(String parada) {
+        // Verificar si ya existe una sucursal en la parada
         for (int i = 0; i < sucursales.length; i++) {
-            if (sucursales[i] == null) {
-                sucursales[i] = parada;
-                Node nodoSucursal = ventanaGrafo.getNode(parada);
-                nodoSucursal.setAttribute("ui.class", "sucursal");
-                numSucursales++;
-                System.out.println("Sucursal colocada en la parada: " + parada);
-                crearGrafoConEstilos(grafo,sucursales);
-                break;
+            if (parada.equals(sucursales[i])) {
+                System.out.println("Ya existe una sucursal en la parada: " + parada);
+                return; // Sale del método si la sucursal ya existe
             }
         }
-    } else {
-        System.out.println("No se puede colocar sucursal en " + parada + ". Verifica si la parada existe o si se alcanzó el límite de sucursales.");
+
+        // Continuar si no hay sucursal en la parada
+        if (numSucursales < sucursales.length && grafo.obtenerIndice(parada) != -1) {
+            for (int i = 0; i < sucursales.length; i++) {
+                if (sucursales[i] == null) {
+                    sucursales[i] = parada;
+                    Node nodoSucursal = ventanaGrafo.getNode(parada);
+                    nodoSucursal.setAttribute("ui.class", "sucursal");
+                    numSucursales++;
+                    System.out.println("Sucursal colocada en la parada: " + parada);
+                    crearGrafoConEstilos(grafo,sucursales);
+                    break;
+                }
+            }
+        } else {
+            System.out.println("No se puede colocar sucursal en " + parada + ". Verifica si la parada existe o si se alcanzó el límite de sucursales.");
+        }
     }
-}
     
 // Des-seleccionar sucursal
 /**

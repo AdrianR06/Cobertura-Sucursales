@@ -46,8 +46,9 @@ public class Lista {
      * Establece el nodo inicial de la lista.
      * @param inicio El nuevo nodo inicial.
      */
-    public void setInicio(Nodo inicio) {
-        this.inicio = inicio;
+    public void setInicio(String inicio) {
+        
+        this.inicio = new Nodo(inicio);
     }
     
     /**

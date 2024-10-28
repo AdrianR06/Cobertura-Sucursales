@@ -12,9 +12,9 @@ import javax.swing.JOptionPane;
 
 public class Ventana2 extends javax.swing.JFrame {
     private ManejoGrafo grafos;
-    private GrafoLA grapho;
-
     private JSON json;
+    private Lista nuevaLinea;
+    private StringBuilder resultado = new StringBuilder();
     /**
      * Creates new form Interfaz
      */
@@ -23,24 +23,30 @@ public class Ventana2 extends javax.swing.JFrame {
         // Inicialmente, desactiva los componentes que dependen del grafo
         comboBoxEstaciones.setEnabled(false);
         sucursalComboBox.setEnabled(false);
-
+        primeraParada.setEnabled(false);
+        siguienteParada.setEnabled(false);
+        borrarLínea.setEnabled(false);
+        conectarButton.setEnabled(false);
     }
-    
-    
+
     
     /**
      * Método para configurar el grafo después de cargar el archivo.
      */
-    public void configurarGrafo(ManejoGrafo grafos) {
-        this.grafos = grafos;
-        this.grapho = grafos.getGrafo();
+    public void configurarGrafo() {
 
-        if (this.grapho != null) {
+        if (this.grafos.grafo != null) {
             // Activa y actualiza los ComboBoxes ahora que el grafo está cargado
+            
             comboBoxEstaciones.setEnabled(true);
             sucursalComboBox.setEnabled(true);
+            primeraParada.setEnabled(true);
             actualizarComboBoxEstaciones();
-            actualizarComboBoxSucursales();
+            primeraParada.addItem("Seleccionar...");
+            primeraParada.setSelectedItem("Seleccionar...");
+            siguienteParada.addItem("Seleccionar...");
+            siguienteParada.setSelectedItem("Seleccionar...");
+            configurarLinea(true);
         } else {
             System.out.println("El grafo aún no está cargado.");
         }
@@ -49,86 +55,118 @@ public class Ventana2 extends javax.swing.JFrame {
 
     
     public void setGrafo(ManejoGrafo grafos) {
-    this.grafos = grafos;
+        this.grafos = grafos;
     }
      public void setJson(JSON json) {
         this.json = json;
     }
      
     private void actualizarComboBoxSucursales() {
-    // Limpiar el JComboBox
-    sucursalComboBox.removeAllItems();
+        // Limpiar el JComboBox
+        sucursalComboBox.removeAllItems();
 
-    // Verificar si 'grafos' está inicializado
-    if (grafos == null) {
-        JOptionPane.showMessageDialog(this, "El objeto de ManejoGrafo no está inicializado.");
-        return; // Sale del método si grafos es nulo
-    }
-
-    // Obtener las sucursales del manejo de grafo
-    String[] sucursalesActuales = grafos.obtenerSucursales();
-
-    // Comprobar si hay sucursales antes de añadir
-    if (sucursalesActuales != null && sucursalesActuales.length > 0) {
-        for (String sucursal : sucursalesActuales) {
-            sucursalComboBox.addItem(sucursal);
+        // Verificar si 'grafos' está inicializado
+        if (grafos == null) {
+            JOptionPane.showMessageDialog(this, "El objeto de ManejoGrafo no está inicializado.");
+            return; // Sale del método si grafos es nulo
         }
-    } else {
-        JOptionPane.showMessageDialog(this, "No hay sucursales disponibles.");
-    }
+
+        // Obtener las sucursales del manejo de grafo
+        String[] sucursalesActuales = grafos.obtenerSucursales();
+
+        // Comprobar si hay sucursales antes de añadir
+        if (sucursalesActuales != null && sucursalesActuales.length > 0) {
+            for (String sucursal : sucursalesActuales) {
+                sucursalComboBox.addItem(sucursal);
+            }
+        } else {
+            JOptionPane.showMessageDialog(this, "No hay sucursales disponibles.");
+        }
     
     }
     
     public void actualizarComboBoxEstaciones() {
-    if (grapho == null) {
-        System.out.println("No se puede actualizar el ComboBox de estaciones porque grapho es null.");
-        return;
-    }
-
-    Lista estaciones = grapho.obtenerTodasLasParadas();
-    
-    // Ordenar la lista de estaciones alfabéticamente
-    estaciones = ordenarListaAlfabeticamente(estaciones);
-    
-    cargarEstacionesEnComboBox(estaciones);
-}
-    // Método para ordenar la lista alfabéticamente
-private Lista ordenarListaAlfabeticamente(Lista estaciones) {
-    Nodo actual, siguiente;
-    String temp;
-    boolean intercambiado;
-
-    do {
-        intercambiado = false;
-        actual = estaciones.getInicio();
-
-        while (actual != null && actual.getSiguiente() != null) {
-            siguiente = actual.getSiguiente();
-
-            if (actual.getInfo().compareToIgnoreCase(siguiente.getInfo()) > 0) {
-                // Intercambiar los nombres de las estaciones
-                temp = actual.getInfo();
-                actual.setInfo(siguiente.getInfo());
-                siguiente.setInfo(temp);
-                intercambiado = true;
-            }
-
-            actual = siguiente;
+        if (this.grafos.grafo == null) {
+            System.out.println("No se puede actualizar el ComboBox de estaciones porque grafo es null.");
+            return;
         }
-    } while (intercambiado);
 
-    return estaciones;
-}
+        Lista estaciones = this.grafos.grafo.obtenerTodasLasParadas();
+
+        // Ordenar la lista de estaciones alfabéticamente
+        estaciones = ordenarListaAlfabeticamente(estaciones);
+
+        cargarEstacionesEnComboBox(estaciones);
+    }
+    // Método para ordenar la lista alfabéticamente
+    private Lista ordenarListaAlfabeticamente(Lista estaciones) {
+        Nodo actual, siguiente;
+        String temp;
+        boolean intercambiado;
+
+        do {
+            intercambiado = false;
+            actual = estaciones.getInicio();
+
+            while (actual != null && actual.getSiguiente() != null) {
+                siguiente = actual.getSiguiente();
+
+                if (actual.getInfo().compareToIgnoreCase(siguiente.getInfo()) > 0) {
+                    // Intercambiar los nombres de las estaciones
+                    temp = actual.getInfo();
+                    actual.setInfo(siguiente.getInfo());
+                    siguiente.setInfo(temp);
+                    intercambiado = true;
+                }
+
+                actual = siguiente;
+            }
+        } while (intercambiado);
+
+        return estaciones;
+    }
     
     public void cargarEstacionesEnComboBox(Lista estaciones) {
         comboBoxEstaciones.removeAllItems(); // Elimina elementos previos en caso de recarga
+        primeraParada.removeAllItems();
+        siguienteParada.removeAllItems();
+        
         Nodo nodo = estaciones.getInicio(); // Accedemos a la primera estación
         while (nodo != null) { // Recorre la lista de estaciones
             comboBoxEstaciones.addItem(nodo.getInfo()); // Agrega cada estación al ComboBox
+            primeraParada.addItem(nodo.getInfo());
+            siguienteParada.addItem(nodo.getInfo());
             nodo = nodo.getSiguiente();
         }
-}
+    }
+    
+    public void configurarLinea(boolean verificacion) {
+        if (primeraParada.getSelectedItem() != null && siguienteParada.getSelectedItem() != null){
+            if (primeraParada.getSelectedItem().toString().equals("Seleccionar...")) {
+                this.primeraParada.setEnabled(true);
+                this.siguienteParada.setEnabled(false);
+                this.conectarButton.setEnabled(false);
+                this.borrarLínea.setEnabled(false);
 
+            } else if ( siguienteParada.getSelectedItem().toString().equals("Seleccionar...") ) {
+                this.siguienteParada.setEnabled(true);
+                this.conectarButton.setEnabled(false);
+                this.borrarLínea.setEnabled(false);   
+            } else {
+                this.primeraParada.setEnabled(false);
+                this.conectarButton.setEnabled(true);
+                this.borrarLínea.setEnabled(true);
+            }
+        }
+        if (verificacion == true) configurarLinea(!verificacion);
+    }
+    
+    private void actualizarOpcionesNuevaLinea() {
+
+        primeraParada.addItem(nombreNuevaParada.getText());
+        siguienteParada.addItem(nombreNuevaParada.getText());
+    }
+    
     // Otros métodos de Ventana2
 
 
@@ -142,17 +180,16 @@ private Lista ordenarListaAlfabeticamente(Lista estaciones) {
     private void initComponents() {
 
         jLabel3 = new javax.swing.JLabel();
+        jTabbedPane1 = new javax.swing.JTabbedPane();
         jPanel1 = new javax.swing.JPanel();
         ValorT = new javax.swing.JTextField();
         CambiarValorT = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
-        AgregarLinea = new javax.swing.JButton();
         jLabel4 = new javax.swing.JLabel();
         ColocarSucursal = new javax.swing.JButton();
         RevisarCoberturaTotal = new javax.swing.JButton();
         MostrarGrafo = new javax.swing.JButton();
         RevisarCoberturaSucursal1 = new javax.swing.JButton();
-        Exit2 = new javax.swing.JButton();
         sucursalComboBox = new javax.swing.JComboBox<>();
         jLabel1 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
@@ -165,6 +202,19 @@ private Lista ordenarListaAlfabeticamente(Lista estaciones) {
         jTextArea = new javax.swing.JTextArea();
         jLabel5 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
+        PanelNuevaLinea = new javax.swing.JPanel();
+        conectarButton = new javax.swing.JButton();
+        primeraParada = new javax.swing.JComboBox<>();
+        jLabel7 = new javax.swing.JLabel();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        ResultadoTextArea1 = new javax.swing.JTextArea();
+        jLabel9 = new javax.swing.JLabel();
+        siguienteParada = new javax.swing.JComboBox<>();
+        borrarLínea = new javax.swing.JButton();
+        jLabel10 = new javax.swing.JLabel();
+        nombreNuevaParada = new javax.swing.JTextField();
+        agregarParadaButton = new javax.swing.JButton();
+        agregarLinea = new javax.swing.JButton();
 
         jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/metroAnimado3.jpg"))); // NOI18N
 
@@ -172,8 +222,7 @@ private Lista ordenarListaAlfabeticamente(Lista estaciones) {
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(106, 93, -1, -1));
-        getContentPane().add(ValorT, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 100, 130, -1));
+        jPanel1.add(ValorT, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 100, 130, -1));
 
         CambiarValorT.setText("Cambiar valor de T");
         CambiarValorT.addActionListener(new java.awt.event.ActionListener() {
@@ -181,21 +230,13 @@ private Lista ordenarListaAlfabeticamente(Lista estaciones) {
                 CambiarValorTActionPerformed(evt);
             }
         });
-        getContentPane().add(CambiarValorT, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 100, -1, -1));
+        jPanel1.add(CambiarValorT, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 100, -1, -1));
 
         jLabel2.setText("Indique el valor de t:");
-        getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 100, -1, -1));
-
-        AgregarLinea.setText("Agregar línea");
-        AgregarLinea.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                AgregarLineaActionPerformed(evt);
-            }
-        });
-        getContentPane().add(AgregarLinea, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 40, -1, -1));
+        jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 100, -1, -1));
 
         jLabel4.setText("Ubicacion Sucursal");
-        getContentPane().add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 160, 100, 20));
+        jPanel1.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 160, 100, 20));
 
         ColocarSucursal.setText("Colocar Sucursal");
         ColocarSucursal.addActionListener(new java.awt.event.ActionListener() {
@@ -203,7 +244,7 @@ private Lista ordenarListaAlfabeticamente(Lista estaciones) {
                 ColocarSucursalActionPerformed(evt);
             }
         });
-        getContentPane().add(ColocarSucursal, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 180, -1, -1));
+        jPanel1.add(ColocarSucursal, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 180, -1, -1));
 
         RevisarCoberturaTotal.setText("Revisar cobertura total");
         RevisarCoberturaTotal.addActionListener(new java.awt.event.ActionListener() {
@@ -211,7 +252,7 @@ private Lista ordenarListaAlfabeticamente(Lista estaciones) {
                 RevisarCoberturaTotalActionPerformed(evt);
             }
         });
-        getContentPane().add(RevisarCoberturaTotal, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 490, -1, -1));
+        jPanel1.add(RevisarCoberturaTotal, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 480, -1, -1));
 
         MostrarGrafo.setText("Mostrar Red de Transporte");
         MostrarGrafo.addActionListener(new java.awt.event.ActionListener() {
@@ -219,7 +260,7 @@ private Lista ordenarListaAlfabeticamente(Lista estaciones) {
                 MostrarGrafoActionPerformed(evt);
             }
         });
-        getContentPane().add(MostrarGrafo, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 40, -1, -1));
+        jPanel1.add(MostrarGrafo, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 40, -1, -1));
 
         RevisarCoberturaSucursal1.setText("Revisar cobertura");
         RevisarCoberturaSucursal1.addActionListener(new java.awt.event.ActionListener() {
@@ -227,30 +268,22 @@ private Lista ordenarListaAlfabeticamente(Lista estaciones) {
                 RevisarCoberturaSucursal1ActionPerformed(evt);
             }
         });
-        getContentPane().add(RevisarCoberturaSucursal1, new org.netbeans.lib.awtextra.AbsoluteConstraints(440, 320, -1, -1));
-
-        Exit2.setText("X");
-        Exit2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                Exit2ActionPerformed(evt);
-            }
-        });
-        getContentPane().add(Exit2, new org.netbeans.lib.awtextra.AbsoluteConstraints(650, 10, -1, -1));
+        jPanel1.add(RevisarCoberturaSucursal1, new org.netbeans.lib.awtextra.AbsoluteConstraints(440, 320, -1, -1));
 
         sucursalComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        getContentPane().add(sucursalComboBox, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 240, 160, -1));
+        jPanel1.add(sucursalComboBox, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 240, 160, -1));
 
         jLabel1.setText("Tipo de Busqueda");
-        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(580, 300, -1, -1));
+        jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(580, 300, -1, -1));
 
         jLabel6.setText("Sucursal");
-        getContentPane().add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 220, -1, 20));
+        jPanel1.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 220, -1, 20));
 
         ResultadoTextArea.setColumns(20);
         ResultadoTextArea.setRows(5);
         jScrollPane1.setViewportView(ResultadoTextArea);
 
-        getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 210, 400, -1));
+        jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 210, 400, -1));
 
         tipoBusqueda.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "DFS", "BFS" }));
         tipoBusqueda.addContainerListener(new java.awt.event.ContainerAdapter() {
@@ -258,7 +291,7 @@ private Lista ordenarListaAlfabeticamente(Lista estaciones) {
                 tipoBusquedaComponentRemoved(evt);
             }
         });
-        getContentPane().add(tipoBusqueda, new org.netbeans.lib.awtextra.AbsoluteConstraints(580, 320, -1, -1));
+        jPanel1.add(tipoBusqueda, new org.netbeans.lib.awtextra.AbsoluteConstraints(580, 320, -1, -1));
 
         comboBoxEstaciones.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
         comboBoxEstaciones.addActionListener(new java.awt.event.ActionListener() {
@@ -266,7 +299,7 @@ private Lista ordenarListaAlfabeticamente(Lista estaciones) {
                 comboBoxEstacionesActionPerformed(evt);
             }
         });
-        getContentPane().add(comboBoxEstaciones, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 180, 160, -1));
+        jPanel1.add(comboBoxEstaciones, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 180, 160, -1));
 
         EliminarSucursal.setText("Eliminar Sucursal");
         EliminarSucursal.addActionListener(new java.awt.event.ActionListener() {
@@ -274,81 +307,145 @@ private Lista ordenarListaAlfabeticamente(Lista estaciones) {
                 EliminarSucursalActionPerformed(evt);
             }
         });
-        getContentPane().add(EliminarSucursal, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 320, -1, -1));
+        jPanel1.add(EliminarSucursal, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 320, -1, -1));
 
         jTextArea.setColumns(20);
         jTextArea.setRows(5);
         jScrollPane2.setViewportView(jTextArea);
 
-        getContentPane().add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 380, 400, -1));
+        jPanel1.add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 380, 400, -1));
 
         jLabel5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/metroAnimado.png"))); // NOI18N
-        getContentPane().add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 0, 230, 310));
+        jPanel1.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 0, 230, 310));
 
         jLabel8.setFont(new java.awt.Font("Segoe UI Black", 0, 14)); // NOI18N
         jLabel8.setText("¡¡BIENVENIDO!! GESTIONE SUS SUCURSALES");
-        getContentPane().add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 10, 370, -1));
+        jPanel1.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 10, 370, -1));
+
+        jTabbedPane1.addTab("Sucursales", jPanel1);
+
+        PanelNuevaLinea.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        conectarButton.setText("Conectar");
+        conectarButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                conectarButtonActionPerformed(evt);
+            }
+        });
+        PanelNuevaLinea.add(conectarButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 290, -1, -1));
+
+        primeraParada.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        primeraParada.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                primeraParadaActionPerformed(evt);
+            }
+        });
+        PanelNuevaLinea.add(primeraParada, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 170, 100, -1));
+
+        jLabel7.setText("Primera parada");
+        PanelNuevaLinea.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 150, 100, 20));
+
+        ResultadoTextArea1.setColumns(20);
+        ResultadoTextArea1.setRows(5);
+        jScrollPane3.setViewportView(ResultadoTextArea1);
+
+        PanelNuevaLinea.add(jScrollPane3, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 150, 400, 210));
+
+        jLabel9.setText("Siguiente Parada");
+        PanelNuevaLinea.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 220, 100, 20));
+
+        siguienteParada.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        siguienteParada.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                siguienteParadaActionPerformed(evt);
+            }
+        });
+        PanelNuevaLinea.add(siguienteParada, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 240, 100, -1));
+
+        borrarLínea.setText("Borrar línea");
+        borrarLínea.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                borrarLíneaActionPerformed(evt);
+            }
+        });
+        PanelNuevaLinea.add(borrarLínea, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 380, -1, -1));
+
+        jLabel10.setText("Crear nueva parada:");
+        PanelNuevaLinea.add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 80, -1, -1));
+        PanelNuevaLinea.add(nombreNuevaParada, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 80, 130, -1));
+
+        agregarParadaButton.setText("Agregar");
+        agregarParadaButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                agregarParadaButtonActionPerformed(evt);
+            }
+        });
+        PanelNuevaLinea.add(agregarParadaButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 80, -1, -1));
+
+        agregarLinea.setText("Agregar línea");
+        agregarLinea.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                agregarLineaActionPerformed(evt);
+            }
+        });
+        PanelNuevaLinea.add(agregarLinea, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 380, -1, -1));
+
+        jTabbedPane1.addTab("Agregar Línea", PanelNuevaLinea);
+
+        getContentPane().add(jTabbedPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 690, 560));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void CambiarValorTActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CambiarValorTActionPerformed
-        // TODO add your handling code here:
-        
+    
         // Obtener el valor del campo de texto ValorT y eliminar espacios en blanco
-    String textoValorT = ValorT.getText().trim();
+        String textoValorT = ValorT.getText().trim();
 
-    // Verificar si el campo está vacío
-    if (textoValorT.isEmpty()) {
-        JOptionPane.showMessageDialog(this, "Por favor, ingresa un valor para T.", "Advertencia", JOptionPane.WARNING_MESSAGE);
-        return; // Sale del método si el campo está vacío
-    }
+        // Verificar si el campo está vacío
+        if (textoValorT.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Por favor, ingresa un valor para T.", "Advertencia", JOptionPane.WARNING_MESSAGE);
+            return; // Sale del método si el campo está vacío
+        }
 
-    int nuevoT;
-    try {
-        // Intentar convertir el texto a un número entero
-        nuevoT = Integer.parseInt(textoValorT);
-    } catch (NumberFormatException e) {
-        // Si la conversión falla, mostrar un mensaje de error y salir del método
-        JOptionPane.showMessageDialog(this, "Por favor, ingresa un número válido para T.", "Error", JOptionPane.ERROR_MESSAGE);
-        return;
-    }
+        int nuevoT;
+        try {
+            // Intentar convertir el texto a un número entero
+            nuevoT = Integer.parseInt(textoValorT);
+        } catch (NumberFormatException e) {
+            // Si la conversión falla, mostrar un mensaje de error y salir del método
+            JOptionPane.showMessageDialog(this, "Por favor, ingresa un número válido para T.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
 
-    // Llamar al método establecerT para asignar el valor en el grafo
-    grafos.establecerT(nuevoT);
-    JOptionPane.showMessageDialog(this, "El valor de T se ha actualizado a " + nuevoT, "Éxito", JOptionPane.INFORMATION_MESSAGE);
+        // Llamar al método establecerT para asignar el valor en el grafo
+        grafos.establecerT(nuevoT);
+        JOptionPane.showMessageDialog(this, "El valor de T se ha actualizado a " + nuevoT, "Éxito", JOptionPane.INFORMATION_MESSAGE);
 
-        
+ 
     }//GEN-LAST:event_CambiarValorTActionPerformed
-
-    private void AgregarLineaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AgregarLineaActionPerformed
-       
-        
-    }//GEN-LAST:event_AgregarLineaActionPerformed
 
     private void ColocarSucursalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ColocarSucursalActionPerformed
         // Verifica si el objeto grafos es null
-    if (grafos == null) {
-        System.out.println("El grafo no ha sido cargado. Por favor, carga el archivo primero.");
-        return; // Sale del método si el grafo es null
-    }
+        if (grafos == null) {
+            System.out.println("El grafo no ha sido cargado. Por favor, carga el archivo primero.");
+            return; // Sale del método si el grafo es null
+        }
 
-    
-    String paradaSeleccionada = (String) comboBoxEstaciones.getSelectedItem();
+        // Suponiendo que tienes un JComboBox llamado comboBoxEstaciones
+        String paradaSeleccionada = (String) comboBoxEstaciones.getSelectedItem();
 
-    // Llama al método que coloca la sucursal
-    if (paradaSeleccionada != null) {
-        grafos.colocarSucursal(paradaSeleccionada);
-        System.out.println("Sucursal colocada en la parada: " + paradaSeleccionada);
-        
-        // Actualiza el ComboBox para reflejar los cambios
-        actualizarComboBoxEstaciones();
-        actualizarComboBoxSucursales(); // También actualiza el ComboBox de sucursales si es necesario
-    } else {
-        System.out.println("Por favor, selecciona una parada válida.");
-    }
+        // Llama al método que coloca la sucursal
+        if (paradaSeleccionada != null) {
+            grafos.colocarSucursal(paradaSeleccionada);
+            System.out.println("Sucursal colocada en la parada: " + paradaSeleccionada);
 
-
+            // Actualiza el ComboBox para reflejar los cambios
+            actualizarComboBoxEstaciones();
+            actualizarComboBoxSucursales(); // También actualiza el ComboBox de sucursales si es necesario
+        } else {
+            System.out.println("Por favor, selecciona una parada válida.");
+        }
 
         
     }//GEN-LAST:event_ColocarSucursalActionPerformed
@@ -380,66 +477,62 @@ private Lista ordenarListaAlfabeticamente(Lista estaciones) {
     
     String sucursalSeleccionada = (String) sucursalComboBox.getSelectedItem();
 
-if (sucursalSeleccionada != null) {
-    // Verificar si el campo de texto ValorT está vacío
-    String textoValorT = ValorT.getText().trim();
-    if (textoValorT.isEmpty()) {
-        JOptionPane.showMessageDialog(this, "Por favor, ingresa un valor para el límite de cobertura.");
-        return; // Sale del método si el campo está vacío
-    }
-
-    // Convertir el valor de texto a entero
-    int limiteCobertura;
-    try {
-        limiteCobertura = Integer.parseInt(textoValorT);
-    } catch (NumberFormatException e) {
-        JOptionPane.showMessageDialog(this, "Por favor, ingresa un número válido para el límite de cobertura.");
-        return; // Sale del método si el valor no es un número válido
-    }
-
-    // Establecer el valor de cobertura en la clase de manejo del grafo
-    grafos.establecerT(limiteCobertura);
-
-    // Llamar a la función para ver la cobertura usando DFS o BFS según lo seleccionado
-    Lista cobertura;
-    String metodoSeleccionado = (String) tipoBusqueda.getSelectedItem();
-    if (metodoSeleccionado.equals("DFS")) {
-        cobertura = grafos.verCoberturaDFS(sucursalSeleccionada);
-    } else {
-        cobertura = grafos.verCoberturaBFS(sucursalSeleccionada);
-    }
-
-    // Verificar si la lista de cobertura está vacía
-    if (cobertura == null || cobertura.getInicio() == null) {
-        JOptionPane.showMessageDialog(this, "No hay paradas alcanzables desde esta sucursal dentro del límite de cobertura.");
-        return; // Sale del método si no hay cobertura disponible
-    }
-
-    // Construir el resultado para mostrarlo en ResultadoTextArea
-    StringBuilder resultado = new StringBuilder("Paradas alcanzables desde " + sucursalSeleccionada + ":\n");
-    Nodo nodo = cobertura.getInicio();
-    while (nodo != null) {
-        // Agregar verificación adicional para asegurar que nodo tenga información
-        if (nodo.getInfo() != null) {
-            resultado.append(nodo.getInfo()).append("\n");
-        } else {
-            System.out.println("Nodo vacío encontrado."); // Mensaje de depuración
+    if (sucursalSeleccionada != null) {
+        // Verificar si el campo de texto ValorT está vacío
+        String textoValorT = ValorT.getText().trim();
+        if (textoValorT.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Por favor, ingresa un valor para el límite de cobertura.");
+            return; // Sale del método si el campo está vacío
         }
-        nodo = nodo.getSiguiente();
-    }
 
-    // Mostrar el resultado en el JTextArea
-    ResultadoTextArea.setText(resultado.toString());
-} else {
-    JOptionPane.showMessageDialog(this, "Por favor, selecciona una sucursal.");
-}                                           
+        // Convertir el valor de texto a entero
+        int limiteCobertura;
+        try {
+            limiteCobertura = Integer.parseInt(textoValorT);
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "Por favor, ingresa un número válido para el límite de cobertura.");
+            return; // Sale del método si el valor no es un número válido
+        }
+
+        // Establecer el valor de cobertura en la clase de manejo del grafo
+        grafos.establecerT(limiteCobertura);
+
+        // Llamar a la función para ver la cobertura usando DFS o BFS según lo seleccionado
+        Lista cobertura;
+        String metodoSeleccionado = (String) tipoBusqueda.getSelectedItem();
+        if (metodoSeleccionado.equals("DFS")) {
+            cobertura = grafos.verCoberturaDFS(sucursalSeleccionada);
+        } else {
+            cobertura = grafos.verCoberturaBFS(sucursalSeleccionada);
+        }
+
+        // Verificar si la lista de cobertura está vacía
+        if (cobertura == null || cobertura.getInicio() == null) {
+            JOptionPane.showMessageDialog(this, "No hay paradas alcanzables desde esta sucursal dentro del límite de cobertura.");
+            return; // Sale del método si no hay cobertura disponible
+        }
+
+        // Construir el resultado para mostrarlo en ResultadoTextArea
+        StringBuilder resultado = new StringBuilder("Paradas alcanzables desde " + sucursalSeleccionada + ":\n");
+        Nodo nodo = cobertura.getInicio();
+        while (nodo != null) {
+            // Agregar verificación adicional para asegurar que nodo tenga información
+            if (nodo.getInfo() != null) {
+                resultado.append(nodo.getInfo()).append("\n");
+            } else {
+                System.out.println("Nodo vacío encontrado."); // Mensaje de depuración
+            }
+            nodo = nodo.getSiguiente();
+        }
+
+        // Mostrar el resultado en el JTextArea
+        ResultadoTextArea.setText(resultado.toString());
+    } else {
+        JOptionPane.showMessageDialog(this, "Por favor, selecciona una sucursal.");
+    }                                           
    
 
     }//GEN-LAST:event_RevisarCoberturaSucursal1ActionPerformed
-
-    private void Exit2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Exit2ActionPerformed
-     this.dispose();
-    }//GEN-LAST:event_Exit2ActionPerformed
 
     private void MostrarGrafoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MostrarGrafoActionPerformed
         // TODO add your handling code here:
@@ -486,31 +579,113 @@ if (sucursalSeleccionada != null) {
         
     }//GEN-LAST:event_EliminarSucursalActionPerformed
 
+    private void conectarButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_conectarButtonActionPerformed
+        // Construir el resultado para mostrarlo en ResultadoTextArea
+        String primera = primeraParada.getSelectedItem().toString();
+        String siguiente = siguienteParada.getSelectedItem().toString();
+
+        configurarLinea(true);
+        if ( nuevaLinea == null ) {
+            nuevaLinea = new Lista(primera);
+
+            nuevaLinea.setInicio(primera);
+            resultado.append(primera+"\n");
+            nuevaLinea.insertarUltimo(siguiente);
+            resultado.append(siguiente+"\n");
+        } else {
+            nuevaLinea.insertarUltimo(siguiente);
+            resultado.append(siguiente+"\n");
+        }
+        // Mostrar el resultado en el JTextArea
+        ResultadoTextArea1.setText(resultado.toString());
+    }//GEN-LAST:event_conectarButtonActionPerformed
+
+    private void primeraParadaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_primeraParadaActionPerformed
+        configurarLinea(true);
+    }//GEN-LAST:event_primeraParadaActionPerformed
+
+    private void siguienteParadaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_siguienteParadaActionPerformed
+        configurarLinea(true);
+    }//GEN-LAST:event_siguienteParadaActionPerformed
+
+    private void borrarLíneaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_borrarLíneaActionPerformed
+        nuevaLinea = null;
+        ResultadoTextArea1.setText("");
+
+    }//GEN-LAST:event_borrarLíneaActionPerformed
+
+    private void agregarParadaButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_agregarParadaButtonActionPerformed
+        actualizarOpcionesNuevaLinea();
+    }//GEN-LAST:event_agregarParadaButtonActionPerformed
+
+    private void agregarLineaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_agregarLineaActionPerformed
+
+        String estacionAnterior = null;
+
+        for (int i = 0; i < nuevaLinea.getiN(); i++) {
+
+            // Asigna la cadena del nombre de la etacion a una variable parada para mayor legibilidad
+            String parada = nuevaLinea.getInicio().getInfo();
+            if (parada.startsWith("{")) { //Le quita las llaves al nombre de las transferencias
+                parada = parada.replace("{","");
+                parada = parada.replace("}","");
+            }
+
+            grafos.agregarParada(parada);
+
+            // Conectar con la estación anterior
+
+            if (estacionAnterior != null) {
+                if (!estacionAnterior.equals(parada)){
+                    grafos.agregarArista(estacionAnterior, parada);
+                }
+            }
+            estacionAnterior = parada;
+            if (nuevaLinea.getInicio().getSiguiente() != null){
+                nuevaLinea.setInicio(nuevaLinea.getInicio().getSiguiente().getInfo());
+            }
+        }
+        primeraParada.setSelectedItem("Seleccionar...");
+        siguienteParada.setSelectedItem("Seleccionar...");
+    }//GEN-LAST:event_agregarLineaActionPerformed
+
    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton AgregarLinea;
     private javax.swing.JButton CambiarValorT;
     private javax.swing.JButton ColocarSucursal;
     private javax.swing.JButton EliminarSucursal;
-    private javax.swing.JButton Exit2;
     private javax.swing.JButton MostrarGrafo;
+    private javax.swing.JPanel PanelNuevaLinea;
     private javax.swing.JTextArea ResultadoTextArea;
+    private javax.swing.JTextArea ResultadoTextArea1;
     private javax.swing.JButton RevisarCoberturaSucursal1;
     private javax.swing.JButton RevisarCoberturaTotal;
     private javax.swing.JTextField ValorT;
+    private javax.swing.JButton agregarLinea;
+    private javax.swing.JButton agregarParadaButton;
+    private javax.swing.JButton borrarLínea;
     private javax.swing.JComboBox<String> comboBoxEstaciones;
+    private javax.swing.JButton conectarButton;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JTextArea jTextArea;
+    private javax.swing.JTextField nombreNuevaParada;
+    private javax.swing.JComboBox<String> primeraParada;
+    private javax.swing.JComboBox<String> siguienteParada;
     private javax.swing.JComboBox<String> sucursalComboBox;
     private javax.swing.JComboBox<String> tipoBusqueda;
     // End of variables declaration//GEN-END:variables

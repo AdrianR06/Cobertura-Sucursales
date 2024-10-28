@@ -41,7 +41,6 @@ public class Ventana1 extends javax.swing.JFrame {
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
-        Exit = new javax.swing.JButton();
         Indicaciones = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         CargarRedDeTransporteJSON1 = new javax.swing.JButton();
@@ -52,14 +51,6 @@ public class Ventana1 extends javax.swing.JFrame {
 
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
         getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 60, -1, -1));
-
-        Exit.setText("X");
-        Exit.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                ExitActionPerformed(evt);
-            }
-        });
-        getContentPane().add(Exit, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 10, -1, -1));
 
         Indicaciones.setText("Indicaciones");
         Indicaciones.addActionListener(new java.awt.event.ActionListener() {
@@ -86,10 +77,6 @@ public class Ventana1 extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    private void ExitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ExitActionPerformed
-        System.exit(0);
-    }//GEN-LAST:event_ExitActionPerformed
 
     private void IndicacionesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_IndicacionesActionPerformed
          JOptionPane.showMessageDialog(null,"Bienvenido al sistema de cobertura de sucursales, para comenzar por favor cargue un archivo .JSON con la información referente a la red de transporte que desea utilizar");
@@ -120,7 +107,7 @@ if (resultado == JFileChooser.APPROVE_OPTION) {
         json.cargarDesdeJSON(grafos, ventana2);
 
         // Configurar el grafo en Ventana2 después de cargarlo
-        ventana2.configurarGrafo(grafos);
+        ventana2.configurarGrafo();
         
         // Pasar JSON a Ventana2 si es necesario
         ventana2.setJson(json);
@@ -174,7 +161,6 @@ if (resultado == JFileChooser.APPROVE_OPTION) {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton CargarRedDeTransporteJSON1;
-    private javax.swing.JButton Exit;
     private javax.swing.JButton Indicaciones;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
