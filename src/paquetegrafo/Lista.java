@@ -34,8 +34,9 @@ public class Lista {
     /**
      * @param inicio the inicio to set
      */
-    public void setInicio(Nodo inicio) {
-        this.inicio = inicio;
+    public void setInicio(String inicio) {
+        
+        this.inicio = new Nodo(inicio);
     }
     
     /**
@@ -60,8 +61,10 @@ public class Lista {
     
     public Nodo buscarUltimo(){
     Nodo aux = inicio;
-    if (getInicio()==null){
+    if ( inicio == null){
         return null;
+    }else if (inicio.getSiguiente() == null ){
+        return inicio;
     }
     while(aux.getSiguiente()!=null){
             aux=aux.getSiguiente();
@@ -75,13 +78,15 @@ public class Lista {
         Nodo nuevo = new Nodo(palabra); 
         if(ult == null){
            inicio = nuevo;
+        }else if (inicio == nuevo){
+            inicio = nuevo;
         }else{
             ult.setSiguiente(nuevo);
         }
         iN++;   
     }
     
-        public boolean seEncuentra(String palabra) {
+    public boolean seEncuentra(String palabra) {
         Nodo actual = inicio;
 
         // Lista vacía
@@ -139,7 +144,6 @@ public class Lista {
         }
     }
     
-    /*
         
     public void insertarPrimero(String parada){  
         Nodo nuevo = new Nodo(parada); 
@@ -147,7 +151,7 @@ public class Lista {
         inicio=nuevo;
         iN++;
     }
-        
+    /*    
     public void insertar1DespuesDe2(String nuevaParada, String parada) {
         Nodo nuevoNodo = new Nodo(nuevaParada);
         Nodo actual = inicio;

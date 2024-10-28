@@ -22,10 +22,12 @@ public class ManejoGrafo {
     public int t;//limite de covertura
     private String[] sucursales = new String[500];
     private int numSucursales = 0;
+    private Viewer viewer;
      
     
     public ManejoGrafo() {
         this.grafo = new GrafoLA(500);
+        System.setProperty("org.graphstream.ui", "swing");
         this.ventanaGrafo = new SingleGraph("Grafo");
         this.t = 0;
     } 
@@ -48,10 +50,11 @@ public class ManejoGrafo {
 
     //mostrar graphstream
     public void mostrarGrafo(){
-        System.setProperty("org.graphstream.ui", "swing");
-        Viewer viewer = ventanaGrafo.display();
+        this.viewer = ventanaGrafo.display();
+        viewer.setCloseFramePolicy(Viewer.CloseFramePolicy.HIDE_ONLY);
         viewer.enableAutoLayout();
     }
+
     
     // Método para agregar una parada al grafo
     public void agregarParada(String parada) {
@@ -273,11 +276,4 @@ private void verCoberturaDFSRecursivo(String parada, int distancia, Lista cobert
         grafo.eliminarGrafo();
         ventanaGrafo.clear();
     }
-    
-    
-    
-    public void agregarLinea(){
-        
-    }
-    
 }

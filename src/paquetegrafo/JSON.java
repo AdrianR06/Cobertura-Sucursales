@@ -56,18 +56,6 @@ public class JSON {
     }
 }
     
-    public void mostrarGrafo(ManejoGrafo grafos){
-        if (grafos != null){
-            System.setProperty("org.graphstream.ui", "swing");
-            grafos.ventanaGrafo.display();
-            grafos.grafo.profundidad();
-            System.out.println("--------------------------");
-            grafos.grafo.amplitud();    
-        } else {
-            System.out.println("Grafo no Cargado");
-        }
-    } 
-    
     // Método para procesar las estaciones de una línea
     private void procesarEstaciones(JSONArray estaciones, ManejoGrafo grafos) {
         String estacionAnterior = null;

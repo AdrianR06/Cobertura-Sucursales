@@ -40,8 +40,7 @@ public class Ventana1 extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jPanel1 = new javax.swing.JPanel();
-        Exit = new javax.swing.JButton();
+        Ventana1Panel = new javax.swing.JPanel();
         Indicaciones = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         CargarRedDeTransporteJSON1 = new javax.swing.JButton();
@@ -49,16 +48,7 @@ public class Ventana1 extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 60, -1, -1));
-
-        Exit.setText("X");
-        Exit.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                ExitActionPerformed(evt);
-            }
-        });
-        getContentPane().add(Exit, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 10, -1, -1));
+        Ventana1Panel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         Indicaciones.setText("Indicaciones");
         Indicaciones.addActionListener(new java.awt.event.ActionListener() {
@@ -66,11 +56,11 @@ public class Ventana1 extends javax.swing.JFrame {
                 IndicacionesActionPerformed(evt);
             }
         });
-        getContentPane().add(Indicaciones, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 130, -1, -1));
+        Ventana1Panel.add(Indicaciones, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 130, -1, -1));
 
         jLabel1.setFont(new java.awt.Font("Segoe UI Black", 0, 14)); // NOI18N
         jLabel1.setText("Cobertura de Sucursales");
-        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 10, -1, -1));
+        Ventana1Panel.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 10, -1, -1));
 
         CargarRedDeTransporteJSON1.setText("Cargar Red de Transporte .JSON");
         CargarRedDeTransporteJSON1.addActionListener(new java.awt.event.ActionListener() {
@@ -78,14 +68,12 @@ public class Ventana1 extends javax.swing.JFrame {
                 CargarRedDeTransporteJSON1ActionPerformed(evt);
             }
         });
-        getContentPane().add(CargarRedDeTransporteJSON1, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 170, -1, -1));
+        Ventana1Panel.add(CargarRedDeTransporteJSON1, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 180, -1, -1));
+
+        getContentPane().add(Ventana1Panel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 430, 330));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    private void ExitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ExitActionPerformed
-        System.exit(0);
-    }//GEN-LAST:event_ExitActionPerformed
 
     private void IndicacionesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_IndicacionesActionPerformed
          JOptionPane.showMessageDialog(null,"Bienvenido al sistema de cobertura de sucursales, para comenzar por favor cargue un archivo .JSON con la información referente a la red de transporte que desea utilizar");
@@ -109,6 +97,7 @@ if (resultado == JFileChooser.APPROVE_OPTION) {
     JSON json = new JSON(rutaArchivo);  // Crear instancia de JSON
     ManejoGrafo grafos = new ManejoGrafo();  // Crear instancia de ManejoGrafo
     Ventana2 ventana2 = new Ventana2();  // Crear Ventana2 sin pasar el grafo
+    ventana2.setDefaultCloseOperation(Ventana2.HIDE_ON_CLOSE);
 
     grafos.eliminarGrafos();
     try {
@@ -116,7 +105,7 @@ if (resultado == JFileChooser.APPROVE_OPTION) {
         json.cargarDesdeJSON(grafos, ventana2);
 
         // Configurar el grafo en Ventana2 después de cargarlo
-        ventana2.configurarGrafo(grafos);
+        ventana2.configurarGrafo();
         
         // Pasar JSON a Ventana2 si es necesario
         ventana2.setJson(json);
@@ -169,10 +158,9 @@ if (resultado == JFileChooser.APPROVE_OPTION) {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton CargarRedDeTransporteJSON1;
-    private javax.swing.JButton Exit;
     private javax.swing.JButton Indicaciones;
+    private javax.swing.JPanel Ventana1Panel;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JPanel jPanel1;
     // End of variables declaration//GEN-END:variables
 }
 
